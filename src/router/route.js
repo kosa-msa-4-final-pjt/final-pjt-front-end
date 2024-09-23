@@ -72,6 +72,7 @@ export default [
 
   { path: '/estimate/list', component: EstimateList },
   { path: '/verify-email', component: VerifyCompo },
+
   {
     path: '/mypage/user',
     component: UserPageCompo,

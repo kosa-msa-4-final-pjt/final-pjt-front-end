@@ -38,6 +38,7 @@
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">멤버십 가입일</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">멤버십 만료일</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">상태</th>
+            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">상태</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">상세보기</th>
           </tr>
         </thead>
