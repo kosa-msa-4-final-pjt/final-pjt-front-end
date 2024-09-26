@@ -20,28 +20,24 @@
             class="absolute mt-1 max-h-[300px] w-full overflow-auto rounded-md bg-white pl-2 py-1 shadow-lg sm:text-sm"
           >
             <!-- 전체 선택 체크박스 -->
-            <div
+            <label
+              @click.prevent="toggleAllServices"
               class="flex items-center py-3 pl-3 pr-4 pb-3 border-b-[1px] border-gray-100 cursor-pointer"
-              @click="toggleAllServices"
             >
               <input
                 type="checkbox"
-                @change="toggleAllServices"
                 :checked="isAllSelected"
                 class="mr-3 custom-checkbox"
-                :class="{ 'checked-checkbox': selectedServices.length === services.length }"
+                :class="{ 'checked-checkbox': isAllSelected }"
               />
-              <span class="font-medium" :class="{ 'text-midGreen': selectedServices.length === services.length }"
-                >전체 선택</span
-              >
-            </div>
+              <span class="font-medium" :class="{ 'text-midGreen': isAllSelected }">전체 선택</span>
+            </label>
 
             <!-- 개별 시공 서비스 체크박스 -->
-            <div
+            <label
               v-for="service in services"
               :key="service.id"
               class="flex items-center py-3 pl-3 pr-4 cursor-pointer hover:text-midGreen hover:color-midGreen"
-              @click="toggleService(service.id)"
               :class="{ 'text-midGreen': selectedServices.includes(service.id) }"
             >
               <input
@@ -52,7 +48,7 @@
                 :class="{ 'checked-checkbox': selectedServices.includes(service.id) }"
               />
               <span class="font-medium">{{ service.name }}</span>
-            </div>
+            </label>
           </ListboxOptions>
         </transition>
       </div>
@@ -106,7 +102,7 @@ export default {
 
     // 전체 선택 여부 확인
     const isAllSelected = computed(() => {
-      return selectedServices.value.length === services.value.length;
+      return selectedServices.value.length === services.value.length && services.value.length > 0;
     });
 
     // 전체 선택/해제 기능
@@ -115,16 +111,6 @@ export default {
         selectedServices.value = []; // 선택 해제
       } else {
         selectedServices.value = services.value.map((service) => service.id); // 모든 서비스 선택
-      }
-    };
-
-    // 개별 서비스 선택 토글
-    const toggleService = (serviceId) => {
-      const index = selectedServices.value.indexOf(serviceId);
-      if (index > -1) {
-        selectedServices.value.splice(index, 1);
-      } else {
-        selectedServices.value.push(serviceId);
       }
     };
 
@@ -145,7 +131,6 @@ export default {
       isAllSelected,
       toggleAllServices,
       selectedServiceNames,
-      toggleService,
       resetSelection,
     };
   },

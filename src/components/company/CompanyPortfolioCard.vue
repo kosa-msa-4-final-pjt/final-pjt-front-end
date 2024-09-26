@@ -15,7 +15,7 @@
     <!-- 내용 영역 -->
     <div class="bg-white px-2 pt-2 pb-3 rounded-b-lg">
       <div class="mb-1">
-        <p class="text-base font-bold text-gray-900 leading-5 tracking-tight truncate">
+        <p class="text-md font-bold text-gray-900 leading-5 tracking-tight truncate">
           {{ portfolio.title }}
         </p>
       </div>
@@ -49,6 +49,10 @@ export default {
       if (!this.portfolio.startDate || !this.portfolio.endDate) return '';
       const startDate = new Date(this.portfolio.startDate);
       const endDate = new Date(this.portfolio.endDate);
+      // 당일 시공 처리
+      if (startDate.getTime() === endDate.getTime()) {
+        return '당일 시공';
+      }
       const timeDiff = Math.abs(endDate - startDate);
       const dayDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
       return dayDiff >= 7 ? `${Math.ceil(dayDiff / 7)}주 소요` : `${dayDiff}일 소요`;

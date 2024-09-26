@@ -29,8 +29,8 @@
             <div v-if="showRequestOptions" class="ml-4 mt-2 space-y-2">
               <button
                 type="button"
-                @click="activeTab = 'sent'"
-                :class="{ 'bg-gray-200 font-bold': activeTab === 'sent' }"
+                @click="activeTab = 'save'"
+                :class="{ 'bg-gray-200 font-bold': activeTab === 'save' }"
                 class="block w-full p-2 rounded-lg hover:bg-gray-100 transition duration-300 text-left"
               >
                 견적 요청 목록(이름 변경 필요)
@@ -42,6 +42,14 @@
                 class="block w-full p-2 rounded-lg hover:bg-gray-100 transition duration-300 text-left"
               >
                 진행 중인 시공(이름 변경 필요)
+              </button>
+              <button
+                type="button"
+                @click="activeTab = 'complete'"
+                :class="{ 'bg-gray-200 font-bold': activeTab === 'complete' }"
+                class="block w-full p-2 rounded-lg hover:bg-gray-100 transition duration-300 text-left"
+              >
+                완료된 시공(이름 변경 필요)
               </button>
             </div>
           </li>
@@ -73,6 +81,7 @@ import UserSaveRequests from './UserSaveRequests.vue';
 import UserReviewList from './review/UserReviewList.vue';
 import UserBaseInfo from './UserBaseInfo.vue';
 import UserOnGoingRequests from './UserOnGoingRequests.vue';
+import UserCompleteRequests from './UserCompleteRequests.vue';
 
 export default {
   data() {
@@ -86,10 +95,12 @@ export default {
       switch (this.activeTab) {
         case 'info':
           return UserBaseInfo;
-        case 'sent':
+        case 'save':
           return UserSaveRequests;
         case 'ongoing':
           return UserOnGoingRequests;
+        case 'complete':
+          return UserCompleteRequests;
         case 'reviewlist':
           return UserReviewList;
         default:

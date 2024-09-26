@@ -43,11 +43,26 @@
         </label>
         <!-- 답변 버튼 공간 -->
         <div class="flex justify-end mt-5 gap-5">
-          <button type="button" @click="showModal = true" class="rounded-lg p-2 bg-accent hover:bg-secondary">
+          <button
+            type="button"
+            @click="showModal = true"
+            class="bg-midGreen hover:bg-[#2a692d] text-white w-1/2 h-[44px] rounded text-[16px] font-medium mt-6"
+          >
             등록하기
           </button>
-          <button type="button" class="rounded-lg p-2 bg-accent hover:bg-secondary">수정하기</button>
-          <button type="button" @click="goBack" class="rounded-lg p-2 bg-accent hover:bg-secondary">되돌아가기</button>
+          <button
+            type="button"
+            class="bg-midGreen hover:bg-[#2a692d] text-white w-1/2 h-[44px] rounded text-[16px] font-medium mt-6"
+          >
+            수정하기
+          </button>
+          <button
+            type="button"
+            @click="goBack"
+            class="bg-midGreen hover:bg-[#2a692d] text-white w-1/2 h-[44px] rounded text-[16px] font-medium mt-6"
+          >
+            되돌아가기
+          </button>
         </div>
         <!-- 버튼에 따른 Modal -->
         <div v-if="showModal" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">

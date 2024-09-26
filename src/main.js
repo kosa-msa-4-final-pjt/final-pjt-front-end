@@ -9,6 +9,8 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import 'quill/dist/quill.snow.css'; // Quill 스타일 추가
 
+import VuePaginatePlugin from '@svifty7/vue-paginate';
+
 import { createPinia } from 'pinia';
 import { createPersistedState } from 'pinia-plugin-persistedstate';
 
@@ -21,6 +23,7 @@ pinia.use(createPersistedState());
 
 app.use(router);
 app.use(pinia);
+app.use(VuePaginatePlugin);
 app.component('font-awesome-icon', FontAwesomeIcon);
 app.mount('#app');
 

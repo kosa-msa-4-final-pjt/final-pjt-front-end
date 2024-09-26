@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- 포트폴리오 이미지 -->
+    <!-- 공지사항 이미지 -->
     <!-- 이미지 슬라이더 -->
     <div class="my-carousel mb-8">
       <swiper
@@ -19,7 +19,7 @@
         </swiper-slide>
       </swiper>
     </div>
-    <!-- 포트폴리오 내용 -->
+    <!-- 공지사항 내용 -->
     <div>
       <ul class="p-10 rounded-lg bg-white">
         <li class="littleTitle">
@@ -28,29 +28,11 @@
         </li>
         <li class="littleTitle">
           <label for="" class="w-1/5 border-r-2 border-indigo-500">내용</label>
-          <p class="w-4/5 px-10">
-            {{ content }}
-          </p>
+          <p class="w-4/5 px-10">{{ content }}</p>
         </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">업체명</label>
-          <p class="w-4/5 px-10">{{ companyName }}</p>
-        </li>
-        <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">주거 형태</label>
-          <p class="w-4/5 px-10">{{ buildingType }}</p>
-        </li>
-        <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">평수</label>
-          <p class="w-4/5 px-10">{{ projectArea }}</p>
-        </li>
-        <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">시공분야</label>
-          <p class="w-4/5 px-10">{{ constructionTypeService }}</p>
-        </li>
-        <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500">시공금액</label>
-          <p class="w-4/5 px-10">{{ totalPrice }}</p>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500">관리자명</label>
+          <p class="w-4/5 px-10">{{ adminName }}</p>
         </li>
         <li class="littleTitle">
           <label for="" class="w-1/5 border-r-2 border-indigo-500">게시일</label>
@@ -62,7 +44,13 @@
     <div class="flex justify-end mt-4 gap-5">
       <button
         class="bg-midGreen hover:bg-[#2a692d] text-white w-1/2 h-[44px] rounded text-[16px] font-medium mt-6"
-        @click="deletionCompanyPortfolio"
+        @click="confirmEdition"
+      >
+        수정
+      </button>
+      <button
+        class="bg-midGreen hover:bg-[#2a692d] text-white w-1/2 h-[44px] rounded text-[16px] font-medium mt-6"
+        @click="confirmDeletion"
       >
         삭제
       </button>
@@ -74,7 +62,13 @@
       </button>
     </div>
     <!-- 버튼에 따른 Modal -->
-    <div v-if="isModalOpen" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div
+      v-if="isEditModalOpen || isDeleteModalOpen"
+      class="relative z-10"
+      aria-labelledby="modal-title"
+      role="dialog"
+      aria-modal="true"
+    >
       <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
 
       <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
@@ -114,16 +108,27 @@
             </div>
             <div class="flex gap-4 bg-white px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <button
-                v-if="isModalOpen"
-                @click="deleteCompanyPortfolio"
-                type="button"
+                v-if="isEditModalOpen"
+                @click="confirmEdit"
+                titel="button"
+                class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+              >
+                수정
+              </button>
+              <button
+                v-if="isDeleteModalOpen"
+                @click="confirmDelete"
+                titel="button"
                 class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-red-600 sm:mt-0 sm:w-auto"
               >
                 삭제
               </button>
               <button
-                @click="isModalOpen = false"
-                type="button"
+                @click="
+                  isEditModalOpen = false;
+                  isDeleteModalOpen = false;
+                "
+                titel="button"
                 class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
               >
                 취소
@@ -146,17 +151,13 @@ import { Navigation, Pagination } from 'swiper';
 export default {
   data() {
     return {
-      // 임의로 넣어둔 값들
-      title: '편안하고 심플한 화이트&블랙 스타일',
+      title: '체인집업 플랫폼 새로운 정책으로 여러분을 맞이합니다!',
       content:
-        '화이트&블랙 컬러의 조화는 깔끔하면서도 시크한 느낌을 주는 대표적인 모던 인테리어 스타일입니다. 이번 프로젝트는 고객의 요청에 따라 복잡함을 배제하고, 간결하고 세련된 공간을 연출하는 데 중점을 두었습니다. 흰색의 벽과 천장은 공간을 넓어 보이게 하며, 검은색 가구와 포인트 소품들이 공간에 깊이감과 균형을 더했습니다. 주요 공간 디자인 1. 거실 넓은 흰색 벽과 큰 창문을 통해 자연광이 가득 들어오는 공간입니다. 깔끔한 블랙 소파와 낮은 프로파일의 가구들로 심플함을 유지하며, 포인트로 매트한 블랙 TV 선반을 배치했습니다. 바닥은 밝은 톤의 원목을 사용해 따뜻함을 더했습니다. 2. 주방 주방은 화이트 상판과 블랙 캐비닛의 조합으로 간결한 느낌을 극대화했습니다. 타일 벽면에는 광택 있는 흰색 타일을 사용해 공간에 깔끔함과 세련미를 더했으며, 블랙 스틸소재의 주방 후드를 포인트로 활용했습니다. 3. 침실 벽과 침구는 부드러운 흰색을 사용해 휴식의 공간을 강조했습니다. 머리맡에 있는 블랙 금속 소재의 스탠드 조명이 모던한 분위기를 한층 더해줍니다. 큰 거울을 사용해 공간감을 넓혔으며, 최소한의 가구 배치로 심플함을 유지했습니다. 4. 화장실 화이트 타일과 블랙 악세서리로 대조를 이루어 간결하면서도 현대적인 화장실을 완성했습니다. 벽면에 설치된 간접 조명은 따뜻한 느낌을 주면서도, 세련된 분위기를 유지합니다.',
-      companyName: '부자업체',
-      buildingType: '아파트',
-      projectArea: '32평',
-      constructionTypeService: '전체 시공',
-      totalPrice: '5000만원',
-      regDate: '24.09.29',
-      isModalOpen: false,
+        '항상 저희 플랫폼을 사랑해주시는 고객 여러분께 진심으로 감사드립니다. 여러분께 더 나은 서비스와 편리한 이용 환경을 제공하기 위해 체인집업 플랫폼이 새로운 정책을 도입하게 되어 이를 안내드리고자 합니다. 1. 개선된 사용자 경험 더욱 간편한 회원가입 절차: 기존보다 빠르고 쉬운 절차로 신규 회원 가입이 가능합니다. 개인화된 맞춤 서비스: 이용자 개개인의 선호도에 맞춘 맞춤형 추천 기능이 강화됩니다. 2. 안전한 거래 환경 보안 강화: 사용자 정보 보호를 위해 최신 보안 시스템을 도입하여 거래 과정의 안전성을 한층 더 강화했습니다. 리뷰 및 평가 시스템 개선: 신뢰할 수 있는 리뷰 기반의 평가 시스템을 통해 고객 여러분의 만족도를 높이겠습니다. 3. 더 다양 혜택 포인트 적립제도 신설: 거래 시 적립된 포인트를 통해 다양한 혜택을 누리실 수 있습니다. 회원 등급제 도입: 이용 실적에 따라 차별화된 혜택을 받을 수 있는 등급제를 도입하였습니다. 저희 체인집업 플랫폼은 항상 여러분의 소중한 의견을 경청하고, 더 나은 서비스로 보답할 수 있도록 노력하겠습니다. 앞으로도 많은 관심과 성원 부탁드립니다. 새로운 변화와 함께 더 나은 서비스로 찾아뵙겠습니다! 감사합니다. 체인집업 드림',
+      adminName: '체인집업',
+      regDate: '24.10.07',
+      isEditModalOpen: false,
+      isDeleteModalOpen: false,
       modalTitle: '',
       modalMessage: '',
     };
@@ -172,19 +173,66 @@ export default {
     };
   },
   methods: {
-    // 탈퇴 버튼 클릭시
-    deletionCompanyPortfolio() {
+    // 제목 변경값 반환
+    changeTitle() {
+      return this.title ? this.title : null;
+    },
+    // 내용 변경값 반환
+    changeContent() {
+      return this.content ? this.content : null;
+    },
+    // 변경사항 여부를 확인하고 모달을 띄움
+    confirmEdition() {
+      let titleChange = this.changeTitle();
+      let contentChange = this.changeContent();
+
+      // 변경 여부에 따른 모달 메시지 구성
+      if (titleChange || contentChange) {
+        this.modalTitle = '관리자 권한으로 멤버십 정책 변경';
+
+        // 변경된 항목들에 대해 메시지 작성
+        let changes = [];
+        if (titleChange) {
+          changes.push('제목');
+        }
+        if (contentChange) {
+          changes.push('내용');
+        }
+
+        // 변경된 내용이 여러 개일 경우 메시지 구성
+        this.modalMessage = `해당 공지사항을 변경하시겠습니까? 변경한 멤버십 작업은 그대로 서버에 저장됩니다. 이 작업은 취소할 수 없습니다.`;
+        this.isEditModalOpen = true;
+      } else {
+        alert('변경 사항이 없습니다.');
+      }
+    },
+    // 모달 수정 버튼 클릭 시 정보 수정
+    confirmEdit() {
+      // 서버로 데이터를 보내는 로직을 여기에 작성
+      if (this.title) {
+        this.titel = this.title;
+      }
+      if (this.content) {
+        this.cotntent = this.content;
+      }
+
+      alert('데이터가 변경되었습니다.');
+      this.title = null;
+      this.content = null;
+      this.isEditModalOpen = false;
+    },
+    // 삭제 버튼 클릭시
+    confirmDeletion() {
       this.modalTitle = '관리자 권한으로 게시물 삭제';
       this.modalMessage =
-        '해당 게시물을 정말로 삭제하시겠습니까? 해당 게시물의 작업은 그대로 서버에 저장됩니다. 이 작업은 취소할 수 없습니다.';
-      this.isModalOpen = true;
-      console.log('게시판 삭제완료:', this.isModalOpen);
+        '해당 공지사항을 정말로 삭제하시겠습니까? 해당 공지사항의 작업은 그대로 서버에 저장됩니다. 이 작업은 취소할 수 없습니다.';
+      this.isDeleteModalOpen = true;
     },
 
-    deleteCompanyPortfolio() {
+    confirmDelete() {
       // 서버로 데이터를 보내는 로직을 여기에 작성
       alert('삭제했습니다.');
-      this.isModalOpen = false;
+      this.isDeleteModalOpen = false;
     },
   },
 };

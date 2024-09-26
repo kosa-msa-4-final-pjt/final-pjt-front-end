@@ -19,7 +19,7 @@
                 to="adminCompanyMembershipList"
                 activeClass="bg-gray-200"
                 class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
-                >멤버십 관리</router-link
+                >멤버십 가입자 관리</router-link
               >
               <router-link
                 to="adminCompanyPortfolioList"
@@ -37,13 +37,37 @@
             >
               고객관리
             </button>
-            <!-- 시공후기 관리 토글 버튼 -->
+            <!-- 고객 관리, 시공후기 관리 토글 버튼 -->
             <div v-if="activeMenu === 'customerManagement'" class="ml-4 mt-2">
+              <router-link
+                to="adminMemberList"
+                activeClass="bg-gray-200"
+                class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
+                >고객 가입 관리</router-link
+              >
               <router-link
                 to="adminMemberReviewList"
                 activeClass="bg-gray-200"
                 class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
                 >시공 후기 관리</router-link
+              >
+            </div>
+          </li>
+          <!-- 멤버십 관리(상품) -->
+          <li class="mb-2">
+            <button
+              @click="toggleMenu('membershipManagement')"
+              class="block w-full text-left p-2 rounded hover:bg-gray-200"
+            >
+              멤버십 관리
+            </button>
+            <!-- 멤버십 관리 토글 버튼 -->
+            <div v-if="activeMenu === 'membershipManagement'" class="ml-4 mt-2">
+              <router-link
+                to="adminMembershipList"
+                activeClass="bg-gray-200"
+                class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
+                >멤버십 관리</router-link
               >
             </div>
           </li>
@@ -58,19 +82,19 @@
             <!-- 공지사항, FAQ, 1:1 문의 관리 토글 버튼 -->
             <div v-if="activeMenu === 'platformManagement'" class="ml-4 mt-2">
               <router-link
-                to="plateformEventList"
+                to="adminplateformEventList"
                 activeClass="bg-gray-200"
                 class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
                 >공지사항 관리</router-link
               >
               <router-link
-                to="plateformFAQList"
+                to="adminplateformFAQList"
                 activeClass="bg-gray-200"
                 class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
                 >FAQ 관리</router-link
               >
               <router-link
-                to="plateformAskList"
+                to="adminplateformAskList"
                 activeClass="bg-gray-200"
                 class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
                 >문의 관리</router-link

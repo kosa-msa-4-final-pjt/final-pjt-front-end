@@ -31,9 +31,24 @@
     </div>
     <!-- 버튼 공간 -->
     <div class="flex justify-end mt-4 gap-5">
-      <button class="rounded-lg p-2 bg-accent hover:bg-secondary" @click="showModal = true">수정</button>
-      <button class="rounded-lg p-2 bg-accent hover:bg-secondary" @click="showModal = true">삭제</button>
-      <button class="rounded-lg p-2 bg-accent hover:bg-secondary" @click="this.$router.back()">되돌아가기</button>
+      <button
+        class="bg-midGreen hover:bg-[#2a692d] text-white w-1/2 h-[44px] rounded text-[16px] font-medium mt-6"
+        @click="showModal = true"
+      >
+        수정
+      </button>
+      <button
+        class="bg-midGreen hover:bg-[#2a692d] text-white w-1/2 h-[44px] rounded text-[16px] font-medium mt-6"
+        @click="showModal = true"
+      >
+        삭제
+      </button>
+      <button
+        class="bg-midGreen hover:bg-[#2a692d] text-white w-1/2 h-[44px] rounded text-[16px] font-medium mt-6"
+        @click="this.$router.back()"
+      >
+        되돌아가기
+      </button>
     </div>
     <!-- 버튼에 따른 Modal -->
     <div v-if="showModal" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">

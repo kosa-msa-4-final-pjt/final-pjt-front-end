@@ -7,13 +7,30 @@
         @submit.prevent="validateForm"
         class="w-[500px] mb-2 overflow-x-hidden overflow-y-scroll px-10 pt-2 pb-4 pb-20 mx-auto"
       >
+        <div class="mb-[22px]">
+          <label class="text-[14px] font-medium">업체 로고</label>
+          <div class="mt-2 flex items-center space-x-4">
+            <!-- 미리보기 이미지 -->
+            <div v-if="previewImage" class="mt-2">
+              <img :src="previewImage" alt="로고 미리보기" class="w-[150px] h-[150px] object-cover rounded-lg border" />
+              <span v-if="selectedFileName" class="pl-2 mt-2 text-gray-600 text-[14px]">{{ selectedFileName }}</span>
+            </div>
+          </div>
+          <div class="mt-4">
+            <label for="fileInput" class="cursor-pointer text-[14px] bg-midGreen text-white px-4 py-3 rounded-md">
+              파일 선택
+            </label>
+            <input id="fileInput" type="file" accept="image/*" @change="onFileChange" class="hidden" />
+          </div>
+        </div>
+
         <div class="mb-[12px]">
-          <label for="companyName" class="text-[14px] font-normal mb-4">업체 이름</label>
+          <label for="companyName" class="text-[14px] font-medium mb-4">업체 이름</label>
           <div class="mt-2 flex justify-between items-center">
             <input
               v-model="companyName"
               @blur="validateCompanyName"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
               type="text"
               placeholder="인테리어 업체 이름을 입력해 주세요."
               required
@@ -23,12 +40,12 @@
         </div>
 
         <div class="mb-[12px]">
-          <label for="companyNumber" class="text-[14px] font-normal mb-4">사업자번호</label>
+          <label for="companyNumber" class="text-[14px] font-medium mb-4">사업자번호</label>
           <div class="mt-2 flex justify-between items-center">
             <input
               v-model="companyNumber"
               @blur="validateCompanyNumber"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
               type="text"
               placeholder="사업자 번호를 입력해 주세요."
               required
@@ -45,12 +62,12 @@
         </div>
 
         <div class="mb-[12px]">
-          <label for="email" class="text-[14px] font-normal mb-4">이메일</label>
+          <label for="email" class="text-[14px] font-medium mb-4">이메일</label>
           <div class="mt-2 flex justify-between items-center">
             <input
               v-model="email"
               @blur="validateEmail"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
               type="email"
               placeholder="이메일을 입력해 주세요."
               required
@@ -67,7 +84,7 @@
         </div>
 
         <div class="mb-[12px]">
-          <label for="password" class="text-[14px] font-normal mb-4"
+          <label for="password" class="text-[14px] font-medium mb-4"
             >비밀번호
             <span class="text-[10px] text-[#bbb] leading-[14px]">(10~16자, 영문/숫자/특수문자 조합)</span></label
           >
@@ -75,7 +92,7 @@
             <input
               v-model="password"
               @blur="validatePassword"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
               type="password"
               placeholder="비밀번호를 입력해 주세요."
               required
@@ -85,12 +102,12 @@
         </div>
 
         <div class="mb-[12px]">
-          <label for="confirmPassword" class="text-[14px] font-normal mb-4">비밀번호 확인</label>
+          <label for="confirmPassword" class="text-[14px] font-medium mb-4">비밀번호 확인</label>
           <div class="mt-2 flex justify-between items-center">
             <input
               v-model="confirmPassword"
               @blur="validateConfirmPassword"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
               type="password"
               placeholder="비밀번호를 한 번 더 입력해 주세요."
               required
@@ -103,7 +120,7 @@
         </div>
 
         <div class="mb-[12px]">
-          <label for="owner" class="text-[14px] font-normal mb-4"
+          <label for="owner" class="text-[14px] font-medium mb-4"
             >대표자명
             <span class="text-[10px] text-[#bbb] leading-[14px]">(2자 이상)</span>
           </label>
@@ -111,7 +128,7 @@
             <input
               v-model="owner"
               @blur="validateOwner"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
               type="text"
               placeholder="대표자명을 입력해 주세요."
               required
@@ -121,13 +138,13 @@
         </div>
 
         <div class="mb-[12px]">
-          <label for="phone" class="text-[14px] font-normal mb-4">휴대폰번호 </label>
+          <label for="phone" class="text-[14px] font-medium mb-4">휴대폰번호 </label>
           <span class="text-[10px] text-[#bbb] leading-[14px]">(숫자만 입력)</span>
           <div class="mt-2 flex justify-between items-center">
             <input
               v-model="phoneNumber"
               @blur="validatePhone"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
               type="text"
               placeholder="휴대폰번호를 입력해 주세요."
               required
@@ -137,12 +154,12 @@
         </div>
 
         <div class="mb-[12px]">
-          <label for="publishDate" class="text-[14px] font-normal mb-4">개업일자</label>
+          <label for="publishDate" class="text-[14px] font-medium mb-4">개업일자</label>
           <div class="mt-2 flex justify-between items-center">
             <input
               v-model="publishDate"
               @blur="validatePublishDate"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
               type="date"
               :max="today"
               required
@@ -151,14 +168,14 @@
         </div>
 
         <div class="mb-[12px]">
-          <label for="address" class="text-[14px] font-normal mb-4">업체 주소 </label>
+          <label for="address" class="text-[14px] font-medium mb-4">업체 주소 </label>
           <span class="text-[10px] text-[#bbb] leading-[14px]">(상세 주소까지 작성)</span>
           <div class="mt-2 flex justify-between items-center">
             <input
               placeholder="업체 주소를 입력해주세요."
               v-model="address"
               @blur="validateAddress"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
               type="text"
               readonly
               required
@@ -182,27 +199,29 @@
           <input
             type="text"
             placeholder="(선택) 지역과 상세주소를 입력해주세요."
-            class="flex-grow w-full h-[52px] text-[14px] font-normal mt-2 p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+            class="flex-grow w-full h-[52px] text-[14px] font-normal mt-2 p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
             v-model="detailedAddress"
             ref="detailedAddress"
           />
           <p v-if="errors.address" class="text-red text-[12px] mt-2">{{ errors.address }}</p>
 
-          <button
-            type="button"
-            @click="searchAddress"
-            class="mt-2 px-3 py-2 bg-gray-600 text-white rounded-lg text-[16px]"
-          >
-            주소 검색
-          </button>
+          <div class="pb-2">
+            <button
+              type="button"
+              @click="searchAddress"
+              class="w-full mt-2 py-3 bg-midGreen text-white rounded-md text-[14px]"
+            >
+              주소 검색
+            </button>
+          </div>
         </div>
 
         <div class="mb-[12px]">
-          <label for="companyDesc" class="text-[14px] font-normal mb-4">업체 소개 </label>
+          <label for="companyDesc" class="text-[14px] font-medium mb-4">업체 소개 </label>
           <div class="mt-2 flex justify-between items-center">
             <textarea
               v-model="companyDesc"
-              class="flex-grow h-[82px] text-[14px] font-normal px-4 py-2 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border"
+              class="flex-grow h-[82px] text-[14px] font-normal px-4 py-2 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
               type="text"
               required
             ></textarea>
@@ -210,7 +229,7 @@
         </div>
 
         <div class="mb-[12px]">
-          <label for="constructionTypes" class="text-[14px] font-normal mb-4">시공 종류</label>
+          <label for="constructionTypes" class="text-[14px] font-medium mb-4">시공 종류</label>
 
           <!-- 전체 선택 체크박스 -->
           <div class="mt-2 mb-3 flex items-center">
@@ -240,8 +259,6 @@
           @click="insertCompany"
           type="submit"
           class="bg-midGreen text-white w-full h-[52px] rounded-[4px] text-[16px] mt-[24px]"
-          :disabled="!isFormValid"
-          :class="{ 'opacity-50 cursor=not-allowed': !isFormValid }"
         >
           등록하기
         </button>
@@ -266,6 +283,7 @@ export default {
       publishDate: '',
       companyDesc: '',
       address: '',
+      detailedAddress: '',
       constructionTypes: [], // 시공 종류 데이터 배열
       selectedTypes: [], // 선택된 시공 종류 배열
       today: '',
@@ -274,6 +292,9 @@ export default {
       emailVerified: false,
       companyNumberVerified: false,
       passwordsMatch: false,
+      selectedFileName: '',
+      logoFile: null, // 로고 이미지 파일
+      previewImage: null, // 로고 이미지 미리보기 URL
     };
   },
   computed: {
@@ -297,10 +318,24 @@ export default {
     // 현재 날짜를 저장하여 개업날짜는 오늘 또는 미래의 날짜만 선택 가능하도록 설정
     const today = new Date().toISOString().split('T')[0];
     this.today = today;
-
     this.getConstructionType();
   },
   methods: {
+    // 파일 변경 시 로고 이미지 미리보기 설정
+    onFileChange(event) {
+      const file = event.target.files[0];
+      if (file && file.type.startsWith('image/')) {
+        this.logoFile = file;
+        this.previewImage = URL.createObjectURL(file);
+        this.selectedFileName = file.name; // 선택한 파일 이름 저장
+      } else {
+        this.logoFile = null;
+        this.previewImage = null;
+        this.selectedFileName = ''; // 파일이 없으면 이름 초기화
+        alert('이미지 파일을 선택해주세요.');
+      }
+    },
+
     // 주소 검색
     searchAddress() {
       this.openDaumPostcode();
@@ -367,10 +402,18 @@ export default {
 
     // 이메일 중복 확인
     async verifyEmail() {
+      this.validateEmail(); // 먼저 이메일 형식 유효성 검사
+
+      // 이메일 형식이 유효하지 않으면 중복 확인 요청을 보내지 않음
+      if (this.errors.email) {
+        return;
+      }
+
       try {
         const response = await axios.get('/api/company/check-email', {
           params: { email: this.email },
         });
+
         if (response.data) {
           this.errors.email = '이미 사용 중인 이메일입니다.';
         } else {
@@ -383,8 +426,25 @@ export default {
       }
     },
     verifyCompanyNumber() {
-      this.companyNumberVerified = true;
+      // 먼저 유효성 검사 수행
+      this.validateCompanyNumber();
+
+      // 유효성 검사를 통과하지 못한 경우 메시지를 표시하지 않음
+      if (this.errors.companyNumber) {
+        return;
+      }
+
+      // 유효성 검사 통과 후 사업자번호 확인
+      try {
+        // 여기서 실제 사업자번호 확인 로직을 추가할 수 있습니다.
+        this.companyNumberVerified = true;
+        delete this.errors.companyNumber;
+      } catch (error) {
+        console.error(error);
+        this.errors.companyNumber = '사업자 번호 확인에 실패했습니다.';
+      }
     },
+
     validateEmail() {
       this.emailVerified = false; // 이메일이 변경되면 중복 확인 상태를 초기화
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -495,23 +555,28 @@ export default {
 
       // 에러가 없는 경우에만 서버로 요청 전송
       if (Object.keys(this.errors).length === 0) {
-        const companyData = {
-          email: this.email,
-          companyName: this.companyName,
-          password: this.password,
-          phoneNumber: this.phoneNumber,
-          owner: this.owner,
-          companyNumber: this.companyNumber,
-          publishDate: this.publishDate,
-          address: this.address,
-          companyDesc: this.companyDesc,
-          constructionService: this.selectedTypes, // 선택된 시공 종류 ID 배열
-        };
+        const formData = new FormData();
+
+        // 폼 데이터 추가
+        formData.append('email', this.email);
+        formData.append('companyName', this.companyName);
+        formData.append('password', this.password);
+        formData.append('phoneNumber', this.phoneNumber);
+        formData.append('owner', this.owner);
+        formData.append('companyNumber', this.companyNumber);
+        formData.append('publishDate', this.publishDate);
+        formData.append('address', this.address);
+        formData.append('companyDesc', this.companyDesc);
+        formData.append('constructionService', this.selectedTypes);
+
+        if (this.logoFile) {
+          formData.append('logoFile', this.logoFile);
+        }
 
         // 서버로 POST 요청
         try {
-          await axios.post('/api/company', companyData);
-          alert('업체 등록이 완료되었습니다.');
+          await axios.post('/api/company', formData);
+          alert('입력하신 이메일로 인증 메일이 전송되었습니다. 메일 인증 후 로그인이 가능합니다.');
           this.$router.push('/');
         } catch (error) {
           console.error(error);

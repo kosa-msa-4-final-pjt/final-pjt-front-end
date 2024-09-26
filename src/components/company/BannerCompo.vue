@@ -5,29 +5,17 @@
       :navigation="true"
       :pagination="{ clickable: true }"
       :loop="true"
-      :autoplay="{ delay: 3000, disableOnInteraction: false }"
+      :autoplay="{ delay: 4000, disableOnInteraction: false }"
       class="h-[200px] rounded-[8px] custom-swiper"
     >
       <swiper-slide>
-        <img
-          class="w-[1100px] object-cover"
-          src="https://cf.zipdoc.co.kr/zws/res/assets/images/zipdoc_v35/common/banner_lx_long2.png"
-          alt="banner1"
-        />
+        <img class="w-[1100px] object-cover" :src="require('/public/imgs/banner1.png')" alt="banner1" />
       </swiper-slide>
       <swiper-slide>
-        <img
-          class="w-[1100px] object-cover"
-          src="https://cf.zipdoc.co.kr/zws/res/assets/images/zipdoc_v35/common/home-banner-pc-01.jpg"
-          alt="banner2"
-        />
+        <img class="w-[1100px] object-cover" :src="require('/public/imgs/banner2.png')" alt="banner2" />
       </swiper-slide>
       <swiper-slide>
-        <img
-          class="w-[1100px] object-cover"
-          src="https://cf.zipdoc.co.kr/zws/res/assets/images/zipdoc_v35/common/home-banner-pc-04.jpg"
-          alt="banner3"
-        />
+        <img class="w-[1100px] object-cover" :src="require('/public/imgs/banner3.png')" alt="banner3" />
       </swiper-slide>
     </swiper>
   </div>

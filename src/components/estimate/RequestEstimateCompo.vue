@@ -8,9 +8,13 @@
         :step="step"
         :progress-width="progressWidth"
         :formData="formData"
+        :city="city"
+        :district="district"
+        :constructionTypeIds="constructionTypeIds"
         @nextStep="nextStep"
         @prevStep="prevStep"
         @updateFormData="updateFormData"
+        @sendDataToParent="handleReceivedData"
       >
       </router-view>
     </div>
@@ -23,6 +27,9 @@ export default {
     return {
       step: 1, // 현재 스텝을 중앙에서 관리
       estimateRequestId: null, // 새로운 필드로 견적 요청 ID 관리
+      city: '', // 부모 컴포넌트에서 상태를 유지
+      district: '', // 부모 컴포넌트에서 상태를 유지
+      constructionTypeIds: [], // 부모 컴포넌트에서 상태를 유지
       formData: {
         buildingTypeId: '', // Step 1 데이터
         floor: '',
@@ -34,7 +41,6 @@ export default {
         measureDate: '', // Step 5 실측 가능일
       },
       initialFormData: {
-        // 초기 상태를 별도로 저장
         buildingTypeId: '',
         floor: '',
         constructionTypeIds: [],
@@ -72,11 +78,18 @@ export default {
       this.formData = { ...this.formData, ...newData };
     },
 
-    // formData 초기화 및 stepOne으로 이동
+    // formData 초기화 및 stepOne으로 이동 (city, district, constructionTypeIds는 초기화하지 않음)
     resetToStepOne() {
       this.step = 1;
       this.formData = { ...this.initialFormData }; // 초기화된 formData로 설정
       this.$router.push('/requestEstimate/stepOne'); // URL도 스텝 1로 변경
+    },
+
+    // 자식 컴포넌트에서 받은 city, district, constructionTypeIds를 처리하는 메서드
+    handleReceivedData(data) {
+      this.city = data.city || this.city; // 기존 값이 있으면 유지
+      this.district = data.district || this.district; // 기존 값이 있으면 유지
+      this.constructionTypeIds = data.constructionTypeIds || this.constructionTypeIds; // 기존 값이 있으면 유지
     },
   },
 

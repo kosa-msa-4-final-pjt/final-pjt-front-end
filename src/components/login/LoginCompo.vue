@@ -11,27 +11,27 @@
           <div class="inputAccount flex flex-col w-80 gap-5">
             <!-- 아이디 -->
             <div class="inputEmail m-0 p-0 align-baseline">
-              <label for="email" class="block text-sm font-medium mb-2">ID</label>
+              <label for="email" class="block text-left text-sm font-medium mb-2">이메일</label>
               <div class="relative flex">
                 <input
                   type="text"
                   v-model="email"
                   autofocus
                   placeholder="example@gmail.com"
-                  class="p-3 rounded border-1 border-solid text-base w-full h-12 resize-none focus:outline-none focus:border-midGreen focus:ring-1 focus:ring-midGreen disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none focus:invalid:border-midGreen focus:invalid:ring-midGreen"
+                  class="p-3 rounded border-[1px] border-solid border-gray-200 text-base w-full h-12 resize-none focus:outline-none focus:border-midGreen focus:ring-1 focus:ring-midGreen"
                 />
               </div>
             </div>
             <!-- 비밀번호 -->
             <div>
-              <label for="password" class="block text-sm font-medium mb-2">PW</label>
+              <label for="password" class="block text-left text-sm font-medium mb-2">비밀번호</label>
               <div class="relative flex">
                 <input
                   type="password"
                   v-model="password"
                   autofocus
                   placeholder="비밀번호를 입력해주세요."
-                  class="p-3 rounded border-1 border-solid text-base w-full resize-none focus:outline-none focus:border-midGreen focus:ring-1 focus:ring-midGreen disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-midgreen invalid:text-midGreen focus:invalid:border-midGreen focus:invalid:ring-midGreen"
+                  class="p-3 rounded border-[1px] border-solid border-gray-200 text-base w-full h-12 resize-none focus:outline-none focus:border-midGreen focus:ring-1 focus:ring-midGreen"
                 />
               </div>
             </div>
@@ -61,47 +61,30 @@
           <div class="flex flex-col gap-3 mt-4 mb-3">
             <button
               type="button"
-              class="naverLoginBtn font-medium text-center border border-solid cursor-pointer select-none ease-in-out px-3 py-3 text-base rounded-s w-full bg-[#03c75a] border-[#03c75a] text-white flex items-center justify-center"
+              class="font-medium text-center border border-solid cursor-pointer select-none ease-in-out px-3 text-base rounded-md w-full bg-[#03c75a] border-[#03c75a] text-white flex items-center justify-center"
             >
               <a href="http://localhost:8080/oauth2/authorization/naver" class="inline-flex"
                 ><img
                   alt="네이버 로고"
+                  class="w-[160px] border-box"
                   loading="lazy"
-                  width="20"
-                  height="20"
                   decoding="async"
                   data-nimg="1"
-                  class="css-1oxvs31 e1rypd771"
-                  style="color: transparent"
-                  srcset="
-                    https://assets.cdn.soomgo.com/icons/icon-login-naver-btn.svg?w=32&amp;q=75 1x,
-                    https://assets.cdn.soomgo.com/icons/icon-login-naver-btn.svg?w=48&amp;q=75 2x
-                  "
-                  src="https://assets.cdn.soomgo.com/icons/icon-login-naver-btn.svg?w=48&amp;q=75"
-                />네이버로 시작</a
-              >
+                  :src="require('/public/imgs/naver_login.png')"
+              /></a>
             </button>
             <button
               type="button"
-              class="kakaoLoginBtn font-medium text-center border border-solid cursor-pointer select-none ease-in-out px-3 py-3 text-base rounded-s w-full bg-[#fee500] border-[#fee500] text-black flex items-center justify-center"
+              class="font-medium text-center border border-solid cursor-pointer select-none ease-in-out px-3 text-base rounded-md w-full bg-[#fee500] border-[#fee500] text-black flex items-center justify-center"
             >
               <a href="http://localhost:8080/oauth2/authorization/kakao" class="inline-flex">
                 <img
                   alt="카카오 로고"
                   loading="lazy"
-                  width="20"
-                  height="20"
                   decoding="async"
                   data-nimg="1"
-                  class="css-1oxvs31 e1q08h1"
-                  style="color: transparent"
-                  srcset="
-                    https://assets.cdn.soomgo.com/icons/icon-login-kakaotalk-btn.svg?w=32&amp;q=75 1x,
-                    https://assets.cdn.soomgo.com/icons/icon-login-kakaotalk-btn.svg?w=48&amp;q=75 2x
-                  "
-                  src="https://assets.cdn.soomgo.com/icons/icon-login-kakaotalk-btn.svg?w=48&amp;q=75"
+                  :src="require('/public/imgs/kakao_login.png')"
                 />
-                <span>카카오로 시작</span>
               </a>
             </button>
           </div>
@@ -175,6 +158,7 @@ export default {
         console.log(response.headers.get('Authorization'));
 
         userStore.login(response.data.nickName, response.headers.get('Authorization'), response.data.role);
+        alert('로그인되었습니다.');
         this.$router.push('/');
       } catch (error) {
         console.log(error);
@@ -190,12 +174,6 @@ export default {
 
 <style scoped>
 .emailLoginBtn {
-  transition-property: color, border-color, background-color;
-  transition-duration: 0.15s;
-}
-
-.naverLoginBtn,
-.kakaoLoginBtn {
   transition-property: color, border-color, background-color;
   transition-duration: 0.15s;
 }

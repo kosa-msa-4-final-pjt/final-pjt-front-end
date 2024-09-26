@@ -1,16 +1,49 @@
 <template>
-  <div class="flex bg-white rounded-lg p-4 space-x-4 border-[1px] border-gray-200">
+  <div
+    class="flex bg-white rounded-lg p-4 space-x-4 border-[1px] border-gray-200 transition-shadow duration-300 ease-in-out cursor-pointer border-box hover:shadow-md"
+    @click="this.$router.push(`/reviews/${review.id}`)"
+  >
+    <!-- 이미지 영역 -->
     <div class="basis-1/3 flex justify-center items-center">
-      <div class="w-40 h-40 rounded-full bg-gray-100 overflow-hidden">
-        <img src="/imgs/bear.jpg" alt="대표사진" class="w-full h-full object-cover" />
+      <div class="w-40 h-40 rounded-lg bg-gray-100 overflow-hidden">
+        <img
+          :src="
+            review.reviewImageResponses.length > 0
+              ? review.reviewImageResponses[0].imageUrl
+              : require('@/assets/replaceHouse.png')
+          "
+          alt="대표사진"
+          class="w-full h-full object-cover"
+        />
       </div>
     </div>
 
+    <!-- 텍스트 영역 -->
     <div class="basis-2/3 flex flex-col justify-between">
-      <div class="text-lg font-semibold text-gray-800 text-center mb-2">리뷰 제목</div>
-      <div class="text-md text-gray-600 text-center mb-2">파트너</div>
-      <div class="text-sm text-gray-500 text-center">
-        여기에는 리뷰 내용의 일부가 들어갑니다. 리뷰의 전체 내용은 자세히 보기에서 확인할 수 있습니다.
+      <!-- 제목 -->
+      <div class="text-lg font-semibold text-gray-800 mb-2">{{ review.title }}</div>
+
+      <!-- 회사 이름 -->
+      <div class="text-[14px] text-gray-600 mb-2 font-medium">{{ review.companyName }}</div>
+
+      <!-- 리뷰 작성일 -->
+      <div class="text-[12px] text-gray-500 mb-2">{{ formattedRegDate }}</div>
+
+      <!-- 내용 미리보기 -->
+      <div v-html="truncatedContent" class="text-sm text-gray-500"></div>
+
+      <!-- 시공 정보 -->
+      <div class="mt-1">
+        <ul class="flex flex-wrap text-sm text-gray-700">
+          <li class="px-3 py-1 text-[13px] bg-neutral rounded-full mr-2">{{ review.buildingType }}</li>
+          <li class="px-3 py-1 text-[13px] bg-neutral rounded-full mr-2">{{ review.floor }}평</li>
+          <li class="px-3 py-1 text-[13px] bg-neutral rounded-full mr-2">
+            <span v-for="(constructionType, index) in review.constructionTypes" :key="index">
+              {{ constructionType }}<span v-if="index !== review.constructionTypes.length - 1">, </span>
+            </span>
+          </li>
+          <li class="px-3 py-1 text-[13px] bg-[#f1f2f3] rounded-full">{{ schedule }}</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -18,7 +51,57 @@
 
 <script>
 export default {
-  props: {},
+  props: {
+    review: {
+      type: Object,
+      required: true,
+    },
+  },
+  computed: {
+    // review content 글자수 정하기 및 img태그 숨김
+    truncatedContent() {
+      if (!this.review || !this.review.content) {
+        return '';
+      }
+      const cleanedContent = this.review.content.replace(/<img[^>]*>/g, ''); // content에 img태그 지우기
+      return cleanedContent.length > 100 ? cleanedContent.substring(0, 100) + '...' : cleanedContent;
+    },
+
+    // 시공 기간 계산하기
+    schedule() {
+      if (!this.review.workStartDate || !this.review.workEndDate) return '';
+
+      const startDate = new Date(this.review.workStartDate);
+      const endDate = new Date(this.review.workEndDate);
+
+      // 당일 시공 처리
+      if (startDate.getTime() === endDate.getTime()) {
+        return '당일 시공';
+      }
+
+      const timeDiff = Math.abs(endDate - startDate);
+      const dayDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+      if (dayDiff >= 7) {
+        const weekDiff = Math.ceil(dayDiff / 7);
+        return `${weekDiff}주 소요`;
+      } else {
+        return `${dayDiff}일 소요`;
+      }
+    },
+
+    // 등록일 형식 변환 (yyyy년 m월 d일)
+    formattedRegDate() {
+      if (!this.review || !this.review.regDate) {
+        return '';
+      }
+      const date = new Date(this.review.regDate);
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      return `${year}년 ${month}월 ${day}일`;
+    },
+  },
 };
 </script>
 

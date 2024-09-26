@@ -2,15 +2,15 @@
   <div class="flex-col">
     <!-- header -->
     <div class="mb-10 p-5 bg-white rounded-lg">
-      <h2 class="font-semibold text-xl mb-4">시공사례 관리</h2>
+      <h2 class="font-semibold text-xl mb-4">고객 가입 관리</h2>
       <ul class="flex gap-4">
         <li>
-          <label for="" class="font-medium">현재 총 시공 사례수</label>
-          <p class="text-red">4명</p>
+          <label for="" class="font-medium">총 고객 가입자수</label>
+          <p class="text-red">3명</p>
         </li>
         <li>
-          <label for="" class="font-medium">현재 등록된 시공 사례수</label>
-          <p class="text-red">4개</p>
+          <label for="" class="font-medium">신규 고객 가입자수</label>
+          <p class="text-red">3명</p>
         </li>
       </ul>
     </div>
@@ -20,26 +20,30 @@
         <thead>
           <tr>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">번호</th>
-            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">제목</th>
-            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">업체명</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">고객명</th>
-            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">게시일</th>
+            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">닉네임</th>
+            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">아이디</th>
+            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">전화번호</th>
+            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">가입일</th>
+            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">상태</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">상세보기</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">1</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              편안하고 심플한 화이트&블랙 스타일
-            </td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">부자업체</td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">김선우</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">24.09.29</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">김선우</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">kimSunWo@gmail.com</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">010-1111-2222</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">24.09.11</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
+              <p class="border-2 border-solid rounded-lg px-2 whitespace-nowrap">비활동</p>
+            </td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               <button
                 class="px-2 rounded-lg whitespace-nowrap bg-gray-200 cursor-pointer hover:bg-gray-300"
-                @click="$router.push('adminCompanyPortfolioDetail')"
+                @click="$router.push('adminMemberDetail')"
               >
                 상세보기
               </button>
@@ -47,16 +51,18 @@
           </tr>
           <tr>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">2</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              따뜻하고 편안한 분위기 24평
-            </td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">프리미엄업체</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">이지연</td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">몰랑이</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">24.09.20</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">qwer@gamail.com</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">010-1111-3333</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">24.07.10</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
+              <p class="border-2 border-solid rounded-lg px-2 whitespace-nowrap">비활동</p>
+            </td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               <button
                 class="px-2 rounded-lg whitespace-nowrap bg-gray-200 cursor-pointer hover:bg-gray-300"
-                @click="$router.push('adminCompanyPortfolioDetail')"
+                @click="$router.push('adminMemberDetail')"
               >
                 상세보기
               </button>
@@ -64,16 +70,20 @@
           </tr>
           <tr>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">3</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">이보소</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">랜덤가챠</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">Notsleep@gmail.com</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">010-1111-4444</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">24.08.28</td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              설레이는 신혼부부의 첫시작
+              <p class="border-2 border-solid border-secondary rounded-lg px-2 text-secondary whitespace-nowrap">
+                활동중
+              </p>
             </td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">뚝딱뚝딱업체</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">토심이와토뭉이</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">24.9.17</td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               <button
                 class="px-2 rounded-lg whitespace-nowrap bg-gray-200 cursor-pointer hover:bg-gray-300"
-                @click="$router.push('adminCompanyPortfolioDetail')"
+                @click="$router.push('adminMemberDetail')"
               >
                 상세보기
               </button>
@@ -112,14 +122,14 @@ export default defineComponent({
     VuePaginate,
   },
   setup() {
-    const pageSize = ref(10);
+    const page = ref(10);
 
     const clickCallback = (pageNum) => {
       console.log(pageNum);
     };
 
     return {
-      pageSize,
+      page,
       clickCallback,
     };
   },

@@ -34,16 +34,30 @@ import AdminCompanyPortfolioList from '@/components/admin/company/AdminCompanyPo
 import AdminCompanyPortfolioDetail from '@/components/admin/company/AdminCompanyPortfolioDetail.vue';
 import AdminMemberReviewList from '@/components/admin/member/AdminMemberReviewList.vue';
 import AdminMemberReviewDetail from '@/components/admin/member/AdminMemberReviewDetail.vue';
-import PlateformEventList from '@/components/admin/plateform/PlateformEventList.vue';
-import PlateformEventDetail from '@/components/admin/plateform/PlateformEventDetail.vue';
-import PlateformFAQList from '@/components/admin/plateform/PlateformFAQList.vue';
-import PlateformFAQDetail from '@/components/admin/plateform/PlateformFAQDetail.vue';
-import PlateformAskList from '@/components/admin/plateform/PlateformAskList.vue';
-import PlateformAskDetail from '@/components/admin/plateform/PlateformAskDetail.vue';
+import AdminMemberList from '@/components/admin/member/AdminMemberList.vue';
+import AdminMemberDetail from '@/components/admin/member/AdminMemberDetail.vue';
+
+import CreateAdminMembership from '@/components/admin/Membership/CreateAdminMembership.vue';
+import AdminMembershipList from '@/components/admin/Membership/AdminMembershipList.vue';
+import AdminMembershipDetail from '@/components/admin/Membership/AdminMembershipDetail.vue';
+
+import AdminPlateformAskList from '@/components/admin/plateform/AdminPlateformAskList.vue';
+import AdminPlateformAskDetail from '@/components/admin/plateform/AdminPlateformAskDetail.vue';
+
+import CreateAdminPlateformEvent from '@/components/admin/plateform/CreateAdminPlateformEvent.vue';
+import AdminPlateformEventList from '@/components/admin/plateform/AdminPlateformEventList.vue';
+import AdminPlateformEventDetail from '@/components/admin/plateform/AdminPlateformEventDetail.vue';
+import AdminPlateformFAQList from '@/components/admin/plateform/AdminPlateformFAQList.vue';
+import AdminPlateformFAQDetail from '@/components/admin/plateform/AdminPlateformFAQDetail.vue';
 
 import CompanySentRequests from '@/components/mypage/company/CompanySentRequests.vue';
 import CompanyReceivedRequests from '@/components/mypage/company/CompanyReceivedRequests.vue';
 import UserSaveRequests from '@/components/mypage/user/UserSaveRequests.vue';
+import UserOnGoingRequests from '@/components/mypage/user/UserOnGoingRequests.vue';
+
+import PlateformEventList from '@/components/plateformEvent/PlateformEventList.vue';
+import PlateformEventDetail from '@/components/plateformEvent/plateformEventDetail.vue';
+import UserCompleteRequests from '@/components/mypage/user/UserCompleteRequests.vue';
 
 export default [
   { path: '/', component: HomeCompo },
@@ -82,10 +96,17 @@ export default [
         path: 'info',
         component: UserBaseInfo,
       },
-
       {
         path: 'usersaverequest',
         component: UserSaveRequests,
+      },
+      {
+        path: 'userongoingrequest',
+        component: UserOnGoingRequests,
+      },
+      {
+        path: 'usercompleterequest',
+        component: UserCompleteRequests,
       },
       {
         path: 'reviewlist',
@@ -141,6 +162,14 @@ export default [
         component: AdminCompanyPortfolioDetail,
       },
       {
+        path: 'adminMemberList',
+        component: AdminMemberList,
+      },
+      {
+        path: 'adminMemberDetail',
+        component: AdminMemberDetail,
+      },
+      {
         path: 'adminMemberReviewList',
         component: AdminMemberReviewList,
       },
@@ -149,29 +178,47 @@ export default [
         component: AdminMemberReviewDetail,
       },
       {
-        path: 'plateformEventList',
-        component: PlateformEventList,
+        path: 'createAdminMembership',
+        component: CreateAdminMembership,
       },
       {
-        path: 'plateformEventDetail',
-        component: PlateformEventDetail,
+        path: 'adminMembershipList',
+        component: AdminMembershipList,
       },
       {
-        path: 'plateformFAQList',
-        component: PlateformFAQList,
+        path: 'adminMembershipDetail',
+        component: AdminMembershipDetail,
       },
       {
-        path: 'plateformFAQDetail',
-        component: PlateformFAQDetail,
+        path: 'createAdminPlateformEvent',
+        component: CreateAdminPlateformEvent,
       },
       {
-        path: 'plateformAskList',
-        component: PlateformAskList,
+        path: 'adminplateformEventList',
+        component: AdminPlateformEventList,
       },
       {
-        path: 'plateformAskDetail',
-        component: PlateformAskDetail,
+        path: 'adminplateformEventDetail',
+        component: AdminPlateformEventDetail,
+      },
+      {
+        path: 'adminplateformFAQList',
+        component: AdminPlateformFAQList,
+      },
+      {
+        path: 'adminplateformFAQDetail',
+        component: AdminPlateformFAQDetail,
+      },
+      {
+        path: 'adminplateformAskList',
+        component: AdminPlateformAskList,
+      },
+      {
+        path: 'adminplateformAskDetail',
+        component: AdminPlateformAskDetail,
       },
     ],
   },
+  { path: '/plateformEvent/list', component: PlateformEventList },
+  { path: '/plateformEvents/list/:id', component: PlateformEventDetail },
 ];

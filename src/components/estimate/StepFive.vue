@@ -165,6 +165,14 @@ export default {
           .post('/api/estimaterequests', this.formData)
           .then((response) => {
             alert('견적 요청이 완료되었습니다.');
+
+            // 견적 요청이 완료된 후, 부모 컴포넌트에 데이터 전달
+            this.$emit('sendDataToParent', {
+              city: response.data.city,
+              district: response.data.district,
+              constructionTypeIds: response.data.constructionTypeIds,
+            });
+
             this.$router.push('/requestEstimate/stepSix');
             console.log(response);
           })

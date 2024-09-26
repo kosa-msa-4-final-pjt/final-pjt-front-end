@@ -1,7 +1,7 @@
 <!-- Footer.vue -->
 <template>
   <footer class="bg-gray-800 text-white py-8">
-    <div class="container mx-auto px-4">
+    <div class="container max-w-[1100px] mx-auto px-4">
       <!-- 상단 섹션 -->
       <div class="flex flex-wrap justify-between items-start text-[14px]">
         <!-- 로고 및 회사 정보 -->
@@ -17,7 +17,9 @@
           <h3 class="text-lg font-bold">퀵 링크</h3>
           <ul class="mt-2 space-y-2">
             <li><a href="#" class="hover:text-gray-300">홈</a></li>
-            <li><a href="#" class="hover:text-gray-300">서비스</a></li>
+            <li>
+              <p @click="$router.push('/plateformEvent/list')" class="cursor-pointer hover:text-gray-300">공지사항</p>
+            </li>
             <li><a href="#" class="hover:text-gray-300">회사 소개</a></li>
             <li><a href="#" class="hover:text-gray-300">연락처</a></li>
           </ul>

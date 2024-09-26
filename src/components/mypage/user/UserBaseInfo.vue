@@ -1,38 +1,30 @@
 <template>
   <div class="max-w-lg mx-auto bg-white p-8 rounded-lg">
     <div class="flex flex-col justify-center items-center w-full mb-8">
-      <div class="w-32 h-32">
-        <img src="/imgs/bear.jpg" class="object-cover w-full h-full rounded-full shadow-lg" alt="Profile Image" />
-      </div>
-      <h2 class="text-2xl font-semibold mt-4">집다부셔</h2>
-      <p class="text-sm text-gray-500">coguddlf@gmail.com</p>
+      <h2 class="text-2xl font-semibold mt-4">{{ info.nickName }}</h2>
+      <p class="text-sm text-gray-500">{{ info.email }}</p>
     </div>
 
-    <form action="#" class="space-y-6">
+    <form @submit.prevent="updateUser" class="space-y-6">
       <div>
         <label class="block text-sm font-medium text-gray-700">이름</label>
         <input
           type="text"
           class="mt-2 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-midGreen"
           placeholder="이름 입력"
+          readonly
+          :value="info.name"
         />
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700">사용자명</label>
+        <label class="block text-sm font-medium text-gray-700">닉네임</label>
         <input
           type="text"
           class="mt-2 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-midGreen"
-          placeholder="사용자명 입력"
-        />
-      </div>
-
-      <div>
-        <label class="block text-sm font-medium text-gray-700">아이디</label>
-        <input
-          type="text"
-          class="mt-2 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-midGreen"
-          placeholder="아이디 입력"
+          placeholder="닉네임 입력"
+          readonly
+          :value="info.nickName"
         />
       </div>
 
@@ -42,6 +34,8 @@
           type="email"
           class="mt-2 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-midGreen"
           placeholder="이메일 입력"
+          readonly
+          :value="info.email"
         />
       </div>
 
@@ -51,6 +45,7 @@
           type="password"
           class="mt-2 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-midGreen"
           placeholder="비밀번호 입력"
+          v-model="info.password"
         />
       </div>
 
@@ -60,6 +55,7 @@
           type="password"
           class="mt-2 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-midGreen"
           placeholder="비밀번호 확인"
+          v-model="info.confirmPassword"
         />
       </div>
 
@@ -69,6 +65,7 @@
           type="text"
           class="mt-2 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-midGreen"
           placeholder="휴대전화 입력"
+          v-model="info.phoneNumber"
         />
       </div>
 
@@ -82,7 +79,59 @@
 </template>
 
 <script>
-export default {};
+import authInstance from '@/utils/axiosUtils';
+import { ref } from 'vue';
+
+export default {
+  setup() {
+    const info = ref([
+      {
+        password: '',
+        confirmPassword: '',
+        phoneNumber: '',
+      },
+    ]);
+
+    const userInfo = async () => {
+      try {
+        const response = await authInstance.get('/api/member/mypage');
+        info.value = response.data;
+        console.log(response.data);
+      } catch (error) {
+        console.error('유저 정보를 가져오지 못했습니다.', error);
+      }
+    };
+
+    const updateUser = async () => {
+      // 비밀번호 확인
+      if (info.value.password !== info.value.confirmPassword) {
+        alert('비밀번호가 일치하지 않습니다.');
+        return;
+      }
+
+      try {
+        // 사용자 정보 업데이트 API 호출
+        console.log(info.value.password);
+        console.log(info.value.phoneNumber);
+        await authInstance.patch('/api/member/mypage', {
+          password: info.value.password,
+          phoneNumber: info.value.phoneNumber,
+        });
+        alert('정보가 성공적으로 수정되었습니다.');
+        window.location.reload();
+      } catch (error) {
+        console.error('정보 수정에 실패했습니다.', error);
+      }
+    };
+
+    userInfo();
+
+    return {
+      info,
+      updateUser,
+    };
+  },
+};
 </script>
 
 <style scoped></style>

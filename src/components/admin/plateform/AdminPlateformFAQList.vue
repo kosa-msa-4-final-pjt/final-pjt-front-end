@@ -9,7 +9,9 @@
           <p class="text-red">1개</p>
         </li>
         <li>
-          <button class="px-2 py-1 rounded-lg bg-accent hover:bg-">등록하기</button>
+          <button class="px-2 py-1 bg-midGreen hover:bg-[#2a692d] text-white rounded-lg text-[16px] font-medium mt-6">
+            등록하기
+          </button>
         </li>
       </ul>
     </div>
@@ -36,7 +38,7 @@
             <td class="text-center p-2 border-t border-gray-300 bg-white">
               <button
                 class="px-2 rounded-lg whitespace-nowrap bg-gray-200 cursor-pointer hover:bg-gray-300"
-                @click="$router.push('plateformFAQDetail')"
+                @click="$router.push('adminplateformFAQDetail')"
               >
                 상세보기
               </button>
@@ -51,7 +53,7 @@
             <td class="text-center p-2 border-t border-gray-300 bg-white">
               <button
                 class="px-2 rounded-lg whitespace-nowrap bg-gray-200 cursor-pointer hover:bg-gray-300"
-                @click="$router.push('plateformFAQDetail')"
+                @click="$router.push('adminplateformFAQDetail')"
               >
                 상세보기
               </button>
@@ -60,11 +62,48 @@
         </tbody>
       </table>
     </div>
+    <!-- footer -->
+    <div class="mt-5">
+      <vue-paginate
+        :model-value="page"
+        :page-count="20"
+        :page-range="3"
+        :margin-pages="2"
+        :click-handler="clickCallback"
+        prev-text="<"
+        next-text=">"
+        :container-class="'flex justify-center font-sans cursor-pointer'"
+        :page-link-class="'m-3 hover:bg-accent '"
+        :prev-link-class="'m-3'"
+        :next-link-class="'m-3'"
+        active-class="bg-accent rounded-md"
+        @update:model-value="page = $event"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-export default {};
+import { defineComponent, ref } from 'vue';
+import { VuePaginate } from '@svifty7/vue-paginate';
+
+export default defineComponent({
+  components: {
+    VuePaginate,
+  },
+  setup() {
+    const page = ref(10);
+
+    const clickCallback = (pageNum) => {
+      console.log(pageNum);
+    };
+
+    return {
+      page,
+      clickCallback,
+    };
+  },
+});
 </script>
 
 <style scoped>

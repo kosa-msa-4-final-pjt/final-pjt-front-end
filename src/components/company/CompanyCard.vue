@@ -1,15 +1,24 @@
 <template>
   <div
     @click="goToDetailPage"
-    class="w-[353px] h-[354px] border-solid border-[1px] border-[#eee] rounded-[8px] transition-shadow duration-300 ease-in-out cursor-pointer border-box hover:shadow-md"
+    class="w-[353px] h-[354px] border-solid border-[1px] border-[#eee] rounded-[8px] transition-shadow duration-300 ease-in-out cursor-pointer border-box hover:shadow-md relative"
   >
+    <!-- 광고 표시 -->
+    <div
+      v-if="isPremium"
+      class="absolute top-0 left-0 bg-[#ffcc00] text-white text-sm font-semibold py-1 px-3 rounded-br-lg"
+    >
+      <font-awesome-icon :icon="['fas', 'crown']" /> 광고추천
+    </div>
+
     <div class="w-100 h-[198px] border-solid border-b-[1px] border-[#eee]">
       <img
         class="w-full h-full rounded-t-lg object-cover"
         :src="company.companyLogoUrl ? company.companyLogoUrl : require('@/assets/logo.png')"
-        alt="AD Img"
+        alt="Company Logo"
       />
     </div>
+
     <div class="bg-white h-[154px] px-3 pt-2 pb-4 rounded-b-lg">
       <div class="mb-2 flex justify-between items-center">
         <p class="text-[16px] font-bold text-[#1d1d1d] leading-[24px] tracking-[-0.5px]">{{ company.companyName }}</p>
@@ -58,6 +67,9 @@ export default {
       required: true,
       default: () => ({}),
     },
+    isPremium: {
+      type: Boolean,
+    },
   },
   computed: {
     visibleServices() {
@@ -76,5 +88,3 @@ export default {
   },
 };
 </script>
-
-<style></style>

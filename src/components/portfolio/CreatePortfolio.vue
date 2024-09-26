@@ -43,9 +43,9 @@
 
       <div class="grid grid-cols-2 gap-4 mb-6">
         <div>
-          <label for="projectArea" class="block text-sm font-medium mb-2">면적 (평수)</label>
+          <label for="floor" class="block text-sm font-medium mb-2">면적 (평수)</label>
           <input
-            v-model="projectArea"
+            v-model="floor"
             class="w-full h-[44px] text-sm p-3 rounded border border-gray-300 focus:outline-none focus:ring-1 focus:ring-midGreen"
             type="text"
             placeholder="시공 면적을 입력해주세요."
@@ -143,7 +143,7 @@ export default {
       content: '',
       startDate: '',
       endDate: '',
-      projectArea: '',
+      floor: '',
       projectLocation: '',
       projectBudget: '',
       constructionTypes: [],
@@ -178,7 +178,7 @@ export default {
         startDate: this.startDate,
         endDate: this.endDate,
         projectLocation: this.projectLocation,
-        projectArea: this.projectArea,
+        floor: this.floor,
         projectBudget: this.projectBudget,
         constructionService: this.selectedTypes,
         buildingTypeId: this.selectedBuildingType,
@@ -270,7 +270,7 @@ export default {
         startDate: this.startDate,
         endDate: this.endDate,
         projectLocation: this.projectLocation,
-        projectArea: this.projectArea,
+        floor: this.floor,
         projectBudget: this.projectBudget,
         constructionService: this.selectedTypes,
         buildingTypeId: this.selectedBuildingType,

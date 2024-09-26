@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="mb-6">
-      <h3 class="font-bold text-2xl text-gray-800">진행 중인 시공 목록</h3>
+      <h3 class="font-bold text-2xl text-gray-800">완료된 시공 목록</h3>
     </div>
 
     <!-- 토글 리스트 -->

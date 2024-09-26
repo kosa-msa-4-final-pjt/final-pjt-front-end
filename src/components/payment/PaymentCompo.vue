@@ -132,6 +132,12 @@ export default {
               success: response.success,
               paidAmount: response.paid_amount,
             });
+
+            if (response.success) {
+              alert('결제를 성공하셨습니다.');
+              this.$router.push("/mypage/company")
+            }
+
             console.log(complete.data.data);
           }
         );

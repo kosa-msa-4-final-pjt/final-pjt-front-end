@@ -121,7 +121,7 @@ export default {
       userStore.logout();
       router.push('/');
     };
-
+    //
     return {
       nickName,
       isLogin,
@@ -131,6 +131,7 @@ export default {
       goToHome,
     };
   },
+
   computed: {
     isHomePage() {
       return this.$route.path === '/';
@@ -150,7 +151,6 @@ export default {
     isEstimateListPage() {
       return this.$route.path === '/estimate/list';
     },
-
     isCreatePortfolioPage() {
       return this.$route.path === '/portfolio/create';
     },
