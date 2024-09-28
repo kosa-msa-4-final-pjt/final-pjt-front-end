@@ -1,19 +1,19 @@
 <template>
-  <div class="flex flex-col justify-center items-center w-full mb-8">
-    <div class="text-3xl font-bold text-gray-800">
-      <p class="text-2xl">내 후기 내역</p>
+  <div class="p-4 max-w-screen-lg mx-auto">
+    <div class="mb-6">
+      <h3 class="font-bold text-2xl text-gray-800">내 후기 내역</h3>
     </div>
-  </div>
 
-  <div class="flex flex-col space-y-4">
-    <!-- 후기 목록 -->
-    <ReviewCompo v-for="review in reviews" :key="review.id" :review="review" />
+    <div class="flex flex-col space-y-4">
+      <!-- 후기 목록 -->
+      <ReviewCompo v-for="review in reviews" :key="review.id" :review="review" />
 
-    <!-- 더보기 버튼 -->
-    <div v-if="currentPage + 1 < totalPage" class="flex justify-center pt-4">
-      <button @click="loadMore" class="px-6 py-2 bg-midGreen text-white rounded-md shadow-sm transition duration-300">
-        더보기
-      </button>
+      <!-- 더보기 버튼 -->
+      <div v-if="currentPage + 1 < totalPage" class="flex justify-center pt-4">
+        <button @click="loadMore" class="px-6 py-2 bg-midGreen text-white rounded-md shadow-sm transition duration-300">
+          더보기
+        </button>
+      </div>
     </div>
   </div>
 </template>

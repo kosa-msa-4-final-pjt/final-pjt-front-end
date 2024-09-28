@@ -22,7 +22,7 @@
         <textarea
           class="mt-2 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-midGreen resize-none"
           placeholder="소개글을 입력해주세요."
-          :value="info.companyDesc"
+          v-model="info.companyDesc"
         ></textarea>
       </div>
 
@@ -210,9 +210,15 @@ export default {
         return;
       }
 
+      const isConfirm = confirm('정말로 수정하시겠습니까?');
+      if (!isConfirm) {
+        return;
+      }
+
       try {
         // 사용자 정보 업데이트 API 호출
         await authInstance.patch('/api/company/mypage', {
+          companyDesc: info.value.companyDesc,
           password: info.value.password,
           phoneNumber: info.value.phoneNumber,
           updateServices: selectedTypes.value, // 선택한 시공 종류 전송

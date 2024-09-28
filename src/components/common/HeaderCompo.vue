@@ -30,7 +30,7 @@
           class="cursor-pointer text-[16px] font-semibold mr-8"
           :class="{ 'text-midGreen': isEstimateListPage, 'hover:text-midGreen': !isEstimateListPage }"
         >
-          시공요청 조회
+          고객시공요청
         </p>
       </div>
     </div>
@@ -39,19 +39,11 @@
       <div class="flex justify-between items-center" v-if="isLogin">
         <p
           v-if="role === 'USER'"
-          @click="$router.push('/requestEstimate')"
+          @click="goToEstimateRequest"
           class="cursor-pointer mr-7 text-[16px] font-semibold hover:text-midGreen"
           :class="{ 'text-midGreen font-bold': isRequestEstimatePage, 'hover:text-midGreen': !isRequestEstimatePage }"
         >
           견적요청
-        </p>
-        <p
-          v-if="role === 'USER'"
-          @click="$router.push('/reviews/create')"
-          class="cursor-pointer mr-7 text-[16px] font-semibold hover:text-midGreen"
-          :class="{ 'text-midGreen font-bold': isReviewCreatePage, 'hover:text-midGreen': !isReviewCreatePage }"
-        >
-          후기작성
         </p>
         <p
           v-if="role === 'COMPANY'"
@@ -59,7 +51,7 @@
           class="cursor-pointer text-[16px] font-semibold mr-8"
           :class="{ 'text-midGreen': isCreatePortfolioPage, 'hover:text-midGreen': !isCreatePortfolioPage }"
         >
-          시공사례 작성
+          시공사례작성
         </p>
 
         <p @click="goToMyPage" class="cursor-pointer text-[16px] font-bold mr-8 hover:text-midGreen">
@@ -117,11 +109,15 @@ export default {
       window.location.href = '/';
     };
 
+    const goToEstimateRequest = () => {
+      window.location.href = '/requestEstimate';
+    };
+
     const handleLogout = () => {
       userStore.logout();
       router.push('/');
     };
-    //
+
     return {
       nickName,
       isLogin,
@@ -129,6 +125,7 @@ export default {
       handleLogout,
       goToMyPage,
       goToHome,
+      goToEstimateRequest,
     };
   },
 
@@ -156,9 +153,6 @@ export default {
     },
     isRequestEstimatePage() {
       return this.$route.path === '/requestEstimate';
-    },
-    isReviewCreatePage() {
-      return this.$route.path === '/reviews/create';
     },
   },
 };

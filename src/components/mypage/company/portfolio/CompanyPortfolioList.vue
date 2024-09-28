@@ -1,20 +1,20 @@
 <template>
-  <div class="flex flex-col justify-center items-center w-full mb-8">
-    <div class="text-2xl font-bold text-gray-800">
-      <h2>시공 사례 리스트</h2>
+  <div class="p-4 max-w-screen-lg mx-auto">
+    <div class="mb-6">
+      <h3 class="font-bold text-2xl text-gray-800">시공 사례 리스트</h3>
     </div>
-  </div>
 
-  <!-- 포트폴리오 그리드 -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full px-4">
-    <PortfolioCompo v-for="portfolio in portfolios" :key="portfolio.id" :portfolio="portfolio"></PortfolioCompo>
-  </div>
+    <!-- 포트폴리오 그리드 -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full px-4">
+      <PortfolioCompo v-for="portfolio in portfolios" :key="portfolio.id" :portfolio="portfolio"></PortfolioCompo>
+    </div>
 
-  <!-- 더보기 버튼 -->
-  <div v-if="currentPage + 1 < totalPage" class="flex justify-center pt-4">
-    <button @click="loadMore" class="px-6 py-2 bg-midGreen text-white rounded-md shadow-sm transition duration-300">
-      더보기
-    </button>
+    <!-- 더보기 버튼 -->
+    <div v-if="currentPage + 1 < totalPage" class="flex justify-center pt-4">
+      <button @click="loadMore" class="px-6 py-2 bg-midGreen text-white rounded-md shadow-sm transition duration-300">
+        더보기
+      </button>
+    </div>
   </div>
 </template>
 

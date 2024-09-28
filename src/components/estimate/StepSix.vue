@@ -1,3 +1,4 @@
+<!-- CompanyList.vue -->
 <template>
   <div class="company-list w-full p-6">
     <div class="header text-xl text-center mb-6">요청에 맞는 인테리어 업체들을 추천해드립니다!</div>
@@ -48,11 +49,6 @@
                 {{ isRequested(company.id) ? '요청 완료' : '요청' }}
               </button>
             </div>
-          </div>
-          <div class="text-right mb-2">
-            <button class="text-white rounded-xl py-2 px-4 transition-colors duration-300 bg-midGreen">
-              요청 확인
-            </button>
           </div>
         </div>
         <!-- 프리미엄 업체가 없을 때 -->
@@ -119,12 +115,10 @@
                 </button>
               </div>
             </div>
-            <div class="text-right mb-2">
-              <button class="text-white rounded-xl py-2 px-4 transition-colors duration-300 bg-midGreen">
-                요청 확인
-              </button>
-            </div>
+            <div class="text-right mb-2"></div>
           </div>
+          <!-- 다른 등급의 업체가 없을 때 -->
+          <div v-else class="mb-5 text-center text-gray-500">근처에 다른 업체가 없습니다.</div>
         </div>
       </div>
     </div>
@@ -139,11 +133,22 @@
       </button>
     </div>
   </div>
+  <div class="text-right mb-2">
+    <button
+      v-if="sortedCompanies.PREMIUM.length > 0 || sortedCompanies.OTHER.length > 0"
+      class="text-white rounded-xl py-2 px-4 transition-colors duration-300 bg-midGreen"
+      @click="goToUserSaveRequests"
+    >
+      요청 확인
+    </button>
+  </div>
 </template>
 
 <script>
 import { ref, reactive, watch, onMounted, computed } from 'vue';
+import { useRouter } from 'vue-router'; // useRouter 임포트
 import axios from 'axios';
+import authInstance from '@/utils/axiosUtils';
 
 export default {
   props: {
@@ -162,7 +167,13 @@ export default {
     },
   },
   setup(props) {
-    const companies = ref([]);
+    const router = useRouter(); // 라우터 초기화
+
+    const companies = reactive({
+      PREMIUM: [],
+      BASIC: [],
+      NO: [],
+    });
     const sortedCompanies = reactive({
       PREMIUM: [],
       OTHER: [],
@@ -171,45 +182,50 @@ export default {
     const error = ref(null);
     const requestedCompanies = ref([]);
 
-    // 다른 등급의 업체 표시 여부를 관리하는 ref
     const showOtherCompanies = ref(false);
 
-    // 다른 등급의 업체가 있는지 확인하는 computed
     const hasOtherCompanies = computed(() => {
       return sortedCompanies.OTHER.length > 0;
     });
 
-    // 업체 리스트를 가져오는 메서드
+    const grades = ['PREMIUM', 'BASIC', 'NO'];
+
     const fetchCompanies = async () => {
       loading.value = true;
       error.value = null;
       try {
-        let url = '/api/company/list';
-        const params = [];
+        const requests = grades.map((grade) => {
+          let url = `/api/company/categorylist?page=0&size=5&name=${grade}`;
+          const params = [];
 
-        // 지역 선택이 된 경우
-        if (props.city && props.district) {
-          params.push(`city=${props.city}&district=${props.district}`);
-        } else if (props.city) {
-          params.push(`city=${props.city}`);
-        }
+          if (props.city && props.district) {
+            params.push(`city=${props.city}&district=${props.district}`);
+          } else if (props.city) {
+            params.push(`city=${props.city}`);
+          }
 
-        // 선택된 시공 서비스가 있을 경우 필터링 추가
-        if (props.constructionTypeIds.length > 0) {
-          params.push(`services=${props.constructionTypeIds.join(',')}`);
-        }
+          if (props.constructionTypeIds.length > 0) {
+            params.push(`services=${props.constructionTypeIds.join(',')}`);
+          }
 
-        // URL에 파라미터 추가
-        if (params.length > 0) {
-          url += `?${params.join('&')}`;
-        }
+          if (params.length > 0) {
+            url += `&${params.join('&')}`;
+          }
 
-        console.log('요청 파라미터:', params);
+          console.log(`Fetching ${grade} companies:`, url);
+          return axios.get(url);
+        });
 
-        const response = await axios.get(url);
-        companies.value = response.data;
+        const responses = await Promise.all(requests);
+        responses.forEach((response, index) => {
+          const grade = grades[index];
+          console.log(`Response for ${grade}:`, response.data);
+
+          companies[grade] = response.data.list;
+        });
+
         sortCompanies();
-        console.log('응답 데이터:', response);
+        console.log('정렬된 응답 데이터:', companies);
       } catch (err) {
         console.error('업체를 불러오는 중 오류가 발생했습니다:', err);
         error.value = '업체 목록을 불러오는 데 실패했습니다';
@@ -218,30 +234,25 @@ export default {
       }
     };
 
-    // 업체 데이터를 PREMIUM과 다른 등급의 업체로 나누는 메서드
     const sortCompanies = () => {
-      sortedCompanies.PREMIUM = companies.value.PREMIUM || [];
-      sortedCompanies.OTHER = [...(companies.value.BASIC || []), ...(companies.value.NO || [])];
+      sortedCompanies.PREMIUM = companies.PREMIUM || [];
+      sortedCompanies.OTHER = [...(companies.BASIC || []), ...(companies.NO || [])];
     };
 
-    // 다른 등급의 업체를 보시겠습니까? 버튼의 표시 메서드 (토글 없이 단순히 표시)
     const showOtherCompaniesMethod = () => {
       showOtherCompanies.value = true;
     };
 
-    // 특정 업체가 요청 완료되었는지 확인하는 메서드
     const isRequested = (companyId) => {
       return requestedCompanies.value.includes(companyId);
     };
 
-    // 견적 요청을 보내는 메서드
     const sendEstimateRequest = async (companyId) => {
       const isConfirm = confirm('요청을 보내시겠습니까?');
       if (!isConfirm) return;
 
       try {
-        // 최신 견적 요청 ID 가져오기
-        const estimateResponse = await axios.get('/api/estimates/request/latest');
+        const estimateResponse = await authInstance.get('/api/estimates/request/latest');
         const estimateRequestId = estimateResponse.data.data;
 
         const requestPayload = {
@@ -249,11 +260,9 @@ export default {
           estimateRequestId: estimateRequestId,
         };
 
-        // API로 견적 요청 전송
-        const response = await axios.post('/api/estimates/send', requestPayload);
+        const response = await authInstance.post('/api/estimates/send', requestPayload);
         console.log(response);
 
-        // 요청 완료된 회사 ID 저장
         requestedCompanies.value.push(companyId);
 
         alert('견적 요청이 완료되었습니다.');
@@ -263,7 +272,15 @@ export default {
       }
     };
 
-    // Props가 변경될 때마다 업체 리스트를 다시 가져옴
+    // UserSaveRequests로 이동하는 메서드
+    const goToUserSaveRequests = () => {
+      const isConfirm = confirm('요청한 견적을 보러 가시겠습니까?');
+      if (!isConfirm) {
+        return;
+      }
+      router.push('/mypage/user/usersaverequest');
+    };
+
     watch(
       () => [props.city, props.district, props.constructionTypeIds],
       () => {
@@ -271,7 +288,6 @@ export default {
       }
     );
 
-    // 컴포넌트가 마운트될 때 업체 리스트를 가져옴
     onMounted(() => {
       fetchCompanies();
     });
@@ -286,7 +302,8 @@ export default {
       showOtherCompaniesMethod,
       isRequested,
       sendEstimateRequest,
-      hasOtherCompanies, // computed 추가
+      hasOtherCompanies,
+      goToUserSaveRequests, // 네비게이션 메서드 반환
     };
   },
 };

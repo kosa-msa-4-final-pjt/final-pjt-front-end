@@ -37,7 +37,6 @@
             </div>
             <!-- 버튼 -->
             <button
-              @click="loginAccount"
               class="emailLoginBtn hover:bg-[#2C7130] inline-block font-medium text-center border-1 border-solid cursor-pointer select-none duration-0 ease-in-out text-neutral bg-midGreen px-3 py-3 text-base rounded"
               type="submit"
             >
@@ -158,7 +157,6 @@ export default {
         console.log(response.headers.get('Authorization'));
 
         userStore.login(response.data.nickName, response.headers.get('Authorization'), response.data.role);
-        alert('로그인되었습니다.');
         this.$router.push('/');
       } catch (error) {
         console.log(error);

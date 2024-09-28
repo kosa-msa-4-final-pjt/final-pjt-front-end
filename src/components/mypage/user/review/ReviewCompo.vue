@@ -29,15 +29,12 @@
       <!-- 리뷰 작성일 -->
       <div class="text-[12px] text-gray-500 mb-2">{{ formattedRegDate }}</div>
 
-      <!-- 내용 미리보기 -->
-      <div v-html="truncatedContent" class="text-sm text-gray-500"></div>
-
       <!-- 시공 정보 -->
       <div class="mt-1">
         <ul class="flex flex-wrap text-sm text-gray-700">
-          <li class="px-3 py-1 text-[13px] bg-neutral rounded-full mr-2">{{ review.buildingType }}</li>
-          <li class="px-3 py-1 text-[13px] bg-neutral rounded-full mr-2">{{ review.floor }}평</li>
-          <li class="px-3 py-1 text-[13px] bg-neutral rounded-full mr-2">
+          <li class="px-3 py-1 text-[13px] bg-gray-100 rounded-full mr-2">{{ review.buildingType }}</li>
+          <li class="px-3 py-1 text-[13px] bg-gray-100 rounded-full mr-2">{{ review.floor }}평</li>
+          <li class="px-3 py-1 text-[13px] bg-gray-100 rounded-full mr-2">
             <span v-for="(constructionType, index) in review.constructionTypes" :key="index">
               {{ constructionType }}<span v-if="index !== review.constructionTypes.length - 1">, </span>
             </span>
@@ -58,15 +55,6 @@ export default {
     },
   },
   computed: {
-    // review content 글자수 정하기 및 img태그 숨김
-    truncatedContent() {
-      if (!this.review || !this.review.content) {
-        return '';
-      }
-      const cleanedContent = this.review.content.replace(/<img[^>]*>/g, ''); // content에 img태그 지우기
-      return cleanedContent.length > 100 ? cleanedContent.substring(0, 100) + '...' : cleanedContent;
-    },
-
     // 시공 기간 계산하기
     schedule() {
       if (!this.review.workStartDate || !this.review.workEndDate) return '';

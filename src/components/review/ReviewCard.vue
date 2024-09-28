@@ -11,16 +11,16 @@
       </div>
 
       <!-- 시공 정보 -->
-      <div class="mt-1">
+      <div class="mt-1 mb-2">
         <ul class="flex flex-wrap text-sm text-gray-700">
-          <li class="px-3 py-1 text-[13px] bg-neutral rounded-full mr-2">{{ review.buildingType }}</li>
-          <li class="px-3 py-1 text-[13px] bg-neutral rounded-full mr-2">{{ review.floor }}평</li>
-          <li class="px-3 py-1 text-[13px] bg-neutral rounded-full mr-2">
+          <li class="px-3 py-1 text-[13px] bg-gray-100 rounded-full mr-2 font-medium">{{ review.buildingType }}</li>
+          <li class="px-3 py-1 text-[13px] bg-gray-100 rounded-full mr-2 font-medium">{{ review.floor }}평</li>
+          <li class="px-3 py-1 text-[13px] bg-gray-100 rounded-full mr-2 font-medium">
             <span v-for="(constructionType, index) in review.constructionTypes" :key="index">
               {{ constructionType }}<span v-if="index !== review.constructionTypes.length - 1">, </span>
             </span>
           </li>
-          <li class="px-3 py-1 text-[13px] bg-[#f1f2f3] rounded-full">{{ schedule }}</li>
+          <li class="px-3 py-1 text-[13px] bg-[#f1f2f3] rounded-full font-medium">{{ schedule }}</li>
         </ul>
       </div>
 

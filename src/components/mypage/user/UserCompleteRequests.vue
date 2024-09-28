@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="p-4 max-w-screen-lg mx-auto">
     <div class="mb-6">
       <h3 class="font-bold text-2xl text-gray-800">완료된 시공 목록</h3>
     </div>
@@ -9,73 +9,99 @@
       <li
         v-for="(estimateRequest, index) in estimateRequests"
         :key="index"
-        class="border border-gray-300 p-4 mb-2 rounded-lg"
+        class="border border-gray-300 p-4 mb-4 rounded-lg shadow-md transition-all"
       >
-        <div class="flex justify-between items-center">
-          <div>
-            <span>{{ '견적 ' + (index + 1) }}</span>
+        <!-- 상단 정보 -->
+        <div class="flex-column justify-between items-center">
+          <div class="flex justify-between">
+            <div class="text-lg font-semibold text-gray-700">
+              {{ estimateRequest.address }}
+            </div>
+            <div class="flex items-center space-x-4">
+              <button @click="toggle(estimateRequest, index)" class="text-midGreen font-semibold">
+                <span v-if="isOpen[index]" class="text-sm">▲</span>
+                <span v-else class="text-sm">▼</span>
+              </button>
+            </div>
           </div>
-          <div class="flex items-center space-x-4">
-            <span class="text-gray-500">{{
-              '등록 날짜: ' + new Date(estimateRequest.regDate).toISOString().split('T')[0]
-            }}</span>
-            <button @click="toggle(estimateRequest, index)">
-              <span v-if="isOpen[index]">▲</span>
-              <span v-else>▼</span>
-            </button>
-          </div>
+          <span class="text-gray-500 text-sm">{{
+            '등록 날짜: ' + new Date(estimateRequest.regDate).toISOString().split('T')[0]
+          }}</span>
         </div>
 
-        <!-- 카드 형식으로 보여주는 부분 -->
-        <div v-if="isOpen[index]" class="bg-gray-100 mt-2 p-4 shadow rounded">
-          <!-- 조건: estimates 배열이 있는지 확인하고 비어있는 경우 메시지 표시 -->
-          <div v-if="!selectedEstimateRequestsMap[index]">해당 요청은 견적이 없습니다.</div>
-          <div v-else class="border border-gray-300 rounded-lg pb-4 px-4 bg-white">
-            <div class="flex justify-between items-center border-b">
-              <div class="w-full h-[125px] flex justify-start items-center">
-                <img
-                  :src="
-                    selectedEstimateRequestsMap[index].companyLogoUrl
-                      ? selectedEstimateRequestsMap[index].companyLogoUrl
-                      : require('@/assets/logo.png')
-                  "
-                  alt="로고"
-                  class="w-[100px] h-[100px] object-contain"
-                />
-                <div class="">
-                  <p class="text-lg my-2 font-semibold">{{ selectedEstimateRequestsMap[index].companyName }}</p>
+        <!-- 카드 내용 (펼쳤을 때 표시) -->
+        <div v-if="isOpen[index]" class="bg-gray-50 mt-4 p-6 rounded-lg transition-all duration-300">
+          <!-- 견적이 없을 때 -->
+          <div v-if="!selectedEstimateRequestsMap[index]" class="text-gray-600">해당 요청은 견적이 없습니다.</div>
 
-                  <p class="text-sm text-gray-500">
-                    {{ selectedEstimateRequestsMap[index].countOfCompleteEstimate }}건의 공사
-                  </p>
-                  <p class="text-sm text-midGreen">
-                    <font-awesome-icon icon="star" />
-                    <span class="ml-1">{{ selectedEstimateRequestsMap[index].rating }}</span>
-                  </p>
-                </div>
+          <!-- 견적 내용 -->
+          <div v-else class="border border-gray-200 rounded-lg p-4 bg-white">
+            <div class="flex items-start space-x-6 border-b pb-4 mb-4">
+              <!-- 회사 로고 -->
+              <img
+                :src="
+                  selectedEstimateRequestsMap[index].companyLogoUrl
+                    ? selectedEstimateRequestsMap[index].companyLogoUrl
+                    : require('@/assets/logo.png')
+                "
+                alt="로고"
+                class="w-[100px] h-[100px] object-contain rounded-lg"
+              />
+              <!-- 회사 정보 -->
+              <div class="flex-1">
+                <p class="text-lg font-bold text-gray-800 mb-2">{{ selectedEstimateRequestsMap[index].companyName }}</p>
+                <p class="text-sm text-gray-500 mb-1">
+                  시공 완료 {{ selectedEstimateRequestsMap[index].countOfCompleteEstimate }}건
+                </p>
+                <p class="flex items-center text-sm text-midGreen">
+                  <font-awesome-icon icon="star" class="mr-1" />{{ selectedEstimateRequestsMap[index].rating }}
+                </p>
               </div>
-              <div class="w-[500px] text-right mr-3">
-                <p>이메일 {{ selectedEstimateRequestsMap[index].companyEmail }}</p>
-                <p>주소 {{ selectedEstimateRequestsMap[index].companyAddress }}</p>
-                <p>전화번호 {{ selectedEstimateRequestsMap[index].phoneNumber }}</p>
+              <!-- 회사 연락처 -->
+              <div class="text-right">
+                <table class="w-full table-auto text-left">
+                  <tbody>
+                    <tr>
+                      <td class="text-sm font-medium text-gray-600 py-1 pr-4">이메일</td>
+                      <td class="text-sm text-gray-800 py-1">{{ selectedEstimateRequestsMap[index].companyEmail }}</td>
+                    </tr>
+                    <tr>
+                      <td class="text-sm font-medium text-gray-600 py-1 pr-4">전화번호</td>
+                      <td class="text-sm text-gray-800 py-1">{{ selectedEstimateRequestsMap[index].phoneNumber }}</td>
+                    </tr>
+                    <tr>
+                      <td class="text-sm font-medium text-gray-600 py-1 pr-4">주소</td>
+                      <td class="text-sm text-gray-800 py-1">
+                        {{ selectedEstimateRequestsMap[index].companyAddress }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
 
-            <div class="text-right mt-4">
-              <ul>
+            <!-- 시공 견적 정보 -->
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <ul class="space-y-2 text-sm text-gray-600">
                 <li
                   v-for="(price, constructionType) in selectedEstimateRequestsMap[index].constructionPrices"
                   :key="constructionType"
                 >
-                  {{ constructionType }}: {{ price }} 만원
+                  {{ constructionType }}: <span class="font-semibold text-gray-800">{{ price }} 만원</span>
                 </li>
               </ul>
-              <p class="font-semibold">예상 금액: {{ selectedEstimateRequestsMap[index].totalPrice }}만원</p>
+              <p class="font-semibold text-right mt-4 text-lg">
+                총 금액: {{ selectedEstimateRequestsMap[index].totalPrice }}만원
+              </p>
             </div>
-            <div class="mt-4 flex justify-end">
-              <button class="bg-gray-300 rounded-lg py-2 px-4 mr-2" @click="cancel(estimateRequest)">취소</button>
-              <button class="bg-midGreen text-white rounded-lg py-2 px-4" @click="complete(estimateRequest)">
-                완료
+
+            <!-- 후기 작성 버튼 -->
+            <div class="mt-6 flex justify-end">
+              <button
+                class="bg-midGreen font-medium text-white px-6 py-2 rounded-md shadow-sm hover:bg-green-600 transition"
+                @click="goToCreateReview(estimateRequest.requestId)"
+              >
+                후기 작성
               </button>
             </div>
           </div>
@@ -88,73 +114,40 @@
 <script>
 import { ref } from 'vue';
 import authInstance from '@/utils/axiosUtils';
+import { useRouter } from 'vue-router';
 
 export default {
   setup() {
-    const estimateRequests = ref([]); // 견적 요청 목록
-    const isOpen = ref([]); // 각 항목의 토글 상태를 저장
-    const selectedEstimateRequestsMap = ref({}); // 각 견적별로 저장된 데이터
+    const router = useRouter();
+    const estimateRequests = ref([]);
+    const isOpen = ref([]);
+    const selectedEstimateRequestsMap = ref({});
 
-    // 승인 견적 목록 가져오기
     const fetchEstimateRequests = async () => {
       try {
-        const response = await authInstance.get('/api/estimaterequests/users', {
-          params: {
-            status: 'ONGOING',
-          },
-        });
-        estimateRequests.value = response.data; // 응답 데이터를 estimateRequests에 저장
-        console.log('여기: ' + estimateRequests.value);
+        const response = await authInstance.get('/api/estimaterequests/users', { params: { status: 'COMPLETE' } });
+        estimateRequests.value = response.data;
       } catch (error) {
-        console.error('견적 요청 리스트를 가져오는데 실패했습니다.', error);
+        console.error('완료 견적 리스트를 가져오는데 실패했습니다.', error);
       }
     };
 
-    // 토글 기능
     const toggle = async (estimateRequest, index) => {
       try {
         if (!selectedEstimateRequestsMap.value[index]) {
-          const response = await authInstance.get(
-            `/api/estimaterequests/${estimateRequest.requestId}/estimates/accept`
-          );
-          selectedEstimateRequestsMap.value[index] = response.data; // 해당 인덱스의 견적 정보를 저장
+          const response = await authInstance.get(`/api/estimaterequests/users/complete/${estimateRequest.requestId}`);
+          selectedEstimateRequestsMap.value[index] = response.data;
         }
-        console.log('여기2: ' + selectedEstimateRequestsMap.value[index]);
-        isOpen.value[index] = !isOpen.value[index]; // 토글 상태 변경
+        isOpen.value[index] = !isOpen.value[index];
       } catch (error) {
         console.error('견적 리스트를 가져오는데 실패했습니다.', error);
       }
     };
 
-    // 시공 취소
-    const cancel = async (estimateRequest) => {
-      const isConfirm = confirm('정말로 취소하시겠습니까?');
-      if (!isConfirm) {
-        return;
-      }
-      try {
-        authInstance.post(`/api/estimaterequests/${estimateRequest.requestId}/cancel`);
-        window.location.reload();
-      } catch (error) {
-        console.log('취소를 실패했습니다.', error);
-      }
+    const goToCreateReview = (requestId) => {
+      router.push({ path: '/reviews/create', query: { requestId } });
     };
 
-    // 시공 완료
-    const complete = async (estimateRequest) => {
-      const isConfirm = confirm('시공을 완료하시겠습니까?');
-      if (!isConfirm) {
-        return;
-      }
-      try {
-        authInstance.post(`/api/estimaterequests/${estimateRequest.requestId}/complete`);
-        window.location.reload();
-      } catch (error) {
-        console.log('시공 완료를 실패했습니다.', error);
-      }
-    };
-
-    // 컴포넌트가 생성될 때 견적 요청 목록을 가져옴
     fetchEstimateRequests();
 
     return {
@@ -162,11 +155,24 @@ export default {
       isOpen,
       selectedEstimateRequestsMap,
       toggle,
-      cancel,
-      complete,
+      goToCreateReview,
     };
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+/* 스타일을 추가하여 전반적인 색상 및 레이아웃을 개선했습니다 */
+ul {
+  padding-left: 0;
+}
+
+li {
+  list-style: none;
+}
+
+button {
+  outline: none;
+  transition: all 0.3s ease-in-out;
+}
+</style>
