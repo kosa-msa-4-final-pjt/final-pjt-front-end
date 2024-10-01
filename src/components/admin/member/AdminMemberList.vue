@@ -22,7 +22,7 @@
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">번호</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">고객명</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">닉네임</th>
-            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">아이디</th>
+            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">이메일</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">전화번호</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">가입일</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">메일인증</th>
@@ -118,10 +118,8 @@ export default defineComponent({
     };
 
     const viewMemberDetail = (member) => {
-      console.log(member);
       router.push({
         path: `/mypage/admin/adminMemberList/${member.id}`,
-        props: member, // 멤버 객체를 JSON으로 쿼리 파라미터로 전달
       });
     };
 

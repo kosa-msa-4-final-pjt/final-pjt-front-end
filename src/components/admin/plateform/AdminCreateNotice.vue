@@ -21,7 +21,7 @@
         <label for="content" class="block text-sm font-medium mb-2">내용</label>
         <textarea
           v-model="content"
-          class="mt-2 block w-full h-[500px] px-3 py-2 rounded border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-midGreen resize-none"
+          class="mt-2 block w-full h-[500px] px-3 py-2 rounded border border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-midGreen resize-none"
           placeholder="내용을 입력해주세요."
         ></textarea>
       </div>
@@ -30,6 +30,7 @@
       <div class="flex gap-12">
         <button
           class="bg-midGreen hover:bg-[#2a692d] text-white w-1/2 h-[44px] rounded text-[16px] font-medium mt-6"
+          type="button"
           @click="this.$router.go(-1)"
         >
           되돌아가기
@@ -66,7 +67,7 @@ export default {
           content: content.value,
         };
         await authInstance.post('/api/admin/notice/create', noticeData);
-        router.push('/plateformEvent/list');
+        router.push('/notice/list');
       } catch (error) {
         console.log('공지사항 등록을 실패했습니다.', error);
       }

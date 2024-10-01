@@ -46,7 +46,7 @@ import AdminPlateformAskDetail from '@/components/admin/plateform/AdminPlateform
 
 import AdminCreateNotice from '@/components/admin/plateform/AdminCreateNotice.vue';
 import AdminNoticeList from '@/components/admin/plateform/AdminNoticeList.vue';
-import AdminPlateformEventDetail from '@/components/admin/plateform/AdminPlateformEventDetail.vue';
+import AdminNoticeDetail from '@/components/admin/plateform/AdminNoticeDetail.vue';
 import AdminPlateformFAQList from '@/components/admin/plateform/AdminPlateformFAQList.vue';
 import AdminPlateformFAQDetail from '@/components/admin/plateform/AdminPlateformFAQDetail.vue';
 
@@ -55,10 +55,12 @@ import CompanyReceivedRequests from '@/components/mypage/company/CompanyReceived
 import UserSaveRequests from '@/components/mypage/user/UserSaveRequests.vue';
 import UserOnGoingRequests from '@/components/mypage/user/UserOnGoingRequests.vue';
 
-import PlateformEventList from '@/components/plateformEvent/PlateformEventList.vue';
-import PlateformEventDetail from '@/components/plateformEvent/plateformEventDetail.vue';
+import NoticeList from '@/components/notice/NoticeList.vue';
+import NoticeDetail from '@/components/notice/NoticeDetail.vue';
 import UserCompleteRequests from '@/components/mypage/user/UserCompleteRequests.vue';
 import EditPortfolio from '@/components/portfolio/EditPortfolio.vue';
+import AdminCompanyList from '@/components/admin/company/AdminCompanyList.vue';
+import AdminCompanyDetail from '@/components/admin/company/AdminCompanyDetail.vue';
 
 export default [
   { path: '/', component: HomeCompo },
@@ -143,8 +145,16 @@ export default [
   {
     path: '/mypage/admin',
     component: AdminPageCompo,
-    redirect: '/mypage/admin/adminCompanyMembershipList',
+    redirect: '/mypage/admin/adminCompanyList',
     children: [
+      {
+        path: 'adminCompanyList',
+        component: AdminCompanyList,
+      },
+      {
+        path: 'adminCompanyList/:id',
+        component: AdminCompanyDetail,
+      },
       {
         path: 'adminCompanyMembershipList',
         component: AdminCompanyMembershipList,
@@ -198,8 +208,8 @@ export default [
         component: AdminNoticeList,
       },
       {
-        path: 'adminplateformEventDetail',
-        component: AdminPlateformEventDetail,
+        path: 'adminNoticeDetail/:id',
+        component: AdminNoticeDetail,
       },
       {
         path: 'adminplateformFAQList',
@@ -219,6 +229,6 @@ export default [
       },
     ],
   },
-  { path: '/plateformEvent/list', component: PlateformEventList },
-  { path: '/plateformEvents/list/:id', component: PlateformEventDetail },
+  { path: '/notice/list', component: NoticeList },
+  { path: '/notice/list/:id', component: NoticeDetail },
 ];

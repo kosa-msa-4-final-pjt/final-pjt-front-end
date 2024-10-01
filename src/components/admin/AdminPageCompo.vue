@@ -16,7 +16,7 @@
             <!-- 멤버십, 시공사례 관리 토글 버튼 -->
             <div v-if="activeMenu === 'companyManagement'" class="ml-4 mt-2">
               <router-link
-                to="adminCompanyMembershipList"
+                to="adminCompanyList"
                 activeClass="bg-gray-200"
                 class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
                 >업체 가입 관리</router-link

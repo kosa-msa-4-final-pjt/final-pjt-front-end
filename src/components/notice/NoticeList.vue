@@ -5,7 +5,7 @@
 
   <div v-for="(notice, index) in noticeList" :key="index" class="flex flex-col space-y-6">
     <!-- 전체 공지사항 공간 -->
-    <div class="flex border-b cursor-pointer px-3 py-6 transition duration-300">
+    <div class="flex border-b cursor-pointer px-3 py-6 transition duration-300" @click="noticeDetail(notice.id)">
       <div class="flex-1 flex flex-col pr-6">
         <!-- 제목 -->
         <h2 class="text-xl font-bold text-gray-900 mb-4">{{ notice.title }}</h2>
@@ -21,6 +21,11 @@
           <span class="font-normal text-gray-500">{{ notice.updateDate }}</span>
         </div>
       </div>
+
+      <!-- 썸네일 이미지 -->
+      <div class="w-32 h-32 flex-shrink-0">
+        <img src="@/assets/logo.png" alt="공지사항 이미지" class="w-full h-full object-cover rounded-lg shadow-sm" />
+      </div>
     </div>
   </div>
   <div class="flex justify-center">
@@ -35,10 +40,12 @@
 <script>
 import { ref } from 'vue';
 import authInstance from '@/utils/axiosUtils';
+import { useRouter } from 'vue-router';
 
 export default {
   setup() {
     const noticeList = ref([]);
+    const router = useRouter(); // 라우터 객체
 
     const getNotices = async () => {
       try {
@@ -53,12 +60,18 @@ export default {
       return content.length > 100 ? content.substring(0, 100) + '...' : content;
     };
 
+    // 공지사항 상세 페이지로 이동하는 함수
+    const noticeDetail = (id) => {
+      router.push(`/notice/list/${id}`);
+    };
+
     getNotices();
 
     return {
       noticeList,
       getNotices,
       truncateContent,
+      noticeDetail,
     };
   },
 };
