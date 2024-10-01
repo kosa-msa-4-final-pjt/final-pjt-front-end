@@ -158,7 +158,7 @@ export default [
         component: AdminCompanyPortfolioList,
       },
       {
-        path: 'adminCompanyPortfolioDetail',
+        path: 'adminCompanyPortfolioDetail/:id',
         component: AdminCompanyPortfolioDetail,
       },
       {

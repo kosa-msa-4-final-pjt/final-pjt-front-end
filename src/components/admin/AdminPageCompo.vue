@@ -25,8 +25,9 @@
                 to="adminCompanyPortfolioList"
                 activeClass="bg-gray-200"
                 class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
-                >시공 사례 관리</router-link
               >
+                시공 사례 관리
+              </router-link>
             </div>
           </li>
           <!-- 고객 관리 -->

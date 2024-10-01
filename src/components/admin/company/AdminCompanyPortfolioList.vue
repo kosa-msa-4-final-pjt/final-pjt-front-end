@@ -8,10 +8,6 @@
           <label for="" class="font-medium">총 시공 사례수</label>
           <p class="text-red">{{ portfolioCompany.length }}명</p>
         </li>
-        <li>
-          <label for="" class="font-medium">현재 등록된 시공 사례수</label>
-          <p class="text-red">{{ portfolioCompany.length }}개</p>
-        </li>
       </ul>
     </div>
     <!-- center -->
@@ -27,7 +23,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(portfolio, index) in portfolioCompany" :key="index">
+          <tr v-for="(portfolio, index) in portfolioCompany" :key="portfolio.id">
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ index + 1 }}</td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               {{ portfolio.title }}
@@ -41,7 +37,7 @@
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               <button
                 class="px-2 rounded-lg whitespace-nowrap bg-gray-200 cursor-pointer hover:bg-gray-300"
-                @click="$router.push({ name: 'adminCompanyPortfolioDetail', params: { id: portfolio.id } })"
+                @click="adminPortfolioDetail(portfolio.id)"
               >
                 상세보기
               </button>
@@ -75,6 +71,7 @@
 import { defineComponent, ref } from 'vue';
 import { VuePaginate } from '@svifty7/vue-paginate';
 import authInstance from '@/utils/axiosUtils';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   components: {
@@ -86,6 +83,11 @@ export default defineComponent({
     const pageSize = ref(5);
     const portfolioCompany = ref([]);
     const totalPage = ref(1);
+    const router = useRouter();
+
+    const adminPortfolioDetail = (id) => {
+      router.push(`/mypage/admin/adminCompanyPortfolioDetail/${id}`);
+    };
 
     const fetchPortfolioList = async (pageNum = pageNumber.value) => {
       try {
@@ -95,6 +97,7 @@ export default defineComponent({
             size: pageSize.value,
           },
         });
+        console.log(response.data);
         portfolioCompany.value = response.data.slice;
         totalPage.value = response.data.totalPages;
         pageNumber.value = response.data.number;
@@ -110,6 +113,7 @@ export default defineComponent({
       pageNumber,
       pageSize,
       totalPage,
+      adminPortfolioDetail,
       fetchPortfolioList,
     };
   },
