@@ -2,16 +2,16 @@
   <div class="flex-col">
     <!-- header -->
     <div class="mb-10 p-5 bg-white rounded-lg">
-      <h2 class="font-semibold text-xl mb-4">공지사항 관리</h2>
+      <h2 class="font-semibold text-xl mb-4">FAQ 관리</h2>
       <ul class="flex justify-between">
         <li>
-          <label for="" class="font-medium">현재 등록된 공지사항수</label>
-          <p class="text-red">{{ noticeList.length }}개</p>
+          <label for="" class="font-medium">현재 등록된 FAQ 관리수</label>
+          <p class="text-red">{{ FAQList.length }}개</p>
         </li>
         <li>
           <button
             class="px-2 py-1 bg-midGreen hover:bg-[#2a692d] text-white rounded-lg text-[16px] font-medium mt-6"
-            @click="$router.push('/mypage/admin/admincreatenotice')"
+            @click="$router.push('/mypage/admin/admincreatefaq')"
           >
             등록하기
           </button>
@@ -31,17 +31,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(notice, index) in noticeList" :key="notice.id">
+          <tr v-for="(FAQ, index) in FAQList" :key="FAQ.id">
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ index + 1 }}</td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              {{ notice.title }}
+              {{ FAQ.title }}
             </td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ notice.authorName }}</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ notice.updateDate }}</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ FAQ.authorName }}</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ FAQ.updateDate }}</td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               <button
                 class="px-2 rounded-lg whitespace-nowrap bg-gray-200 cursor-pointer hover:bg-gray-300"
-                @click="adminNoticeDetail(notice.id)"
+                @click="adminFAQDetail(FAQ.id)"
               >
                 상세보기
               </button>
@@ -54,35 +54,35 @@
 </template>
 
 <script>
-import { ref } from 'vue';
 import authInstance from '@/utils/axiosUtils';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default {
   setup() {
-    const noticeList = ref([]);
+    const FAQList = ref([]);
     const router = useRouter(); // 라우터 객체
 
-    const getNotices = async () => {
+    const getFAQs = async () => {
       try {
-        const response = await authInstance.get('/api/admin/notice/list');
-        noticeList.value = response.data;
+        const response = await authInstance.get('/api/admin/faq/list');
+        FAQList.value = response.data;
       } catch (error) {
-        console.log('공지사항을 가져오지 못했습니다.', error);
+        console.log('FAQ를 가져오지 못했습니다.', error);
       }
     };
 
-    // 공지사항 상세 페이지로 이동하는 함수
-    const adminNoticeDetail = (id) => {
-      router.push(`/mypage/admin/adminnoticedetail/${id}`);
+    // FAQ 상세 페이지로 이동하는 함수
+    const adminFAQDetail = (id) => {
+      router.push(`/mypage/admin/adminfaqdetail/${id}`);
     };
 
-    getNotices();
+    getFAQs();
 
     return {
-      noticeList,
-      getNotices,
-      adminNoticeDetail,
+      FAQList,
+      getFAQs,
+      adminFAQDetail,
     };
   },
 };

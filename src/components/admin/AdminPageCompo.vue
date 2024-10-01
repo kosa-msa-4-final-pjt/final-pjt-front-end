@@ -95,16 +95,10 @@
                 >공지사항 관리</router-link
               >
               <router-link
-                to="adminplateformFAQList"
+                to="adminfaqlist"
                 activeClass="bg-gray-200"
                 class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
                 >FAQ 관리</router-link
-              >
-              <router-link
-                to="adminplateformAskList"
-                activeClass="bg-gray-200"
-                class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
-                >문의 관리</router-link
               >
             </div>
           </li>
