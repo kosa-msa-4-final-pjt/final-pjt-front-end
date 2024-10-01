@@ -107,11 +107,13 @@
         <div v-for="(constructionType, index) in selectedEstimate.constructionTypes" :key="index" class="mb-4">
           <label :for="'constructionType-' + index" class="block mb-1 font-medium">{{ constructionType }}</label>
           <input
-            type="text"
+            type="number"
             :id="'constructionType-' + index"
             v-model="constructionTypeInputs[index]"
             class="w-full border border-gray-300 p-2 rounded"
-            placeholder="해당 시공 타입의 금액을 입력하세요"
+            placeholder="금액을 입력하세요(단위: 만원)"
+            :min="1"
+            @input="validateInput(index)"
           />
         </div>
 
@@ -132,11 +134,13 @@
         <div v-for="(constructionType, index) in selectedEstimate.constructionTypes" :key="index" class="mb-4">
           <label :for="'constructionType-' + index" class="block mb-1 font-medium">{{ constructionType }}</label>
           <input
-            type="text"
+            type="number"
             :id="'constructionType-' + index"
             v-model="constructionTypeInputs[index]"
             class="w-full border border-gray-300 p-2 rounded"
-            placeholder="해당 시공 타입의 금액을 입력하세요"
+            placeholder="금액을 입력하세요(단위: 만원)"
+            :min="1"
+            @input="validateInput(index)"
           />
         </div>
         <div class="text-right">
@@ -176,9 +180,7 @@ export default {
     // 견적 요청 목록을 API로부터 가져오는 함수
     async fetchEstimates() {
       try {
-        const response = await authInstance.get('/api/estimaterequests', {
-          params: { status: 'WAITING' },
-        });
+        const response = await authInstance.get('/api/estimaterequests/received');
         this.estimates = response.data; // 가져온 데이터를 estimates 배열에 저장
       } catch (error) {
         console.error('견적 리스트를 가져오는데 실패했습니다.', error);
@@ -313,6 +315,12 @@ export default {
         window.location.reload();
       } catch (error) {
         console.log('견적 삭제를 실패했습니다.', error);
+      }
+    },
+
+    validateInput(index) {
+      if (this.constructionTypeInputs[index] < 1) {
+        this.constructionTypeInputs[index] = 1;
       }
     },
   },

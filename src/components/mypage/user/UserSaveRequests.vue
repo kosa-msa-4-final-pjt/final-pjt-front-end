@@ -4,66 +4,73 @@
       <h3 class="font-bold text-2xl text-gray-800">견적 요청 목록</h3>
     </div>
 
-    <!-- 토글 리스트 -->
-    <ul class="list-none p-0">
-      <li
-        v-for="(estimateRequest, index) in estimateRequests"
-        :key="index"
-        class="border border-gray-300 p-4 mb-2 rounded-lg"
-      >
-        <div class="flex justify-between items-center">
-          <div>
-            <span>{{ estimateRequest.address }}</span>
+    <div v-if="estimateRequests.length > 0">
+      <!-- 토글 리스트 -->
+      <ul class="list-none p-0">
+        <li
+          v-for="(estimateRequest, index) in estimateRequests"
+          :key="index"
+          class="border border-gray-300 p-4 mb-2 rounded-lg"
+        >
+          <div class="flex justify-between items-center">
+            <div>
+              <span>{{ estimateRequest.address }}</span>
+            </div>
+            <div class="flex items-center space-x-4">
+              <span class="text-gray-500">{{
+                '등록 날짜: ' + new Date(estimateRequest.regDate).toISOString().split('T')[0]
+              }}</span>
+              <button @click="toggle(estimateRequest, index)">
+                <span v-if="isOpen[index]" class="text-xs p-1">▲</span>
+                <span v-else class="text-xs p-1">▼</span>
+              </button>
+            </div>
           </div>
-          <div class="flex items-center space-x-4">
-            <span class="text-gray-500">{{
-              '등록 날짜: ' + new Date(estimateRequest.regDate).toISOString().split('T')[0]
-            }}</span>
-            <button @click="toggle(estimateRequest, index)">
-              <span v-if="isOpen[index]" class="text-xs p-1">▲</span>
-              <span v-else class="text-xs p-1">▼</span>
-            </button>
-          </div>
-        </div>
 
-        <!-- 카드 형식으로 보여주는 부분 -->
-        <div v-if="isOpen[index]" class="bg-gray-100 mt-2 p-4 shadow rounded">
-          <!-- 조건: estimates 배열이 있는지 확인하고 비어있는 경우 메시지 표시 -->
-          <div v-if="!estimateRequest.estimates || estimateRequest.estimates.length === 0">
-            해당 요청은 견적이 없습니다.
-          </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div
-              v-for="(estimate, estimateIndex) in estimateRequest.estimates"
-              :key="estimateIndex"
-              class="border border-gray-300 rounded-lg pb-4 px-4 bg-white transition-shadow duration-300 ease-in-out cursor-pointer border-box hover:shadow-md"
-              @click="estimateDetail(estimateRequest, estimate)"
-            >
-              <div class="w-full h-[125px] flex justify-center items-center border-b">
-                <img
-                  :src="estimate.companyLogoUrl ? estimate.companyLogoUrl : require('@/assets/logo.png')"
-                  alt="로고"
-                  class="w-[100%] h-[100px] object-cover rounded-lg"
-                />
-              </div>
-              <div class="">
-                <p class="my-2 font-semibold">{{ estimate.companyName }}</p>
-                <div class="flex justify-between">
-                  <p class="text-xs text-gray-500">{{ estimate.completeEstimateCount }}건의 공사</p>
-                  <p class="text-xs text-midGreen">
-                    <font-awesome-icon icon="star" />
-                    <span class="ml-1">{{ estimate.rating }}</span>
-                  </p>
+          <!-- 카드 형식으로 보여주는 부분 -->
+          <div v-if="isOpen[index]" class="bg-gray-100 mt-2 p-4 shadow rounded">
+            <!-- 조건: estimates 배열이 있는지 확인하고 비어있는 경우 메시지 표시 -->
+            <div v-if="!estimateRequest.estimates || estimateRequest.estimates.length === 0">
+              해당 요청은 견적이 없습니다.
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div
+                v-for="(estimate, estimateIndex) in estimateRequest.estimates"
+                :key="estimateIndex"
+                class="border border-gray-300 rounded-lg pb-4 px-4 bg-white transition-shadow duration-300 ease-in-out cursor-pointer border-box hover:shadow-md"
+                @click="estimateDetail(estimateRequest, estimate)"
+              >
+                <div class="w-full h-[125px] flex justify-center items-center border-b">
+                  <img
+                    :src="estimate.companyLogoUrl ? estimate.companyLogoUrl : require('@/assets/logo.png')"
+                    alt="로고"
+                    class="w-[100%] h-[100px] object-cover rounded-lg"
+                  />
                 </div>
-              </div>
-              <div class="text-right mt-4">
-                <p class="font-semibold">예상 금액: {{ estimate.totalPrice }}만원</p>
+                <div class="">
+                  <p class="my-2 font-semibold">{{ estimate.companyName }}</p>
+                  <div class="flex justify-between">
+                    <p class="text-xs text-gray-500">{{ estimate.completeEstimateCount }}건의 공사</p>
+                    <p class="text-xs text-midGreen">
+                      <font-awesome-icon icon="star" />
+                      <span class="ml-1">{{ estimate.rating }}</span>
+                    </p>
+                  </div>
+                </div>
+                <div class="text-right mt-4">
+                  <p class="font-semibold">예상 금액: {{ estimate.totalPrice }}만원</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </li>
-    </ul>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 작성한 견적 요청이 없을 경우 보여줄 메시지 -->
+    <div v-else class="text-center text-gray-500">
+      <p class="text-lg font-semibold">작성한 견적 요청이 없습니다.</p>
+    </div>
   </div>
 
   <!-- 모달 -->

@@ -82,7 +82,7 @@
             <!-- 공지사항, FAQ, 1:1 문의 관리 토글 버튼 -->
             <div v-if="activeMenu === 'platformManagement'" class="ml-4 mt-2">
               <router-link
-                to="adminplateformEventList"
+                to="adminnoticelist"
                 activeClass="bg-gray-200"
                 class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
                 >공지사항 관리</router-link

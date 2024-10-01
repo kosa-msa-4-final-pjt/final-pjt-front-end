@@ -1,5 +1,5 @@
 <template>
-  <div class="pb-[40px]">
+  <div class="py-5">
     <!-- 총 시공 사례 개수 표시 -->
     <p v-if="totalPortfolios" class="text-lg font-medium py-4 mb-6">
       총

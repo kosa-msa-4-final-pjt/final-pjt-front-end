@@ -11,7 +11,7 @@
         <li>
           <button
             class="px-2 py-1 bg-midGreen hover:bg-[#2a692d] text-white rounded-lg text-[16px] font-medium mt-6"
-            @click="$router.push('/mypage/admin/createAdminPlateformEvent')"
+            @click="$router.push('/mypage/admin/admincreatenotice')"
           >
             등록하기
           </button>

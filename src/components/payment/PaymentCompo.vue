@@ -66,7 +66,6 @@
 
 <script>
 import { useUserStore } from '@/stores/userStore';
-import axios from 'axios';
 import { mapState } from 'pinia';
 import authInstance from '@/utils/axiosUtils';
 
@@ -87,16 +86,9 @@ export default {
 
   mounted() {
     // 멤버십 리스트 가져오기
-    axios.get(`${SERVER_BASE_URL}/api/membershiptypes`).then(
-      (response) => {
-        this.membershipList = response.data.data;
-      },
-      {
-        headers: {
-          Authorization: this.token,
-        },
-      }
-    );
+    authInstance.get(`${SERVER_BASE_URL}/api/membershiptypes`).then((response) => {
+      this.membershipList = response.data.data;
+    });
   },
 
   methods: {
@@ -135,7 +127,7 @@ export default {
 
             if (response.success) {
               alert('결제를 성공하셨습니다.');
-              this.$router.push("/mypage/company")
+              this.$router.push('/mypage/company');
             }
 
             console.log(complete.data.data);

@@ -1,9 +1,9 @@
 <template>
   <div class="w-full mx-auto px-6 py-8">
-    <p class="text-2xl font-semibold text-center pb-6">시공 사례 작성</p>
+    <p class="text-2xl font-semibold text-center pb-6">시공 사례 수정</p>
 
     <form
-      @submit.prevent="insertPortfolio"
+      @submit.prevent="updatePortfolio"
       class="max-w-[720px] mx-auto bg-white p-6 border-[1px] border-gray-300 rounded-lg"
     >
       <div class="mb-6">
@@ -124,7 +124,7 @@
       </div>
 
       <button class="bg-midGreen text-white w-full h-[44px] rounded text-[16px] font-medium mt-6" type="submit">
-        작성하기
+        수정하기
       </button>
     </form>
   </div>
@@ -148,28 +148,57 @@ export default {
       projectLocation: '',
       projectBudget: '',
       constructionTypes: [],
-      selectedTypes: [],
-      buildingTypes: [],
+      selectedTypes: [], // Checked construction types
+      buildingTypes: '',
       selectedBuildingType: '',
       today: '',
+      portfolioId: '', // 수정할 포트폴리오 ID 저장
     };
   },
-  mounted() {
+  async mounted() {
     const today = new Date().toISOString().split('T')[0];
     this.today = today;
 
-    this.getConstructionType();
-    this.getBuildingType();
+    // 페이지 진입 시 기존 데이터를 불러옴
+    const portfolioId = this.$route.params.id; // URL에서 포트폴리오 ID를 가져옴
+    this.portfolioId = portfolioId;
+
+    await this.getConstructionType(); // 시공 종류 가져오기
+    await this.fetchPortfolioData(portfolioId); // 포트폴리오 데이터 가져오기
+    await this.getBuildingType(); // 건물 종류 가져오기
   },
   methods: {
-    searchAddress() {
-      this.openDaumPostcode();
+    async fetchPortfolioData(portfolioId) {
+      try {
+        const response = await axios.get(`/api/portfolio/${portfolioId}`);
+        const data = response.data;
+        console.log(data);
+
+        // 불러온 데이터를 폼에 초기값으로 설정
+        this.title = data.title;
+        this.content = data.content;
+        this.startDate = data.startDate;
+        this.endDate = data.endDate;
+        this.projectLocation = data.projectLocation;
+        this.floor = data.floor;
+        this.projectBudget = data.projectBudget;
+
+        // 기존 건물 타입을 비교하여 라디오 버튼 설정
+        this.selectedBuildingType = this.buildingTypes.filter((type) => data.buildingType.includes(type.name));
+
+        // 기존 시공 서비스를 비교하여 체크박스 설정
+        const serviceNames = data.services; // 포트폴리오의 시공 서비스 (string 리스트)
+
+        // 시공 타입과 비교해서 체크박스 활성화
+        this.selectedTypes = this.constructionTypes
+          .filter((type) => serviceNames.includes(type.name)) // 시공 서비스가 일치하는 타입만 선택
+          .map((type) => type.id); // 해당하는 ID만 저장
+      } catch (error) {
+        console.error('포트폴리오 데이터를 불러오는데 실패했습니다.', error);
+      }
     },
 
     async afterUploadImages(portfolioId, afterUpdateContent, resolve, reject) {
-      console.log('이미지 삽입 후 내용');
-      console.log(afterUpdateContent);
-
       // const userStore = useUserStore();
       // const token = userStore.accessToken;
 
@@ -256,13 +285,13 @@ export default {
       }
     },
 
-    async insertPortfolio() {
+    async updatePortfolio() {
       // const userStore = useUserStore();
       // const token = userStore.accessToken;
 
       const portfolioRequest = {
         title: this.title,
-        content: '대체 예정',
+        content: this.content,
         startDate: this.startDate,
         endDate: this.endDate,
         projectLocation: this.projectLocation,
@@ -273,16 +302,16 @@ export default {
       };
 
       try {
-        const response = await authInstance.post('/api/portfolio/create', portfolioRequest);
-        alert('시공 사례가 작성되었습니다.');
-        const portfolioId = response.data.id;
-        console.log('이미지 저장 호출');
-        await this.$refs.quillEditor.uploadImages(portfolioId);
+        const response = await authInstance.patch(`/api/portfolio/${this.portfolioId}`, portfolioRequest);
+        console.log(response.data);
 
-        this.$router.push(`/portfolio/${portfolioId}`);
+        // 이미지 업로드도 진행
+        await this.$refs.quillEditor.uploadImages(this.portfolioId);
+
+        this.$router.push(`/portfolio/${this.portfolioId}`);
       } catch (error) {
-        console.error(error);
-        alert('시공 사례 작성에 실패하였습니다.');
+        console.error('시공 사례 수정에 실패하였습니다.', error);
+        alert('시공 사례 수정에 실패하였습니다.');
       }
     },
   },

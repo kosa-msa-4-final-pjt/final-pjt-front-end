@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import authInstance from '@/utils/axiosUtils';
 
 export default {
   data() {
@@ -155,7 +155,7 @@ export default {
       const id = this.$route.params.id;
 
       try {
-        const response = await axios.get(`/api/portfolio/${id}`);
+        const response = await authInstance.get(`/api/portfolio/${id}`);
         this.portfolio = response.data;
         console.log(this.portfolio);
       } catch (error) {
@@ -166,7 +166,7 @@ export default {
       this.$router.push(`/portfolio/edit/${this.$route.params.id}`);
     },
     confirmDelete() {
-      if (confirm('시공후기를 삭제하시겠습니까?')) {
+      if (confirm('시공시례를 삭제하시겠습니까?')) {
         this.deletePortfolio();
       }
     },
@@ -174,8 +174,7 @@ export default {
       const id = this.$route.params.id;
 
       try {
-        await axios.delete(`/api/portfolio/${id}`);
-        alert('시공후기가 삭제되었습니다.');
+        await authInstance.delete(`/api/portfolio/${id}`);
         this.$router.push('/portfolio');
       } catch (error) {
         console.error('Error deleting portfolio: ', error);

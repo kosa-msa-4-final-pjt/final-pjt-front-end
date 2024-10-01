@@ -76,7 +76,6 @@ export default {
 
           // 선택 범위가 없을 경우 에디터 끝에 이미지를 삽입
           const base64Image = e.target.result;
-          alert('이미지 추가 완료');
 
           if (!range) {
             const length = this.quill.getLength();
@@ -91,9 +90,6 @@ export default {
             range: range ? { index: range.index, length: 1 } : { index: this.quill.getLength(), length: 0 },
             placeholder: e.target.result,
           });
-
-          alert(this.pendingImages[0].placeholder);
-          // 서버로 이미지를 업로드하고 Base64 이미지를 URL로 교체
         };
 
         reader.readAsDataURL(file);

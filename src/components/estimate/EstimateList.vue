@@ -104,11 +104,13 @@
         <div v-for="(constructionType, index) in selectedEstimate.constructionTypes" :key="index" class="mb-4">
           <label :for="'constructionType-' + index" class="block mb-1 font-medium">{{ constructionType }}</label>
           <input
-            type="text"
+            type="number"
             :id="'constructionType-' + index"
             v-model="constructionTypeInputs[index]"
             class="w-full border border-gray-300 p-2 rounded"
-            placeholder="해당 시공 타입의 금액을 입력하세요"
+            placeholder="금액을 입력하세요(단위: 만원)"
+            :min="1"
+            @input="validateInput(index)"
           />
         </div>
 
@@ -129,11 +131,13 @@
         <div v-for="(constructionType, index) in selectedEstimate.constructionTypes" :key="index" class="mb-4">
           <label :for="'constructionType-' + index" class="block mb-1 font-medium">{{ constructionType }}</label>
           <input
-            type="text"
+            type="number"
             :id="'constructionType-' + index"
             v-model="constructionTypeInputs[index]"
             class="w-full border border-gray-300 p-2 rounded"
-            placeholder="해당 시공 타입의 금액을 입력하세요"
+            placeholder="금액을 입력하세요(단위: 만원)"
+            :min="1"
+            @input="validateInput(index)"
           />
         </div>
         <div class="text-right">
@@ -310,6 +314,12 @@ export default {
         window.location.reload();
       } catch (error) {
         console.log('견적 삭제를 실패했습니다.', error);
+      }
+    },
+
+    validateInput(index) {
+      if (this.constructionTypeInputs[index] < 1) {
+        this.constructionTypeInputs[index] = 1;
       }
     },
   },

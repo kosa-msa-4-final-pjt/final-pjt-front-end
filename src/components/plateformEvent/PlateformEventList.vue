@@ -1,46 +1,65 @@
 <template>
   <div class="py-5">
-    <!-- <p v-if="plateformEvent && plateformEvent.length" class="text-lg font-medium mb-6"> -->
-    <strong class="text-xl">총 1개의 공지사항 수</strong>
-    <!-- </p> -->
-
-    <!-- <p v-else class="pt-20 text-center text-gray-600 text-lg font-medium">공지사항이 없습니다.</p> -->
+    <strong class="text-xl">총 {{ noticeList.length }}개의 공지사항 수</strong>
   </div>
 
-  <div class="flex flex-col space-y-6">
-    <plateformEventCard class="p-6 bg-white rounded-lg"></plateformEventCard>
+  <div v-for="(notice, index) in noticeList" :key="index" class="flex flex-col space-y-6">
+    <!-- 전체 공지사항 공간 -->
+    <div class="flex border-b cursor-pointer px-3 py-6 transition duration-300">
+      <div class="flex-1 flex flex-col pr-6">
+        <!-- 제목 -->
+        <h2 class="text-xl font-bold text-gray-900 mb-4">{{ notice.title }}</h2>
 
-    <div class="flex justify-center">
-      <button
-        class="py-4 px-20 my-10 font-medium text-midGreen border-[1px] border-midGreen rounded hover:bg-midGreen hover:text-white transition duration-300"
-      >
-        더보기
-      </button>
+        <!-- 내용 미리보기 -->
+        <div class="text-gray-700">
+          <p>{{ truncateContent(notice.content) }}</p>
+        </div>
+
+        <!-- 별점 및 작성자 정보 -->
+        <div class="flex items-center mt-3 text-sm text-gray-600 font-medium">
+          <span class="mr-4">{{ notice.authorName }}</span>
+          <span class="font-normal text-gray-500">{{ notice.updateDate }}</span>
+        </div>
+      </div>
     </div>
+  </div>
+  <div class="flex justify-center">
+    <button
+      class="py-4 px-20 my-10 font-medium text-midGreen border-[1px] border-midGreen rounded hover:bg-midGreen hover:text-white transition duration-300"
+    >
+      더보기
+    </button>
   </div>
 </template>
 
 <script>
-// import axios from 'axios';
-import PlateformEventCard from './PlateformEventCard.vue';
+import { ref } from 'vue';
+import authInstance from '@/utils/axiosUtils';
 
 export default {
-  data() {
-    return {
-      id: 1,
-      plateformEvent: [],
+  setup() {
+    const noticeList = ref([]);
+
+    const getNotices = async () => {
+      try {
+        const response = await authInstance.get('/api/admin/notice/list');
+        noticeList.value = response.data;
+      } catch (error) {
+        console.log('공지사항을 가져오지 못했습니다.', error);
+      }
     };
-  },
 
-  // 서버 연결 준비
-  // async mounted() {
-  //   const plateformEventList = await axios.get('http://localhost:8080/api/plateformEvent/list');
-  //   this.plateformEvent = plateformEventList.data;
-  //   console.log(this.plateformEvent);
-  // },
+    const truncateContent = (content) => {
+      return content.length > 100 ? content.substring(0, 100) + '...' : content;
+    };
 
-  components: {
-    PlateformEventCard,
+    getNotices();
+
+    return {
+      noticeList,
+      getNotices,
+      truncateContent,
+    };
   },
 };
 </script>

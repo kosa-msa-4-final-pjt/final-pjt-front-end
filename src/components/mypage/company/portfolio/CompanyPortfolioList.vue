@@ -4,16 +4,23 @@
       <h3 class="font-bold text-2xl text-gray-800">시공 사례 리스트</h3>
     </div>
 
-    <!-- 포트폴리오 그리드 -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full px-4">
-      <PortfolioCompo v-for="portfolio in portfolios" :key="portfolio.id" :portfolio="portfolio"></PortfolioCompo>
+    <div v-if="portfolios.length > 0">
+      <!-- 포트폴리오 그리드 -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full px-4">
+        <PortfolioCompo v-for="portfolio in portfolios" :key="portfolio.id" :portfolio="portfolio"></PortfolioCompo>
+      </div>
+
+      <!-- 더보기 버튼 -->
+      <div v-if="currentPage + 1 < totalPage" class="flex justify-center pt-4">
+        <button @click="loadMore" class="px-6 py-2 bg-midGreen text-white rounded-md shadow-sm transition duration-300">
+          더보기
+        </button>
+      </div>
     </div>
 
-    <!-- 더보기 버튼 -->
-    <div v-if="currentPage + 1 < totalPage" class="flex justify-center pt-4">
-      <button @click="loadMore" class="px-6 py-2 bg-midGreen text-white rounded-md shadow-sm transition duration-300">
-        더보기
-      </button>
+    <!-- 작성한 시공 사례가 없을 경우 보여줄 메시지 -->
+    <div v-else class="text-center text-gray-500">
+      <p class="text-lg font-semibold">작성한 시공 사례가 없습니다.</p>
     </div>
   </div>
 </template>
