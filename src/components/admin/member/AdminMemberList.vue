@@ -6,11 +6,11 @@
       <ul class="flex gap-4">
         <li>
           <label for="" class="font-medium">총 고객 가입자수</label>
-          <p class="text-red">3명</p>
+          <p class="text-red">{{ totalMembers }}명</p>
         </li>
         <li>
           <label for="" class="font-medium">신규 고객 가입자수</label>
-          <p class="text-red">3명</p>
+          <p class="text-red">{{ newMembers }}명</p>
         </li>
       </ul>
     </div>
@@ -25,65 +25,27 @@
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">아이디</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">전화번호</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">가입일</th>
-            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">상태</th>
+            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">메일인증</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">상세보기</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">1</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">김선우</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">김선우</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">kimSunWo@gmail.com</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">010-1111-2222</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">24.09.11</td>
+          <tr v-for="(member, index) in members" :key="member.id">
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ index + 1 }}</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ member.name }}</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ member.nickName }}</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ member.email }}</td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              <p class="border-2 border-solid rounded-lg px-2 whitespace-nowrap">비활동</p>
+              {{ formatPhoneNumber(member.phoneNumber) }}
+            </td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ member.createAt }}</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
+              {{ member.verified ? 'O' : 'X' }}
             </td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               <button
                 class="px-2 rounded-lg whitespace-nowrap bg-gray-200 cursor-pointer hover:bg-gray-300"
-                @click="$router.push('adminMemberDetail')"
-              >
-                상세보기
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">2</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">이지연</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">몰랑이</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">qwer@gamail.com</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">010-1111-3333</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">24.07.10</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              <p class="border-2 border-solid rounded-lg px-2 whitespace-nowrap">비활동</p>
-            </td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              <button
-                class="px-2 rounded-lg whitespace-nowrap bg-gray-200 cursor-pointer hover:bg-gray-300"
-                @click="$router.push('adminMemberDetail')"
-              >
-                상세보기
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">3</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">이보소</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">랜덤가챠</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">Notsleep@gmail.com</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">010-1111-4444</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">24.08.28</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              <p class="border-2 border-solid border-secondary rounded-lg px-2 text-secondary whitespace-nowrap">
-                활동중
-              </p>
-            </td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              <button
-                class="px-2 rounded-lg whitespace-nowrap bg-gray-200 cursor-pointer hover:bg-gray-300"
-                @click="$router.push('adminMemberDetail')"
+                @click="viewMemberDetail(member)"
               >
                 상세보기
               </button>
@@ -96,7 +58,7 @@
     <div class="mt-5">
       <vue-paginate
         :model-value="page"
-        :page-count="20"
+        :page-count="totalPages"
         :page-range="3"
         :margin-pages="2"
         :click-handler="clickCallback"
@@ -114,23 +76,81 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
 import { VuePaginate } from '@svifty7/vue-paginate';
+import { useRouter } from 'vue-router';
+import authInstance from '@/utils/axiosUtils';
+import dayjs from 'dayjs'; // 날짜를 계산하기 위해 dayjs를 사용합니다.
 
 export default defineComponent({
   components: {
     VuePaginate,
   },
   setup() {
-    const page = ref(10);
+    const page = ref(1);
+    const members = ref([]);
+    const totalMembers = ref(0);
+    const newMembers = ref(0);
+    const totalPages = ref(1);
+    const router = useRouter();
+
+    // 현재 날짜 기준 2주 이내의 가입자를 찾는 함수
+    const isNewMember = (signupDate) => {
+      const now = dayjs(); // 현재 날짜
+      const signup = dayjs(signupDate); // 가입 날짜
+      return now.diff(signup, 'day') <= 14; // 14일 이내인지 확인
+    };
+
+    const fetchMembers = async () => {
+      try {
+        const response = await authInstance.get(`/api/admin/members`);
+        console.log(response.data);
+        members.value = response.data;
+        totalMembers.value = response.data.length;
+        newMembers.value = response.data.filter((member) => isNewMember(member.createAt)).length;
+      } catch (error) {
+        console.error('멤버 목록을 불러오는데 실패했습니다.', error);
+      }
+    };
 
     const clickCallback = (pageNum) => {
-      console.log(pageNum);
+      fetchMembers(pageNum);
     };
+
+    const viewMemberDetail = (member) => {
+      console.log(member);
+      router.push({
+        path: `/mypage/admin/adminMemberList/${member.id}`,
+        props: member, // 멤버 객체를 JSON으로 쿼리 파라미터로 전달
+      });
+    };
+
+    const formatPhoneNumber = (phoneNumber) => {
+      if (!phoneNumber) return '';
+
+      const cleaned = ('' + phoneNumber).replace(/\D/g, '');
+      const match = cleaned.match(/^(\d{3})(\d{4})(\d{4})$/);
+
+      if (match) {
+        return `${match[1]}-${match[2]}-${match[3]}`;
+      }
+
+      return phoneNumber;
+    };
+
+    onMounted(() => {
+      fetchMembers();
+    });
 
     return {
       page,
+      members,
+      totalMembers,
+      newMembers,
+      totalPages,
       clickCallback,
+      viewMemberDetail,
+      formatPhoneNumber,
     };
   },
 });

@@ -2,46 +2,41 @@
   <div>
     <!-- 고객 이미지 -->
     <div class="flex items-center justify-center h-full mb-10">
-      <img class="object-fill w-72 h-auto rounded-full bg-white" src="@/assets/logo.png" alt="" />
+      <img class="object-fill w-72 h-auto bg-inherit" src="@/assets/logo.png" alt="" />
     </div>
     <!-- 고객 정보 -->
     <div>
       <ul class="p-10 rounded-lg bg-white">
         <li class="littleTitle">
           <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">고객명</label>
-          <p class="w-1/5 px-10 whitespace-nowrap">{{ name }}</p>
-          <p class="px-2 border-2 border-solid rounded-lg whitespace-nowrap text-center">
-            {{ memberState }}
-          </p>
+          <p class="w-1/5 px-10 whitespace-nowrap">{{ member.name }}</p>
+          <!-- <p class="px-2 border-2 border-solid rounded-lg whitespace-nowrap text-center">
+            {{ member.memberState }}
+          </p> -->
         </li>
         <li class="littleTitle">
           <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">닉네임</label>
-          <p class="w-4/5 px-10">{{ nickName }}</p>
+          <p class="w-4/5 px-10">{{ member.nickName }}</p>
         </li>
-
         <li class="littleTitle">
           <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">이메일</label>
-          <p class="w-4/5 px-10">{{ email }}</p>
+          <p class="w-4/5 px-10">{{ member.email }}</p>
         </li>
         <li class="littleTitle">
           <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">전화번호</label>
-          <p class="w-4/5 px-10">{{ phoneNumber }}</p>
+          <p class="w-4/5 px-10">{{ formatPhoneNumber(member.phoneNumber) }}</p>
         </li>
-        <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">주소</label>
-          <p class="w-4/5 px-10">{{ address }}</p>
-        </li>
-        <li class="littleTitle">
+        <!-- <li class="littleTitle">
           <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">상담 수</label>
           <p class="w-4/5 px-10">8건</p>
         </li>
         <li class="littleTitle">
           <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">시공 수</label>
           <p class="w-4/5 px-10">2건</p>
-        </li>
+        </li> -->
         <li class="littleTitle">
           <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">가입일</label>
-          <p class="w-4/5 px-10">{{ startDate }}</p>
+          <p class="w-4/5 px-10">{{ member.createAt }}</p>
         </li>
       </ul>
     </div>
@@ -55,7 +50,7 @@
       </button>
       <button
         class="bg-midGreen hover:bg-[#2a692d] text-white w-1/2 h-[44px] rounded text-[16px] font-medium mt-6"
-        @click="this.$router.back()"
+        @click="goBack"
       >
         되돌아가기
       </button>
@@ -109,7 +104,7 @@
                 탈퇴
               </button>
               <button
-                @click="isModalOpen = false"
+                @click="closeModal"
                 type="button"
                 class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
               >
@@ -124,43 +119,83 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      // 임의로 넣어둔 값들
-      name: '김선우',
-      nickName: '김선우',
-      memberState: '비활동',
-      email: 'kimSunWo@gmail.com',
-      phoneNumber: '010-1111-2222',
-      address: '서울특별시 죠스떡볶이',
-      startDate: '2024.09.11',
-      isModalOpen: false,
-      modalTitle: '',
-      modalMessage: '',
-    };
-  },
-  methods: {
-    // 탈퇴 버튼 클릭시
-    deletionMember() {
-      this.modalTitle = '관리자 권한으로 강제 탈퇴';
-      this.modalMessage =
-        '해당 계정을 정말로 강제 탈퇴하시겠습니까? 해당 계정의 작업은 그대로 서버에 저장됩니다. 이 작업은 취소할 수 없습니다.';
-      this.isModalOpen = true;
-      console.log('계정 탈퇴 완료', this.isModalOpen);
-    },
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import authInstance from '@/utils/axiosUtils';
 
-    deleteMember() {
-      // 서버로 데이터를 보내는 로직을 여기에 작성
+export default {
+  setup() {
+    const member = ref({});
+    const isModalOpen = ref(false);
+    const modalTitle = ref('');
+    const modalMessage = ref('');
+    const route = useRoute();
+    const router = useRouter();
+    const memberId = route.params.id;
+
+    const fetchMemberDetail = async () => {
+      try {
+        const response = await authInstance.get(`/api/admin/member/${memberId}`);
+        member.value = response.data;
+      } catch (error) {
+        console.error('멤버 정보를 불러오는데 실패했습니다.', error);
+      }
+    };
+
+    onMounted(() => {
+      fetchMemberDetail();
+    });
+
+    const deletionMember = () => {
+      modalTitle.value = '관리자 권한으로 강제 탈퇴';
+      modalMessage.value = '해당 계정을 정말로 강제 탈퇴하시겠습니까? 이 작업은 취소할 수 없습니다.';
+      isModalOpen.value = true;
+    };
+
+    const deleteMember = () => {
       alert('탈퇴했습니다.');
-      this.isModalOpen = false;
-    },
+      isModalOpen.value = false;
+    };
+
+    const goBack = () => {
+      router.back();
+    };
+
+    const closeModal = () => {
+      isModalOpen.value = false;
+    };
+
+    const formatPhoneNumber = (phoneNumber) => {
+      if (!phoneNumber) return '';
+
+      const cleaned = ('' + phoneNumber).replace(/\D/g, '');
+      const match = cleaned.match(/^(\d{3})(\d{4})(\d{4})$/);
+
+      if (match) {
+        return `${match[1]}-${match[2]}-${match[3]}`;
+      }
+
+      return phoneNumber;
+    };
+
+    return {
+      member,
+      isModalOpen,
+      modalTitle,
+      modalMessage,
+      deletionMember,
+      deleteMember,
+      goBack,
+      closeModal,
+      formatPhoneNumber,
+    };
   },
 };
 </script>
 
-<style>
+<style scoped>
 .littleTitle {
   display: flex;
+  line-height: 2rem;
 }
 </style>
