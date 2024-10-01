@@ -157,7 +157,12 @@ export default {
         console.log(response.headers.get('Authorization'));
 
         userStore.login(response.data.nickName, response.headers.get('Authorization'), response.data.role);
-        this.$router.push('/');
+        const role = response.data.role;
+        if (role === 'ADMIN') {
+          this.$router.push('/mypage/admin/adminCompanyList');
+        } else {
+          this.$router.push('/');
+        }
       } catch (error) {
         console.log(error);
         console.error('로그인 오류:', error);

@@ -2,7 +2,7 @@
   <header class="flex justify-between items-center fixed w-[1105px] mx-auto top-0 bg-white z-10">
     <div class="flex justify-between items-center">
       <img @click="goToHome" class="w-[90px] cursor-pointer mr-8" src="@/assets/logo.png" alt="로고" />
-      <div class="flex">
+      <div v-if="role !== 'ADMIN'" class="flex">
         <p
           @click="$router.push('/')"
           class="cursor-pointer mr-7 text-[16px] font-semibold"
@@ -106,7 +106,11 @@ export default {
     };
 
     const goToHome = () => {
-      window.location.href = '/';
+      if (role.value === 'ADMIN') {
+        router.push('/mypage/admin/adminCompanyList');
+      } else {
+        router.push('/');
+      }
     };
 
     const goToEstimateRequest = () => {

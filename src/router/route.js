@@ -195,7 +195,7 @@ export default [
         component: AdminMembershipList,
       },
       {
-        path: 'adminMembershipDetail',
+        path: 'adminMembershipList/:id',
         component: AdminMembershipDetail,
       },
       {

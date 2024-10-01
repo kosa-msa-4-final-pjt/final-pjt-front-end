@@ -8,15 +8,15 @@
           <div class="flex gap-4">
             <div>
               <label for="" class="font-medium">총 멤버십수</label>
-              <p class="text-red">3개</p>
+              <p class="text-red">{{ totalMemberships }}개</p>
             </div>
             <div>
               <label for="" class="font-medium">신규 멤버십수</label>
-              <p class="text-red">0개</p>
+              <p class="text-red">{{ newMemberships }}개</p>
             </div>
             <div>
               <label for="" class="font-medium">총 멤버십 가입자수</label>
-              <p class="text-red">4명</p>
+              <p class="text-red">{{ totalSubscribers }}명</p>
             </div>
           </div>
         </li>
@@ -44,33 +44,22 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">1</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">BASIC</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">100원</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">가장 기본적인 멤버십</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">2명</td>
+          <tr v-for="(membership, index) in memberships" :key="membership.id">
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ index + 1 }}</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ membership.name }}</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
+              {{ membership.price }}원
+            </td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
+              {{ membership.description || '서비스 내용 없음' }}
+            </td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
+              {{ membership.subscribers }}명
+            </td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               <button
                 class="px-2 rounded-lg whitespace-nowrap bg-gray-200 cursor-pointer hover:bg-gray-300"
-                @click="$router.push('adminMembershipDetail')"
-              >
-                상세보기
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">1</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">PREMIUM</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">150원</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              광고 혜택이 주어지는 멤버십
-            </td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">2명</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              <button
-                class="px-2 rounded-lg whitespace-nowrap bg-gray-200 cursor-pointer hover:bg-gray-300"
-                @click="$router.push('adminMembershipDetail')"
+                @click="$router.push(`/mypage/admin/adminMembershipList/${membership.id}`)"
               >
                 상세보기
               </button>
@@ -83,10 +72,10 @@
     <div class="mt-5">
       <vue-paginate
         :model-value="page"
-        :page-count="20"
+        :page-count="totalPages"
         :page-range="3"
         :margin-pages="2"
-        :click-handler="clickCallback"
+        :click-handler="fetchMembershipList"
         prev-text="<"
         next-text=">"
         :container-class="'flex justify-center font-sans cursor-pointer'"
@@ -101,30 +90,47 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
 import { VuePaginate } from '@svifty7/vue-paginate';
+import authInstance from '@/utils/axiosUtils';
 
 export default defineComponent({
   components: {
     VuePaginate,
   },
   setup() {
-    const page = ref(10);
+    const page = ref(1);
+    const totalPages = ref(1);
+    const memberships = ref([]);
+    const totalMemberships = ref(0);
+    const newMemberships = ref(0);
+    const totalSubscribers = ref(0);
 
-    const clickCallback = (pageNum) => {
-      console.log(pageNum);
+    const fetchMembershipList = async () => {
+      try {
+        const response = await authInstance.get(`/api/admin/membership/list`);
+        console.log(response.data);
+
+        memberships.value = response.data;
+        totalMemberships.value = memberships.value.length;
+      } catch (error) {
+        console.error('멤버십 데이터를 가져오는데 실패했습니다.', error);
+      }
     };
+
+    onMounted(() => {
+      fetchMembershipList(page.value);
+    });
 
     return {
       page,
-      clickCallback,
+      totalPages,
+      memberships,
+      totalMemberships,
+      newMemberships,
+      totalSubscribers,
+      fetchMembershipList,
     };
   },
 });
 </script>
-
-<style scoped>
-th {
-  border-bottom: 2px solid gray;
-}
-</style>
