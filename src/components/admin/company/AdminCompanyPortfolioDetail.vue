@@ -41,7 +41,7 @@
         </li>
         <li class="littleTitle">
           <label class="w-1/5 border-r-2 border-indigo-500">평수</label>
-          <p class="w-4/5 px-10">{{ portfolioTest.floor }}</p>
+          <p class="w-4/5 px-10">{{ portfolioTest.floor }}평</p>
         </li>
         <li class="littleTitle">
           <label class="w-1/5 border-r-2 border-indigo-500">시공분야</label>
@@ -50,7 +50,7 @@
         </li>
         <li class="littleTitle">
           <label class="w-1/5 border-r-2 border-indigo-500">시공금액</label>
-          <p class="w-4/5 px-10">{{ portfolioTest.projectBudget }}</p>
+          <p class="w-4/5 px-10">{{ portfolioTest.projectBudget }}만원</p>
         </li>
         <li class="littleTitle">
           <label class="w-1/5 border-r-2 border-indigo-500">게시일</label>
@@ -223,7 +223,7 @@ export default {
         const response = await authInstance.delete(`/api/admin/portfolios/${id}`);
         if (response.data) {
           alert('삭제했습니다.');
-          router.push('/portfolios');
+          router.push('/mypage/admin/adminCompanyPortfolioList');
         } else {
           alert('삭제에 실패했습니다.');
         }

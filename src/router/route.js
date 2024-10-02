@@ -183,7 +183,7 @@ export default [
         component: AdminMemberReviewList,
       },
       {
-        path: 'adminMemberReviewDetail',
+        path: 'adminMemberReviewDetail/:id',
         component: AdminMemberReviewDetail,
       },
       {

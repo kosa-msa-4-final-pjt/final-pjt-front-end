@@ -32,7 +32,7 @@
               {{ portfolio.companyName }}
             </td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              {{ portfolio.createdAt }}
+              {{ formatDate(portfolio.createdAt) }}
             </td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               <button
@@ -106,6 +106,11 @@ export default defineComponent({
       }
     };
 
+    const formatDate = (dateString) => {
+      const date = new Date(dateString);
+      return date.toISOString().split('T')[0]; // Returns the date part only in YYYY-MM-DD format
+    };
+
     fetchPortfolioList();
 
     return {
@@ -115,6 +120,7 @@ export default defineComponent({
       totalPage,
       adminPortfolioDetail,
       fetchPortfolioList,
+      formatDate,
     };
   },
 });
