@@ -17,7 +17,7 @@
         <!-- Listbox Options with Checkboxes -->
         <transition class="z-10">
           <ListboxOptions
-            class="absolute mt-1 max-h-[300px] w-full overflow-auto rounded-md bg-white pl-2 py-1 shadow-lg sm:text-sm"
+            class="absolute mt-1 max-h-[350px] w-full overflow-auto rounded-md bg-white pl-2 py-1 shadow-lg sm:text-sm"
           >
             <!-- 전체 선택 체크박스 -->
             <label
