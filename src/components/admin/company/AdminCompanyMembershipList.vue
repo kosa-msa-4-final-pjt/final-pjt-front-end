@@ -111,7 +111,7 @@
 <script>
 import { defineComponent, ref } from 'vue';
 import { VuePaginate } from '@svifty7/vue-paginate';
-import authInstance from '@/utils/axiosUtils';
+import { authInstance } from '@/utils/axiosUtils';
 
 export default defineComponent({
   components: {

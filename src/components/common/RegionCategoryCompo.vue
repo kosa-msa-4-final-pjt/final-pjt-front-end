@@ -57,7 +57,7 @@
 <script>
 import { ref, onMounted } from 'vue';
 import { Listbox, ListboxButton, ListboxOptions, Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue';
-import axios from 'axios';
+import { instance } from '@/utils/axiosUtils';
 
 export default {
   components: {
@@ -76,7 +76,7 @@ export default {
     // JSON 파일에서 지역 데이터를 가져오기
     const fetchRegions = async () => {
       try {
-        const response = await axios.get('/regions.json');
+        const response = await instance.get('/regions.json');
         regions.value = response.data;
       } catch (error) {
         console.error('Error fetching regions:', error);

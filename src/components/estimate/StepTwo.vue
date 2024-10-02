@@ -27,7 +27,7 @@
       class="w-24 py-2 rounded-lg text-white"
       :class="{
         'bg-gray-400 cursor-not-allowed': !isValidSelection,
-        'bg-primary hover:bg-primary-dark cursor-pointer': isValidSelection
+        'bg-primary hover:bg-primary-dark cursor-pointer': isValidSelection,
       }"
     >
       다음
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { instance } from '@/utils/axiosUtils';
 
 export default {
   props: ['step', 'formData'],
@@ -69,7 +69,7 @@ export default {
   methods: {
     async getConstructionTypes() {
       try {
-        const response = await axios.get('/api/constructionType');
+        const response = await instance.get('/api/constructionType');
         this.constructionTypes = response.data;
       } catch (error) {
         console.error(error);
@@ -110,9 +110,9 @@ export default {
 
 <style scoped>
 .bg-primary {
-  background-color: #0A3A5E; /* 활성화된 버튼 색상 */
+  background-color: #0a3a5e; /* 활성화된 버튼 색상 */
 }
 .bg-primary-dark {
-  background-color: #06263F; /* 활성화된 버튼 hover 색상 */
+  background-color: #06263f; /* 활성화된 버튼 hover 색상 */
 }
 </style>

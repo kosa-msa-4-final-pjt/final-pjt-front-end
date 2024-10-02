@@ -163,7 +163,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { QuillEditor } from '@vueup/vue-quill';
 import { useRoute, useRouter } from 'vue-router';
-import authInstance from '@/utils/axiosUtils';
+import { authInstance } from '@/utils/axiosUtils';
 
 export default {
   components: {

@@ -5,7 +5,7 @@ module.exports = defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: process.env.VUE_APP_SERVER_API + '/api',
+        target: process.env.VUE_APP_SERVER_URI + '/api',
         changeOrigin: true,
         pathRewrite: { '^/api': '' },
       },

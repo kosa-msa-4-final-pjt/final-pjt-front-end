@@ -1,5 +1,9 @@
 import axios from 'axios';
 
+const instance = axios.create({
+  baseURL: process.env.VUE_APP_SERVER_URI,
+});
+
 const authInstance = axios.create({
   baseURL: process.env.VUE_APP_SERVER_URI,
   headers: {
@@ -75,4 +79,4 @@ function setAccessToken(accessToken) {
   localStorage.setItem('user', JSON.stringify(user));
 }
 
-export default authInstance;
+export { instance, authInstance };

@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import authInstance from '@/utils/axiosUtils';
+import { authInstance } from '@/utils/axiosUtils';
 import ReviewCompo from './ReviewCompo.vue';
 
 export default {

@@ -133,7 +133,7 @@
 
 <script>
 import { ref } from 'vue';
-import authInstance from '@/utils/axiosUtils';
+import { authInstance } from '@/utils/axiosUtils';
 
 export default {
   setup() {

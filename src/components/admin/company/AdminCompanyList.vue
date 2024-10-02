@@ -101,7 +101,7 @@
 
 <script>
 import { defineComponent, ref, onMounted } from 'vue';
-import authInstance from '@/utils/axiosUtils';
+import { authInstance } from '@/utils/axiosUtils';
 import dayjs from 'dayjs';
 import router from '@/router';
 import { VuePaginate } from '@svifty7/vue-paginate';

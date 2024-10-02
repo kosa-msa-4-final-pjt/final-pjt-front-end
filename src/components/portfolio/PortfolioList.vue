@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import axios from 'axios';
 import PortfolioCard from './PortfolioCard.vue';
+import { instance } from '@/utils/axiosUtils';
 
 export default {
   components: { PortfolioCard },
@@ -47,7 +47,7 @@ export default {
   methods: {
     async fetchPortfolios() {
       try {
-        const response = await axios.get(`/api/portfolio/page?size=${this.pageSize}&page=${this.currentPage}`);
+        const response = await instance.get(`/api/portfolio/page?size=${this.pageSize}&page=${this.currentPage}`);
         console.log(response.data);
         this.totalPage = response.data.totalPage;
         this.totalPortfolios = response.data.list.length;

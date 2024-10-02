@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import axios from 'axios';
 import ReviewCard from './ReviewCard.vue';
+import { instance } from '@/utils/axiosUtils';
 
 export default {
   data() {
@@ -54,7 +54,7 @@ export default {
     // 후기 데이터를 서버에서 가져오는 메서드
     async fetchReviews() {
       try {
-        const response = await axios.get(`/api/reviews/page?page=${this.currentPage}&size=${this.pageSize}`);
+        const response = await instance.get(`/api/reviews/page?page=${this.currentPage}&size=${this.pageSize}`);
         console.log(response.data);
         this.totalPage = response.data.totalPage;
         this.totalReviews = response.data.list.length;

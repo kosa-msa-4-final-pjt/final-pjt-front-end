@@ -131,10 +131,9 @@
 </template>
 
 <script>
-import axios from 'axios';
 // import { useUserStore } from '@/stores/userStore';
 import QuillEditor from '@/components/common/QuillEditor.vue';
-import authInstance from '@/utils/axiosUtils';
+import { instance, authInstance } from '@/utils/axiosUtils';
 
 export default {
   components: { QuillEditor },
@@ -240,7 +239,7 @@ export default {
 
     async getBuildingType() {
       try {
-        const response = await axios.get('/api/buildingType');
+        const response = await instance.get('/api/buildingType');
         this.buildingTypes = response.data;
       } catch (error) {
         console.error(error);
@@ -249,7 +248,7 @@ export default {
 
     async getConstructionType() {
       try {
-        const response = await axios.get('/api/constructionType');
+        const response = await instance.get('/api/constructionType');
         this.constructionTypes = response.data;
       } catch (error) {
         console.error(error);

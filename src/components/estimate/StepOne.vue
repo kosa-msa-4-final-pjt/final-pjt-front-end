@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { instance } from '@/utils/axiosUtils';
 
 export default {
   props: ['step', 'formData'],
@@ -58,7 +58,7 @@ export default {
   methods: {
     async getBuildingTypes() {
       try {
-        const response = await axios.get('/api/buildingType');
+        const response = await instance.get('/api/buildingType');
         this.buildingTypes = response.data;
       } catch (error) {
         console.error(error);

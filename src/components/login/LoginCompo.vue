@@ -63,7 +63,7 @@
               class="font-medium text-center border border-solid cursor-pointer select-none ease-in-out px-3 text-base rounded-md w-full bg-[#03c75a] border-[#03c75a] text-white flex items-center justify-center"
             >
               <a :href="`${serverUri}/oauth2/authorization/naver`" class="inline-flex">
-                ><img
+                <img
                   alt="네이버 로고"
                   class="w-[160px] border-box"
                   loading="lazy"
@@ -95,7 +95,8 @@
 
 <script>
 import { useUserStore } from '@/stores/userStore';
-import axios from 'axios';
+import { instance } from '@/utils/axiosUtils';
+
 export default {
   data() {
     return {
@@ -151,7 +152,7 @@ export default {
 
       // 서버 요청
       try {
-        const response = await axios.post(process.env.VUE_APP_SERVER_URI + `/form/login`, loginData, {
+        const response = await instance.post(`/form/login`, loginData, {
           withCredentials: true,
         });
 
