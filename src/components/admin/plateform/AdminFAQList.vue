@@ -116,6 +116,7 @@ export default {
       getFAQs();
     });
 
+    // 컴포넌트가 마운트될 때 데이터 불러오기
     onMounted(() => {
       getFAQs();
     });

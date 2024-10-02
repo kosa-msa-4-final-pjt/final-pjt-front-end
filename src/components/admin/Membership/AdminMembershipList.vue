@@ -27,15 +27,13 @@
       <table class="table border-2 border-solid border-gray-300 border-collapse w-full">
         <thead>
           <tr>
-            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">번호</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">멤버십명</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">가격</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">가입자수</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(membership, index) in memberships" :key="membership.name">
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ index + 1 }}</td>
+          <tr v-for="membership in memberships" :key="membership.name">
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ membership.name }}</td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               {{ membership.price }}원
@@ -47,40 +45,16 @@
         </tbody>
       </table>
     </div>
-    <!-- footer -->
-    <div class="mt-5">
-      <vue-paginate
-        :model-value="page"
-        :page-count="totalPages"
-        :page-range="3"
-        :margin-pages="2"
-        :click-handler="fetchMembershipList"
-        prev-text="<"
-        next-text=">"
-        :container-class="'flex justify-center font-sans cursor-pointer'"
-        :page-link-class="'m-3 hover:bg-accent '"
-        :prev-link-class="'m-3'"
-        :next-link-class="'m-3'"
-        active-class="bg-accent rounded-md"
-        @update:model-value="page = $event"
-      />
-    </div>
   </div>
 </template>
 
 <script>
 import { defineComponent, ref, onMounted } from 'vue';
-import { VuePaginate } from '@svifty7/vue-paginate';
 import { authInstance } from '@/utils/axiosUtils';
 import dayjs from 'dayjs';
 
 export default defineComponent({
-  components: {
-    VuePaginate,
-  },
   setup() {
-    const page = ref(1);
-    const totalPages = ref(1);
     const memberships = ref([]);
     const totalMemberships = ref(0);
     const newMemberships = ref(0);
@@ -138,8 +112,6 @@ export default defineComponent({
     });
 
     return {
-      page,
-      totalPages,
       memberships,
       totalMemberships,
       newMemberships,
