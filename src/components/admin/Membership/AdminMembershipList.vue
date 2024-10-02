@@ -98,6 +98,7 @@ export default defineComponent({
         const response = await authInstance.get(`/api/admin/membership/list`);
         memberships.value = response.data;
         totalMemberships.value = memberships.value.length;
+        console.log(response.data);
 
         newMemberships.value = memberships.value.filter((membership) => isNewCompany(membership.startDate)).length;
       } catch (error) {

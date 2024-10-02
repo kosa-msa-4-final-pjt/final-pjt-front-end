@@ -6,7 +6,7 @@
       <ul class="flex gap-4">
         <li>
           <label for="" class="font-medium">총 고객 가입자수</label>
-          <p class="text-red">{{ totalMembers.length }}명</p>
+          <p class="text-red">{{ totalMembers }}명</p>
         </li>
         <li>
           <label for="" class="font-medium">신규 고객 가입자수</label>
@@ -95,37 +95,43 @@ export default defineComponent({
     const router = useRouter();
 
     // 현재 날짜 기준 2주 이내의 가입자를 찾는 함수
-    const isNewMember = (signupDate) => {
+    const isNewMember = (createAt) => {
       const now = dayjs(); // 현재 날짜
-      const signup = dayjs(signupDate); // 가입 날짜
+      const signup = dayjs(createAt); // 가입 날짜
       return now.diff(signup, 'day') <= 14; // 14일 이내인지 확인
     };
 
+    // 멤버 데이터를 가져오는 함수
     const fetchMembers = async () => {
       try {
         const response = await authInstance.get(`/api/admin/members?page=${page.value - 1}&size=${pageSize.value}`);
         console.log(response.data);
         members.value = response.data.slice || [];
-        totalMembers.value = response.data.list || [];
+        totalMembers.value = response.data.list.length;
 
         totalPage.value = response.data.totalPage;
 
-        newMembers.value = response.data.filter((member) => isNewMember(member.createAt)).length;
+        // 신규 고객 수 계산
+        newMembers.value = response.data.list.filter((member) => isNewMember(member.createAt)).length;
       } catch (error) {
         console.error('멤버 목록을 불러오는데 실패했습니다.', error);
       }
     };
 
+    // 페이지 클릭 핸들러
     const clickCallback = (pageNum) => {
-      fetchMembers(pageNum);
+      page.value = pageNum;
+      fetchMembers();
     };
 
+    // 회원 상세보기 페이지로 이동
     const viewMemberDetail = (member) => {
       router.push({
         path: `/mypage/admin/adminMemberList/${member.id}`,
       });
     };
 
+    // 전화번호 포맷
     const formatPhoneNumber = (phoneNumber) => {
       if (!phoneNumber) return '';
 
