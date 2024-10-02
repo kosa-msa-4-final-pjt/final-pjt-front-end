@@ -17,23 +17,23 @@
       <ul class="flex gap-4">
         <li>
           <label for="" class="font-medium">총 가입자수</label>
-          <p class="text-red">3명</p>
+          <p class="text-red">{{ totalmembershipCompany.length }}명</p>
         </li>
         <li>
           <label for="" class="font-medium">신규 가입자수</label>
-          <p class="text-red">3명</p>
+          <p class="text-red">?명</p>
         </li>
         <li>
           <label for="" class="font-medium">총 가입비</label>
-          <p class="text-red">350원</p>
+          <p class="text-red">?원</p>
         </li>
         <li>
           <label for="" class="font-medium">환불 처리수</label>
-          <p class="text-red">1개</p>
+          <p class="text-red">?개</p>
         </li>
         <li>
           <label for="" class="font-medium">환불 처리금액</label>
-          <p class="text-red">150원</p>
+          <p class="text-red">?원</p>
         </li>
       </ul>
     </div>
@@ -90,7 +90,7 @@
     <!-- footer -->
     <div class="mt-5">
       <vue-paginate
-        :model-value="pageNumber"
+        :model-value="page"
         :page-count="totalPage"
         :page-range="3"
         :margin-pages="2"
@@ -102,14 +102,14 @@
         :prev-link-class="'m-3'"
         :next-link-class="'m-3'"
         active-class="bg-accent rounded-md"
-        @update:model-value="pageNumber = $event"
+        @update:model-value="page = $event"
       />
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onMounted, ref, watch } from 'vue';
 import { VuePaginate } from '@svifty7/vue-paginate';
 import { authInstance } from '@/utils/axiosUtils';
 
@@ -118,19 +118,13 @@ export default defineComponent({
     VuePaginate,
   },
 
-  async mounted() {
-    const memberships = await authInstance.get('/api/admin/memberships');
-    console.log(memberships.data);
-
-    this.membershipCompany = memberships.data.slice;
-    this.pageNumber = memberships.data.pageNumber;
-  },
-
   setup() {
-    const pageNumber = ref(1);
-    const pageSize = ref(10);
+    const page = ref(1);
+    const pageSize = ref(5);
+    const totalPage = ref();
+
     const membershipCompany = ref([]);
-    const totalPage = ref(1);
+    const totalmembershipCompany = ref([]);
     const isModalOpen = ref(false);
 
     const openModal = () => {
@@ -142,20 +136,33 @@ export default defineComponent({
       isModalOpen.value = false;
     };
 
-    const fetchMembershipList = async (pageNum) => {
-      console.log(pageNum);
-      const memberships = await authInstance.get('/api/admin/memberships');
-      this.membershipCompany = memberships.data.slice;
-      this.pageNumber = memberships.data.pageNumber;
+    const fetchMembershipList = async () => {
+      const response = await authInstance.get(`/api/admin/memberships?page=${page.value - 1}&size=${pageSize.value}`);
+      console.log(response.data);
+      membershipCompany.value = response.data.slice || [];
+      totalmembershipCompany.value = response.data.list || [];
+
+      totalPage.value = response.data.totalPage;
     };
+
+    // 페이지 변경 시 데이터 다시 가져오기
+    watch(page, () => {
+      fetchMembershipList();
+    });
+
+    // 컴포넌트가 마운트될 때 데이터 불러오기
+    onMounted(() => {
+      fetchMembershipList();
+    });
 
     return {
       membershipCompany,
-      pageNumber,
+      page,
       pageSize,
       totalPage,
-      fetchMembershipList,
+      totalmembershipCompany,
       isModalOpen,
+      fetchMembershipList,
       openModal,
       closeModal,
     };

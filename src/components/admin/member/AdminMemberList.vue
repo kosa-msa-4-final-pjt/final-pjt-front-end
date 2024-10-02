@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from 'vue';
+import { defineComponent, ref, onMounted, watch } from 'vue';
 import { VuePaginate } from '@svifty7/vue-paginate';
 import { useRouter } from 'vue-router';
 import { authInstance } from '@/utils/axiosUtils';
@@ -145,6 +145,12 @@ export default defineComponent({
       return phoneNumber;
     };
 
+    // 페이지 변경 시 데이터 다시 가져오기
+    watch(page, () => {
+      fetchMembers();
+    });
+
+    // 컴포넌트가 마운트될 때 데이터 불러오기
     onMounted(() => {
       fetchMembers();
     });

@@ -6,7 +6,7 @@
       <ul class="flex gap-4">
         <li>
           <label for="" class="font-medium">총 등록된 시공 후기수</label>
-          <p class="text-red">{{ reviews.length }}개</p>
+          <p class="text-red">{{ totalReview.length }}개</p>
         </li>
       </ul>
     </div>
@@ -15,7 +15,6 @@
       <table class="table border-2 border-solid border-gray-300 border-collapse w-full">
         <thead>
           <tr>
-            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">번호</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">제목</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">고객명</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">업체명</th>
@@ -24,8 +23,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(review, index) in reviews" :key="review.id">
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ index + 1 }}</td>
+          <tr v-for="review in reviews" :key="review.id">
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ review.title }}</td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               {{ review.member.nickName }}
@@ -51,7 +49,7 @@
     <!-- footer -->
     <div class="mt-5" v-if="totalPage > 1">
       <vue-paginate
-        :model-value="pageNumber"
+        :model-value="page"
         :page-count="totalPage"
         :page-range="3"
         :margin-pages="2"
@@ -63,45 +61,44 @@
         :prev-link-class="'m-3'"
         :next-link-class="'m-3'"
         active-class="bg-accent rounded-md"
-        @update:model-value="pageNumber = $event"
+        @update:model-value="page = $event"
       />
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import { VuePaginate } from '@svifty7/vue-paginate';
 import { useRouter } from 'vue-router';
 import { authInstance } from '@/utils/axiosUtils';
+import { watch } from 'vue';
 
 export default defineComponent({
   components: {
     VuePaginate,
   },
   setup() {
-    const pageNumber = ref(1);
+    const page = ref(1);
     const pageSize = ref(5);
+    const totalPage = ref();
+
     const reviews = ref([]);
-    const totalPage = ref(1);
+    const totalReview = ref([]);
     const router = useRouter();
 
     const adminReviewDetail = (id) => {
       router.push(`/mypage/admin/adminMemberReviewDetail/${id}`);
     };
 
-    const fetchReviewList = async (pageNum = pageNumber.value) => {
+    const fetchReviewList = async () => {
       try {
-        const response = await authInstance.get(`/api/admin/reviews`, {
-          params: {
-            pageNumber: pageNum,
-            size: pageSize.value,
-          },
-        });
+        const response = await authInstance.get(`/api/admin/reviews?page=${page.value - 1}&size=${pageSize.value}`);
         console.log(response.data);
-        reviews.value = response.data.slice;
-        totalPage.value = response.data.totalPages;
-        pageNumber.value = response.data.number;
+        reviews.value = response.data.slice || [];
+        totalReview.value = response.data.list || [];
+
+        totalPage.value = response.data.totalPage;
       } catch (error) {
         console.error('Failed to fetch review data', error);
       }
@@ -116,13 +113,22 @@ export default defineComponent({
       return `${year}-${month}-${day}`; // YYYY-MM-DD 형식으로 리턴
     };
 
-    fetchReviewList();
+    // 페이지 변경 시 데이터 다시 가져오기
+    watch(page, () => {
+      fetchReviewList();
+    });
+
+    // 컴포넌트가 마운트될 때 데이터 불러오기
+    onMounted(() => {
+      fetchReviewList();
+    });
 
     return {
       reviews,
-      pageNumber,
+      page,
       pageSize,
       totalPage,
+      totalReview,
       adminReviewDetail,
       fetchReviewList,
       formatDate,

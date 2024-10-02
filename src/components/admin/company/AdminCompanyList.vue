@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from 'vue';
+import { defineComponent, ref, onMounted, watch } from 'vue';
 import { authInstance } from '@/utils/axiosUtils';
 import dayjs from 'dayjs';
 import router from '@/router';
@@ -154,6 +154,11 @@ export default defineComponent({
         path: `/mypage/admin/adminCompanyList/${company.id}`,
       });
     };
+
+    // 페이지 변경 시 데이터 다시 가져오기
+    watch(page, () => {
+      fetchCompanies();
+    });
 
     // 컴포넌트가 마운트될 때 데이터 불러오기
     onMounted(() => {
