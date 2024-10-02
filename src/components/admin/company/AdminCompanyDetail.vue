@@ -61,7 +61,15 @@
         </li>
         <li class="littleTitle">
           <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">시공 분야</label>
-          <p class="w-4/5 px-10">{{ company.services }}</p>
+          <div class="w-4/5 px-10 py-2 flex flex-wrap gap-2">
+            <span
+              v-for="(service, index) in company.services"
+              :key="index"
+              class="py-1 px-3 bg-gray-200 text-sm rounded-full"
+            >
+              {{ service }}
+            </span>
+          </div>
         </li>
         <li class="littleTitle">
           <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">상담 수</label>
