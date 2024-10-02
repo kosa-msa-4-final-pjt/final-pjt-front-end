@@ -55,14 +55,17 @@
           </tbody>
         </table>
       </div>
-      <!-- footer -->
-      <!-- <div class="mt-5">페이지 네이션?</div> -->
     </div>
-    <div v-else>
-      <p>처음 멤버십을 가입하는 업체에게 보여주는 화면.</p>
-      <p>가입한 내역이 있다면 멤버십 내역이 보임.</p>
-      <button @click="this.$router.push('/payment')" class="bg-midGreen text-white rounded-lg py-2 px-4 font-medium">
-        멤버십 가입
+
+    <!-- 멤버십이 없는 경우 -->
+    <div v-else class="flex flex-col items-center justify-center py-16 bg-gray-100 rounded-lg">
+      <p class="text-lg font-semibold text-gray-700 mb-4">아직 멤버십에 가입하지 않으셨습니다.</p>
+      <p class="text-sm text-gray-500 mb-8">멤버십에 가입하시면 다양한 혜택을 누리실 수 있습니다.</p>
+      <button
+        @click="this.$router.push('/payment')"
+        class="bg-midGreen text-white rounded-lg py-3 px-6 font-medium hover:bg-green-600 transition duration-200"
+      >
+        멤버십 가입하기
       </button>
     </div>
   </div>
@@ -80,18 +83,16 @@ export default {
       try {
         const response = await authInstance.get('/api/memberships');
         memberships.value = response.data;
-        console.log('안녕');
-        console.log(memberships.value);
       } catch (error) {
         console.log('실패', error);
       }
     };
 
     const isActive = (startDate, endDate) => {
-      const now = new Date(); // 현재 날짜
+      const now = new Date();
       const start = new Date(startDate);
       const end = new Date(endDate);
-      return now >= start && now <= end; // 현재 날짜가 기간 내에 있는지 비교
+      return now >= start && now <= end;
     };
 
     onMounted(getMembershipHistory);
@@ -99,7 +100,6 @@ export default {
     return {
       memberships,
       isActive,
-      getMembershipHistory,
     };
   },
 };

@@ -1,12 +1,14 @@
 <template>
   <div v-if="noticeList.length">
-    <div class="py-5">
-      <strong class="text-xl">총 {{ noticeList.length }}개의 공지사항 수</strong>
+    <div class="p-4">
+      <div class="">
+        <strong class="text-xl">총 {{ noticeList.length }}개의 공지사항</strong>
+      </div>
     </div>
 
     <div v-for="(notice, index) in noticeList" :key="index" class="flex flex-col space-y-6">
       <!-- 전체 공지사항 공간 -->
-      <div class="flex border-b cursor-pointer px-3 py-6 transition duration-300" @click="noticeDetail(notice.id)">
+      <div class="flex border-b cursor-pointer px-4 py-6 transition duration-300" @click="noticeDetail(notice.id)">
         <div class="flex-1 flex flex-col pr-6">
           <!-- 제목 -->
           <h2 class="text-xl font-bold text-gray-900 mb-4">{{ notice.title }}</h2>
