@@ -12,18 +12,6 @@
           <label for="" class="font-medium">신규 가입자수</label>
           <p class="text-red">{{ newCompanies }}명</p>
         </li>
-        <!-- <li>
-          <label for="" class="font-medium">총 가입비</label>
-          <p class="text-red">{{ totalFee }}원</p>
-        </li>
-        <li>
-          <label for="" class="font-medium">환불 처리수</label>
-          <p class="text-red">{{ refundCount }}개</p>
-        </li>
-        <li>
-          <label for="" class="font-medium">환불 처리금액</label>
-          <p class="text-red">{{ refundAmount }}원</p>
-        </li> -->
       </ul>
     </div>
 
@@ -44,15 +32,15 @@
         </thead>
 
         <tbody>
-          <tr v-for="company in companies" :key="company.companyId">
+          <tr v-for="company in companies" :key="company.id">
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              {{ company.companyName }}
+              {{ company.name }}
             </td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               {{ company.email }}
             </td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              {{ company.owner }}
+              {{ company.nickName }}
             </td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               {{ formatPhoneNumber(company.phoneNumber) }}
@@ -116,7 +104,7 @@ export default defineComponent({
     const totalPage = ref();
 
     const companies = ref([]);
-    const totalCompanies = ref(0);
+    const totalCompanies = ref([]);
     const newCompanies = ref(0);
 
     // 현재 날짜 기준 2주 이내의 가입자를 찾는 함수
@@ -129,7 +117,7 @@ export default defineComponent({
     // API에서 업체 리스트를 가져오는 함수
     const fetchCompanies = async () => {
       try {
-        const response = await authInstance.get(`/api/admin/companies?page=${page.value - 1}&size=${pageSize.value}`); // API 호출
+        const response = await authInstance.get(`/api/admin/companies?page=${page.value - 1}&size=${pageSize.value}`);
         console.log(response.data);
 
         companies.value = response.data.slice || [];
@@ -137,9 +125,8 @@ export default defineComponent({
 
         totalPage.value = response.data.totalPage;
 
-        newCompanies.value = response.data.filter((company) => isNewCompany(company.createAt)).length;
-
-        // 추가 데이터 계산 (예: 총 가입비, 환불 처리수 등)
+        // 신규 가입자 계산
+        newCompanies.value = totalCompanies.value.filter((company) => isNewCompany(company.createAt)).length;
       } catch (error) {
         console.error('Error fetching membership list:', error);
       }
