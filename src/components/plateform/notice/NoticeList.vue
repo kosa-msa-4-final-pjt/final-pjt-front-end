@@ -1,9 +1,7 @@
 <template>
-  <div v-if="noticeList.length">
-    <div class="p-4">
-      <div class="">
-        <strong class="text-xl">총 {{ noticeList.length }}개의 공지사항</strong>
-      </div>
+  <div class="w-full" v-if="noticeList.length">
+    <div class="mx-auto w-full rounded-2xl bg-white p-4">
+      <strong class="text-xl">총 {{ noticeList.length }}개의 공지사항</strong>
     </div>
 
     <div v-for="(notice, index) in noticeList" :key="index" class="flex flex-col space-y-6">
@@ -39,8 +37,11 @@
       </button>
     </div>
   </div>
-  <div v-else>
-    <p>현재 등록되어 있는 공지사항이 없습니다.</p>
+  <div v-else class="mx-auto w-full rounded-2xl bg-white p-4">
+    <div class="pb-10">
+      <strong class="text-xl">총 {{ noticeList.length }}개의 공지사항</strong>
+    </div>
+    <p class="text-center text-gray-500">현재 등록되어 있는 공지사항이 없습니다.</p>
   </div>
 </template>
 
