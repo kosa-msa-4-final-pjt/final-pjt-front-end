@@ -67,7 +67,7 @@ export default {
           content: content.value,
         };
         await authInstance.post('/api/admin/faq/create', FAQData);
-        router.push('/faq/list');
+        router.back();
       } catch (error) {
         console.log('FAQ 등록을 실패했습니다.', error);
       }

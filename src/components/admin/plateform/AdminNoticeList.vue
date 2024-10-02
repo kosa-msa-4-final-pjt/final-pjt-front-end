@@ -6,7 +6,7 @@
       <ul class="flex justify-between">
         <li>
           <label for="" class="font-medium">현재 등록된 공지사항수</label>
-          <p class="text-red">{{ noticeList.length }}개</p>
+          <p class="text-red">{{ totalNotice.length }}개</p>
         </li>
         <li>
           <button
@@ -23,7 +23,6 @@
       <table class="table border-2 border-solid border-gray-300 border-collapse w-full">
         <thead>
           <tr>
-            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">번호</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">제목</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">관리자명</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">게시일</th>
@@ -31,10 +30,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(notice, index) in noticeList" :key="notice.id">
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ index + 1 }}</td>
+          <tr v-for="notice in noticeList" :key="notice.id">
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              {{ notice.title }}
+              {{ truncateTitle(notice.title) }}
             </td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ notice.authorName }}</td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ notice.updateDate }}</td>
@@ -50,26 +48,61 @@
         </tbody>
       </table>
     </div>
+    <!-- footer -->
+    <div class="mt-5">
+      <vue-paginate
+        :model-value="page"
+        :page-count="totalPage"
+        :page-range="3"
+        :margin-pages="2"
+        :click-handler="getNotices"
+        prev-text="<"
+        next-text=">"
+        :container-class="'flex justify-center font-sans cursor-pointer'"
+        :page-link-class="'m-3 hover:bg-accent '"
+        :prev-link-class="'m-3'"
+        :next-link-class="'m-3'"
+        active-class="bg-accent rounded-md"
+        @update:model-value="page = $event"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import authInstance from '@/utils/axiosUtils';
 import { useRouter } from 'vue-router';
+import { VuePaginate } from '@svifty7/vue-paginate';
 
 export default {
+  components: {
+    VuePaginate,
+  },
   setup() {
+    const page = ref(1);
+    const pageSize = ref(5);
+    const totalPage = ref();
+
     const noticeList = ref([]);
+    const totalNotice = ref([]);
     const router = useRouter(); // 라우터 객체
 
     const getNotices = async () => {
       try {
-        const response = await authInstance.get('/api/admin/notice/list');
-        noticeList.value = response.data;
+        const response = await authInstance.get(`/api/admin/notice/list?page=${page.value - 1}&size=${pageSize.value}`);
+        console.log(response.data);
+        noticeList.value = response.data.slice || [];
+        totalNotice.value = response.data.list || [];
+
+        totalPage.value = response.data.totalPage;
       } catch (error) {
         console.log('공지사항을 가져오지 못했습니다.', error);
       }
+    };
+
+    const truncateTitle = (title) => {
+      return title.length > 24 ? title.substring(0, 24) + '...' : title;
     };
 
     // 공지사항 상세 페이지로 이동하는 함수
@@ -77,11 +110,23 @@ export default {
       router.push(`/mypage/admin/adminnoticedetail/${id}`);
     };
 
-    getNotices();
+    // 페이지 변경 시 데이터 다시 가져오기
+    watch(page, () => {
+      getNotices();
+    });
+
+    onMounted(() => {
+      getNotices();
+    });
 
     return {
+      page,
+      pageSize,
+      totalPage,
       noticeList,
+      totalNotice,
       getNotices,
+      truncateTitle,
       adminNoticeDetail,
     };
   },
