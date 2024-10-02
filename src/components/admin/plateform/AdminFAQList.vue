@@ -52,7 +52,7 @@
     <div class="mt-5">
       <vue-paginate
         :model-value="page"
-        :page-count="totalPages"
+        :page-count="totalPage"
         :page-range="3"
         :margin-pages="2"
         :click-handler="getFAQs"

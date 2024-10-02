@@ -6,7 +6,7 @@
       <ul class="flex gap-4">
         <li>
           <label for="" class="font-medium">총 가입자수</label>
-          <p class="text-red">{{ totalCompanies }}명</p>
+          <p class="text-red">{{ totalCompanies.length }}명</p>
         </li>
         <li>
           <label for="" class="font-medium">신규 가입자수</label>
@@ -82,7 +82,7 @@
     <div class="mt-5">
       <vue-paginate
         :model-value="page"
-        :page-count="totalPages"
+        :page-count="totalPage"
         :page-range="3"
         :margin-pages="2"
         :click-handler="clickCallback"
@@ -112,10 +112,12 @@ export default defineComponent({
   },
   setup() {
     const page = ref(1);
+    const pageSize = ref(5);
+    const totalPage = ref();
+
     const companies = ref([]);
     const totalCompanies = ref(0);
     const newCompanies = ref(0);
-    const totalPages = ref(1);
 
     // 현재 날짜 기준 2주 이내의 가입자를 찾는 함수
     const isNewCompany = (createAt) => {
@@ -127,11 +129,14 @@ export default defineComponent({
     // API에서 업체 리스트를 가져오는 함수
     const fetchCompanies = async () => {
       try {
-        const response = await authInstance.get('/api/admin/companies'); // API 호출
+        const response = await authInstance.get(`/api/admin/companies?page=${page.value - 1}&size=${pageSize.value}`); // API 호출
         console.log(response.data);
 
-        companies.value = response.data;
-        totalCompanies.value = response.data.length; // 총 가입자 수
+        companies.value = response.data.slice || [];
+        totalCompanies.value = response.data.list || [];
+
+        totalPage.value = response.data.totalPage;
+
         newCompanies.value = response.data.filter((company) => isNewCompany(company.createAt)).length;
 
         // 추가 데이터 계산 (예: 총 가입비, 환불 처리수 등)
@@ -170,10 +175,11 @@ export default defineComponent({
 
     return {
       page,
+      pageSize,
+      totalPage,
       companies,
       totalCompanies,
       newCompanies,
-      totalPages,
       clickCallback,
       isNewCompany,
       formatPhoneNumber,

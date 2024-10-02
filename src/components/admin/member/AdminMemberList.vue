@@ -6,7 +6,7 @@
       <ul class="flex gap-4">
         <li>
           <label for="" class="font-medium">총 고객 가입자수</label>
-          <p class="text-red">{{ totalMembers }}명</p>
+          <p class="text-red">{{ totalMembers.length }}명</p>
         </li>
         <li>
           <label for="" class="font-medium">신규 고객 가입자수</label>
@@ -19,7 +19,6 @@
       <table class="table border-2 border-solid border-gray-300 border-collapse w-full">
         <thead>
           <tr>
-            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">번호</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">고객명</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">닉네임</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">이메일</th>
@@ -30,8 +29,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(member, index) in members" :key="member.id">
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ index + 1 }}</td>
+          <tr v-for="member in members" :key="member.id">
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ member.name }}</td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ member.nickName }}</td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ member.email }}</td>
@@ -58,7 +56,7 @@
     <div class="mt-5">
       <vue-paginate
         :model-value="page"
-        :page-count="totalPages"
+        :page-count="totalPage"
         :page-range="3"
         :margin-pages="2"
         :click-handler="clickCallback"
@@ -88,10 +86,12 @@ export default defineComponent({
   },
   setup() {
     const page = ref(1);
+    const pageSize = ref(5);
+    const totalPage = ref();
+
     const members = ref([]);
     const totalMembers = ref(0);
     const newMembers = ref(0);
-    const totalPages = ref(1);
     const router = useRouter();
 
     // 현재 날짜 기준 2주 이내의 가입자를 찾는 함수
@@ -103,10 +103,13 @@ export default defineComponent({
 
     const fetchMembers = async () => {
       try {
-        const response = await authInstance.get(`/api/admin/members`);
+        const response = await authInstance.get(`/api/admin/members?page=${page.value - 1}&size=${pageSize.value}`);
         console.log(response.data);
-        members.value = response.data;
-        totalMembers.value = response.data.length;
+        members.value = response.data.slice || [];
+        totalMembers.value = response.data.list || [];
+
+        totalPage.value = response.data.totalPage;
+
         newMembers.value = response.data.filter((member) => isNewMember(member.createAt)).length;
       } catch (error) {
         console.error('멤버 목록을 불러오는데 실패했습니다.', error);
@@ -142,10 +145,11 @@ export default defineComponent({
 
     return {
       page,
+      pageSize,
+      totalPage,
       members,
       totalMembers,
       newMembers,
-      totalPages,
       clickCallback,
       viewMemberDetail,
       formatPhoneNumber,
