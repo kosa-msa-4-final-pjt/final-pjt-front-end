@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import authInstance from '@/utils/axiosUtils';
+import { authInstance } from '@/utils/axiosUtils';
 import { VuePaginate } from '@svifty7/vue-paginate';
 import { onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';

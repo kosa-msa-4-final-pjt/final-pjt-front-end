@@ -71,9 +71,9 @@
 
 <script>
 import { onMounted, ref, watch } from 'vue';
-import authInstance from '@/utils/axiosUtils';
 import { useRouter } from 'vue-router';
 import { VuePaginate } from '@svifty7/vue-paginate';
+import { authInstance } from '@/utils/axiosUtils';
 
 export default {
   components: {
