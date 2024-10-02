@@ -70,8 +70,8 @@
 <script>
 import { defineComponent, ref } from 'vue';
 import { VuePaginate } from '@svifty7/vue-paginate';
-import authInstance from '@/utils/axiosUtils';
 import { useRouter } from 'vue-router';
+import { authInstance } from '@/utils/axiosUtils';
 
 export default defineComponent({
   components: {
