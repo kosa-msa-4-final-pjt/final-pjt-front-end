@@ -1,5 +1,5 @@
 <template>
-  <div>안녕</div>
+  <div class="w-full px-4 pt-16">안녕</div>
 </template>
 
 <script>
