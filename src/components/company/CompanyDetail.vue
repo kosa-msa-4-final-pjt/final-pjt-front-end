@@ -81,9 +81,9 @@
 </template>
 
 <script>
-import axios from 'axios';
 import CompanyPortfolioCard from './CompanyPortfolioCard.vue';
 import CompanyReviewCard from './CompanyReviewCard.vue';
+import { instance } from '@/utils/axiosUtils';
 
 export default {
   components: { CompanyPortfolioCard, CompanyReviewCard },
@@ -107,7 +107,7 @@ export default {
     async fetchCompany() {
       const companyId = this.$route.params.id;
       try {
-        const response = await axios.get(`/api/company/${companyId}`);
+        const response = await instance.get(`/api/company/${companyId}`);
         this.company = response.data;
         this.portfolios = this.company.responses.list.slice(0, 3);
         this.reviews = this.company.reviews.list.slice(0, 3);

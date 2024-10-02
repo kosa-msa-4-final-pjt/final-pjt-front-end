@@ -20,14 +20,6 @@
             </div>
           </div>
         </li>
-        <li>
-          <button
-            class="px-2 py-1 bg-midGreen hover:bg-[#2a692d] text-white rounded-lg text-[16px] font-medium mt-6"
-            @click="$router.push('/mypage/admin/createAdminMembership')"
-          >
-            등록하기
-          </button>
-        </li>
       </ul>
     </div>
     <!-- center -->
@@ -38,31 +30,18 @@
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">번호</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">멤버십명</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">가격</th>
-            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">서비스 내용</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">가입자수</th>
-            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">상세보기</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(membership, index) in memberships" :key="membership.id">
+          <tr v-for="(membership, index) in memberships" :key="membership.name">
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ index + 1 }}</td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ membership.name }}</td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               {{ membership.price }}원
             </td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              {{ membership.description || '서비스 내용 없음' }}
-            </td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              {{ membership.subscribers }}명
-            </td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              <button
-                class="px-2 rounded-lg whitespace-nowrap bg-gray-200 cursor-pointer hover:bg-gray-300"
-                @click="$router.push(`/mypage/admin/adminMembershipList/${membership.id}`)"
-              >
-                상세보기
-              </button>
+              {{ membership.subscriberCount }}명
             </td>
           </tr>
         </tbody>
@@ -92,7 +71,8 @@
 <script>
 import { defineComponent, ref, onMounted } from 'vue';
 import { VuePaginate } from '@svifty7/vue-paginate';
-import authInstance from '@/utils/axiosUtils';
+import { authInstance } from '@/utils/axiosUtils';
+import dayjs from 'dayjs';
 
 export default defineComponent({
   components: {
@@ -106,20 +86,55 @@ export default defineComponent({
     const newMemberships = ref(0);
     const totalSubscribers = ref(0);
 
+    // 현재 날짜 기준 2주 이내의 가입자를 찾는 함수
+    const isNewCompany = (startDate) => {
+      const now = dayjs(); // 현재 날짜
+      const signup = dayjs(startDate); // 가입 날짜
+      return now.diff(signup, 'day') <= 14; // 14일 이내인지 확인
+    };
+
     const fetchMembershipList = async () => {
       try {
         const response = await authInstance.get(`/api/admin/membership/list`);
-        console.log(response.data);
-
         memberships.value = response.data;
         totalMemberships.value = memberships.value.length;
+
+        newMemberships.value = memberships.value.filter((membership) => isNewCompany(membership.startDate)).length;
       } catch (error) {
         console.error('멤버십 데이터를 가져오는데 실패했습니다.', error);
       }
     };
 
+    const fetchMemberShipCompanies = async () => {
+      try {
+        const response = await authInstance.get('/api/admin/memberships');
+        const membershipCompanies = response.data.list;
+        totalSubscribers.value = membershipCompanies.length;
+
+        // 멤버십별 가입자 수 계산
+        const membershipMap = {};
+        membershipCompanies.forEach((membership) => {
+          if (!membershipMap[membership.membershipName]) {
+            membershipMap[membership.membershipName] = {
+              name: membership.membershipName,
+              price: membership.membershipPrice,
+              subscriberCount: 1, // 첫 가입자
+              startDate: membership.startDate, // 가입일을 유지하여 신규 멤버십 판단
+            };
+          } else {
+            membershipMap[membership.membershipName].subscriberCount += 1; // 가입자 추가
+          }
+        });
+
+        memberships.value = Object.values(membershipMap); // 배열로 변환
+      } catch (error) {
+        console.error('멤버십 가입자 데이터를 가져오는데 실패했습니다.', error);
+      }
+    };
+
     onMounted(() => {
-      fetchMembershipList(page.value);
+      fetchMembershipList();
+      fetchMemberShipCompanies();
     });
 
     return {
@@ -129,7 +144,7 @@ export default defineComponent({
       totalMemberships,
       newMemberships,
       totalSubscribers,
-      fetchMembershipList,
+      isNewCompany,
     };
   },
 });

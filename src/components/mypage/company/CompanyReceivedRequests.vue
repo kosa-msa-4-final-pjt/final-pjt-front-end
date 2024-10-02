@@ -158,7 +158,7 @@
 </template>
 
 <script>
-import authInstance from '@/utils/axiosUtils';
+import { authInstance } from '@/utils/axiosUtils';
 
 export default {
   data() {

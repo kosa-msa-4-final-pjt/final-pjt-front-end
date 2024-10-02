@@ -91,11 +91,11 @@
 </template>
 
 <script>
-import axios from 'axios';
 import RegionCategoryCompo from './common/RegionCategoryCompo.vue';
 import ConstructionCategoryCompo from './common/ConstructionCategoryCompo.vue';
 import BannerCompo from './company/BannerCompo.vue';
 import CompanyCard from './company/CompanyCard.vue';
+import { instance } from '@/utils/axiosUtils';
 
 export default {
   components: { RegionCategoryCompo, ConstructionCategoryCompo, BannerCompo, CompanyCard },
@@ -147,7 +147,7 @@ export default {
           url += `&${params.join('&')}`;
         }
 
-        const response = await axios.get(url);
+        const response = await instance.get(url);
         this.companies = response.data;
         console.log('fetchCompanies', this.companies);
 
@@ -185,7 +185,7 @@ export default {
           url += `&${params.join('&')}`;
         }
 
-        const response = await axios.get(url);
+        const response = await instance.get(url);
 
         console.log(response.data);
         // Fetch total pages from the response or calculate them

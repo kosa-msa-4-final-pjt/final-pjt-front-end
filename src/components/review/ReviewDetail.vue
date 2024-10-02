@@ -117,7 +117,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Navigation, Pagination } from 'swiper';
-import authInstance from '@/utils/axiosUtils';
+import { authInstance } from '@/utils/axiosUtils';
 
 export default {
   data() {
@@ -200,7 +200,7 @@ export default {
 
   methods: {
     goToEditPage() {
-      this.$router.push(`/review/edit/${this.$route.params.id}`);
+      this.$router.push(`/reviews/edit/${this.reviewDetail.id}`);
     },
     confirmDelete() {
       if (confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {

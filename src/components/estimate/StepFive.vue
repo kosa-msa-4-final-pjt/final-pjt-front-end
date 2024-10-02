@@ -60,7 +60,7 @@
 <script>
 import { useUserStore } from '@/stores/userStore';
 import { mapState } from 'pinia';
-import authInstance from '@/utils/axiosUtils';
+import { authInstance } from '@/utils/axiosUtils';
 
 export default {
   props: ['step', 'formData'],

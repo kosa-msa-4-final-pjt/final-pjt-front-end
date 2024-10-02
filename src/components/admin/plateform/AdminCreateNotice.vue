@@ -48,7 +48,7 @@
 
 <script>
 import router from '@/router';
-import authInstance from '@/utils/axiosUtils';
+import { authInstance } from '@/utils/axiosUtils';
 import { ref } from 'vue';
 
 export default {
@@ -67,7 +67,7 @@ export default {
           content: content.value,
         };
         await authInstance.post('/api/admin/notice/create', noticeData);
-        router.push('/notice/list');
+        router.back();
       } catch (error) {
         console.log('공지사항 등록을 실패했습니다.', error);
       }

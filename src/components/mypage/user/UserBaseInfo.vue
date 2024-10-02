@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import authInstance from '@/utils/axiosUtils';
+import { authInstance } from '@/utils/axiosUtils';
 import { ref } from 'vue';
 
 export default {

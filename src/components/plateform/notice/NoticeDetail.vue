@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import authInstance from '@/utils/axiosUtils';
+import { authInstance } from '@/utils/axiosUtils';
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -38,7 +38,7 @@ export default {
 
     const getNoticeDetail = async (noticeId) => {
       try {
-        const response = await authInstance.get(`/api/admin/notice/${noticeId}`);
+        const response = await authInstance.get(`/api/notice/${noticeId}`);
         notice.value = response.data;
       } catch (error) {
         console.log('공지사항을 가져오지 못했습니다.', error);

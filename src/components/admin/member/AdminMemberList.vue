@@ -79,7 +79,7 @@
 import { defineComponent, ref, onMounted } from 'vue';
 import { VuePaginate } from '@svifty7/vue-paginate';
 import { useRouter } from 'vue-router';
-import authInstance from '@/utils/axiosUtils';
+import { authInstance } from '@/utils/axiosUtils';
 import dayjs from 'dayjs'; // 날짜를 계산하기 위해 dayjs를 사용합니다.
 
 export default defineComponent({

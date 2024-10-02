@@ -1,7 +1,11 @@
 import axios from 'axios';
 
+const instance = axios.create({
+  baseURL: process.env.VUE_APP_SERVER_URI,
+});
+
 const authInstance = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: process.env.VUE_APP_SERVER_URI,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -30,7 +34,7 @@ authInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    console.log (error);
+    console.log(error);
     if (error.status == 500) {
       console.log('서버 예외');
       return Promise.reject(error);
@@ -47,7 +51,7 @@ authInstance.interceptors.response.use(
     try {
       console.log('재발급 요청');
       const res = await axios.post(
-        'http://localhost:8080/refreshToken',
+        process.env.VUE_APP_SERVER_URI + '/refreshToken',
         {},
         {
           withCredentials: true, // 쿠키로 refreshToken이 전송될 경우 필요
@@ -75,4 +79,4 @@ function setAccessToken(accessToken) {
   localStorage.setItem('user', JSON.stringify(user));
 }
 
-export default authInstance;
+export { instance, authInstance };

@@ -37,9 +37,7 @@ import AdminMemberReviewDetail from '@/components/admin/member/AdminMemberReview
 import AdminMemberList from '@/components/admin/member/AdminMemberList.vue';
 import AdminMemberDetail from '@/components/admin/member/AdminMemberDetail.vue';
 
-import CreateAdminMembership from '@/components/admin/Membership/CreateAdminMembership.vue';
 import AdminMembershipList from '@/components/admin/Membership/AdminMembershipList.vue';
-import AdminMembershipDetail from '@/components/admin/Membership/AdminMembershipDetail.vue';
 
 import AdminCreateNotice from '@/components/admin/plateform/AdminCreateNotice.vue';
 import AdminNoticeList from '@/components/admin/plateform/AdminNoticeList.vue';
@@ -60,6 +58,7 @@ import AdminCompanyList from '@/components/admin/company/AdminCompanyList.vue';
 import AdminCompanyDetail from '@/components/admin/company/AdminCompanyDetail.vue';
 import AdminCreateFAQ from '@/components/admin/plateform/AdminCreateFAQ.vue';
 import FAQList from '@/components/plateform/faq/FAQList.vue';
+import EditReview from '@/components/review/EditReview.vue';
 
 export default [
   { path: '/', component: HomeCompo },
@@ -141,6 +140,7 @@ export default [
   { path: '/reviews/:id', component: ReviewDetail },
   { path: '/reviews', component: ReviewList },
   { path: '/reviews/create', component: CreateReview },
+  { path: '/reviews/edit/:id', component: EditReview },
   {
     path: '/mypage/admin',
     component: AdminPageCompo,
@@ -187,16 +187,8 @@ export default [
         component: AdminMemberReviewDetail,
       },
       {
-        path: 'createAdminMembership',
-        component: CreateAdminMembership,
-      },
-      {
         path: 'adminMembershipList',
         component: AdminMembershipList,
-      },
-      {
-        path: 'adminMembershipList/:id',
-        component: AdminMembershipDetail,
       },
       {
         path: 'admincreatenotice',

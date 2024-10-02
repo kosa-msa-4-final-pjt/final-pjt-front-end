@@ -7,7 +7,7 @@
 <script>
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
-import axios from 'axios';
+import { instance } from '@/utils/axiosUtils';
 
 export default {
   props: {
@@ -105,7 +105,7 @@ export default {
         formData.append('file', file);
         console.log(range);
         try {
-          const response = await axios.post(`/api/portfolio/${portfolioId}/images`, formData, {
+          const response = await instance.post(`/api/portfolio/${portfolioId}/images`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
