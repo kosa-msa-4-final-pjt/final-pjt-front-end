@@ -20,7 +20,7 @@
             <li>
               <p @click="$router.push('/notice/list')" class="cursor-pointer hover:text-gray-300">공지사항</p>
             </li>
-            <li><a href="/faq/list" class="hover:text-gray-300">FAQ</a></li>
+            <li><p @click="$router.push('/faq/list')" class="cursor-pointer hover:text-gray-300">FAQ</p></li>
             <li><a href="/" class="hover:text-gray-300">회사 소개</a></li>
           </ul>
         </div>

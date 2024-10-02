@@ -167,7 +167,7 @@ export default [
         component: AdminCompanyPortfolioList,
       },
       {
-        path: 'adminCompanyPortfolioDetail',
+        path: 'adminCompanyPortfolioDetail/:id',
         component: AdminCompanyPortfolioDetail,
       },
       {
@@ -183,7 +183,7 @@ export default [
         component: AdminMemberReviewList,
       },
       {
-        path: 'adminMemberReviewDetail',
+        path: 'adminMemberReviewDetail/:id',
         component: AdminMemberReviewDetail,
       },
       {

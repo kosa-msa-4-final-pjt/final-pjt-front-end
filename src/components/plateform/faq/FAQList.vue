@@ -1,41 +1,24 @@
 <template>
-  <div class="w-full px-4 pt-16">
-    <div class="mx-auto w-full max-w-md rounded-2xl bg-white p-2">
-      <Disclosure v-slot="{ open }">
-        <DisclosureButton
-          class="flex w-full justify-between rounded-lg bg-black px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75"
-        >
-          <span>What is your refund policy?</span>
-          <font-awesome-icon :class="open ? 'rotate-180 transform' : ''" class="h-5 w-5" aria-hidden="true" />
-        </DisclosureButton>
-        <DisclosurePanel class="px-4 pb-2 pt-4 text-sm text-gray-500">
-          If you're unhappy with your purchase for any reason, email us within 90 days and we'll refund you in full, no
-          questions asked.
-        </DisclosurePanel>
-      </Disclosure>
-      <Disclosure as="div" class="mt-2" v-slot="{ open }">
-        <DisclosureButton
-          class="flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75"
-        >
-          <span>Do you offer technical support?</span>
-          <ChevronUpIcon :class="open ? 'rotate-180 transform' : ''" class="h-5 w-5 text-purple-500" />
-        </DisclosureButton>
-        <DisclosurePanel class="px-4 pb-2 pt-4 text-sm text-gray-500"> No. </DisclosurePanel>
-      </Disclosure>
-    </div>
-  </div>
+  <div class="w-full px-4 pt-16">안녕</div>
 </template>
 
-<script setup>
-import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue';
-</script>
-
 <script>
+import authInstance from '@/utils/axiosUtils';
+
 export default {
-  components: {
-    Disclosure,
-    DisclosureButton,
-    DisclosurePanel,
+  setup() {
+    const FAQList = async () => {
+      try {
+        const response = await authInstance.get('/api/faq/list');
+        console.log(response);
+      } catch (error) {
+        console.log('FAQ 리스트를 가져오는 데 실패했습니다.');
+      }
+    };
+
+    FAQList();
+
+    return {};
   },
 };
 </script>
