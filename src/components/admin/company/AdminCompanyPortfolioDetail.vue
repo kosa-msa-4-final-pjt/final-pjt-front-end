@@ -3,7 +3,7 @@
     <!-- 포트폴리오 이미지 -->
     <div class="my-carousel mb-8">
       <swiper
-        v-if="portfolio.images && portfolio.images.length > 1"
+        v-if="portfolio.images && portfolio.images.length > 0"
         :modules="[Navigation, Pagination]"
         :navigation="true"
         :pagination="{ clickable: true }"
@@ -208,6 +208,8 @@ export default {
       const doc = parser.parseFromString(content, 'text/html');
       const imgTags = doc.querySelectorAll('img');
       const imageUrls = Array.from(imgTags).map((img) => img.src);
+      console.log('Extracted image URLs:', imageUrls); // 추가: 이미지 추출된 부분을 콘솔에 출력하여 확인
+
       return imageUrls;
     };
 
