@@ -42,29 +42,31 @@
     </div>
 
     <!-- 업체 시공 사례 -->
-    <div v-if="portfolios.length > 0" class="p-6 mb-20">
+    <div class="p-6 mb-20">
       <h3 class="text-xl font-semibold text-gray-900 mb-6">업체 시공 사례</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
+      <div
+        v-if="portfolios.length > 0"
+        class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6"
+      >
         <CompanyPortfolioCard v-for="portfolio in portfolios" :key="portfolio.id" :portfolio="portfolio" />
       </div>
-      <!-- <div v-if="currentPortfolioPage < totalPortfolioPages" class="flex justify-center mt-6">
-        <button @click="loadMorePortfolios" class="py-2 px-6 bg-midGreen text-white rounded hover:bg-green-600">
-          더보기
-        </button>
-      </div> -->
+      <div v-else>
+        <p class="text-center py-10">등록된 시공 사례가 없습니다.</p>
+      </div>
     </div>
 
     <!-- 업체 시공 후기 -->
-    <div v-if="reviews.length > 0" class="p-6 pb-20 mb-12 border-b-[1px] border-gray-200">
+    <div class="p-6 pb-20 mb-12 border-b-[1px] border-gray-200">
       <h3 class="text-xl font-semibold text-gray-900 mb-6">업체 시공 후기</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
+      <div
+        v-if="reviews.length > 0"
+        class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6"
+      >
         <CompanyReviewCard v-for="review in reviews" :key="review.id" :review="review" />
       </div>
-      <!-- <div v-if="currentReviewPage < totalReviewPages" class="flex justify-center mt-6">
-        <button @click="loadMoreReviews" class="py-2 px-6 bg-midGreen text-white rounded hover:bg-green-600">
-          더보기
-        </button>
-      </div> -->
+      <div v-else>
+        <p class="text-center py-10">등록된 시공 후기가 없습니다</p>
+      </div>
     </div>
 
     <!-- 업체 추가 정보 -->
@@ -111,44 +113,11 @@ export default {
         this.company = response.data;
         this.portfolios = this.company.responses.list.slice(0, 3);
         this.reviews = this.company.reviews.list.slice(0, 3);
-        // this.totalPortfolioPages = this.company.responses.totalPage;
-        // this.totalReviewPages = this.company.reviews.totalPage;
         console.log(response.data);
       } catch (error) {
         console.error('Error fetching company data:', error);
       }
     },
-
-    // async loadMorePortfolios() {
-    //   if (this.currentPortfolioPage < this.totalPortfolioPages) {
-    //     this.currentPortfolioPage += 1;
-    //     const companyId = this.$route.params.id;
-    //     try {
-    //       const response = await axios.get(
-    //         `/api/company/${companyId}?page=${this.currentPortfolioPage + 1}&size${this.pageSize}`
-    //       );
-    //       this.portfolios.push(...response.data.responses.slice);
-    //       console.log(response.data);
-    //     } catch (error) {
-    //       console.error('Error loading more portfolios:', error);
-    //     }
-    //   }
-    // },
-
-    // async loadMoreReviews() {
-    //   if (this.currentReviewPage < this.totalReviewPages) {
-    //     this.currentReviewPage += 1;
-    //     const companyId = this.$route.params.id;
-    //     try {
-    //       const response = await axios.get(
-    //         `/api/company/${companyId}?page=${this.currentReviewPage}&size=${this.pageSize}`
-    //       );
-    //       this.reviews.push(...response.data.reviews.slice);
-    //     } catch (error) {
-    //       console.error('Error loading more reviews:', error);
-    //     }
-    //   }
-    // },
 
     formatDate(dateStr) {
       const options = { year: 'numeric', month: 'long', day: 'numeric' };
