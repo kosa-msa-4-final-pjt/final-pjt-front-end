@@ -2,7 +2,7 @@
   <div class="container mx-auto p-6">
     <!-- Sidebar -->
     <div class="flex max-w-7xl">
-      <div class="basis-1/4 bg-white shadow-md rounded-lg p-4">
+      <div class="basis-1/4 bg-white shadow-md rounded-lg p-4 whitespace-nowrap">
         <h2 class="text-lg font-semibold mb-4">관리자페이지</h2>
         <ul class="text-gray-800">
           <!-- 업체 관리 -->
@@ -16,7 +16,7 @@
             <!-- 멤버십, 시공사례 관리 토글 버튼 -->
             <div v-if="activeMenu === 'companyManagement'" class="ml-4 mt-2">
               <router-link
-                to="adminCompanyMembershipList"
+                to="adminCompanyList"
                 activeClass="bg-gray-200"
                 class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
                 >업체 가입 관리</router-link
@@ -25,8 +25,9 @@
                 to="adminCompanyPortfolioList"
                 activeClass="bg-gray-200"
                 class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
-                >시공 사례 관리</router-link
               >
+                시공 사례 관리
+              </router-link>
             </div>
           </li>
           <!-- 고객 관리 -->
@@ -94,23 +95,17 @@
                 >공지사항 관리</router-link
               >
               <router-link
-                to="adminplateformFAQList"
+                to="adminfaqlist"
                 activeClass="bg-gray-200"
                 class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
                 >FAQ 관리</router-link
-              >
-              <router-link
-                to="adminplateformAskList"
-                activeClass="bg-gray-200"
-                class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
-                >문의 관리</router-link
               >
             </div>
           </li>
         </ul>
       </div>
       <!-- 메뉴에 따른 내용 -->
-      <div class="basis-3/4 bg-gray-100 shadow-2xl rounded-lg p-6 ml-4">
+      <div class="basis-3/4 bg-gray-100 shadow-md rounded-lg p-6 ml-4">
         <router-view></router-view>
       </div>
     </div>

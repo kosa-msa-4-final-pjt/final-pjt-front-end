@@ -1,10 +1,10 @@
 <template>
   <div class="w-72 mr-auto">
-    <Listbox v-model="selectedDistrict" :open="listboxOpen" @update:open="listboxOpen = $event">
+    <Listbox v-model="selectedDistrict">
       <div class="relative mt-1">
         <!-- Listbox Button -->
         <ListboxButton
-          class="relative w-full cursor-default rounded-lg bg-white px-4 py-3 text-left shadow-sm focus:outline-none sm:text-sm"
+          class="relative w-full cursor-pointer rounded-lg bg-white px-4 py-3 text-left shadow-sm focus:outline-none sm:text-sm"
         >
           <span class="block truncate font-medium">
             {{ selectedDistrict ? `${selectedDistrict.city} ${selectedDistrict.district || ''}` : '지역을 선택하세요' }}
@@ -71,7 +71,6 @@ export default {
   setup(_, { emit }) {
     const regions = ref([]); // 지역 데이터를 저장할 변수
     const selectedDistrict = ref(null); // 선택된 시/군/구 저장 (city와 district를 함께 저장)
-    const listboxOpen = ref(false); // Listbox의 열림/닫힘 상태 관리
 
     // JSON 파일에서 지역 데이터를 가져오기
     const fetchRegions = async () => {
@@ -93,8 +92,6 @@ export default {
     const selectDistrict = (city, district) => {
       selectedDistrict.value = { city, district };
       emit('region-selected', selectedDistrict.value); // 부모 컴포넌트로 선택된 지역을 전달
-      listboxOpen.value = false; // District 선택 후 Listbox 닫기
-      console.log(listboxOpen.value);
     };
 
     // 선택된 지역을 초기화하는 함수 (null 값 전달)
@@ -111,7 +108,6 @@ export default {
     return {
       regions,
       selectedDistrict,
-      listboxOpen,
       selectCity,
       selectDistrict,
       resetSelection,

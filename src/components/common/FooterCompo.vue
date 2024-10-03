@@ -16,12 +16,12 @@
         <div class="w-full md:w-1/3 mb-6 md:mb-0">
           <h3 class="text-lg font-bold">퀵 링크</h3>
           <ul class="mt-2 space-y-2">
-            <li><a href="#" class="hover:text-gray-300">홈</a></li>
+            <li><a href="/" class="hover:text-gray-300">홈</a></li>
             <li>
-              <p @click="$router.push('/plateformEvent/list')" class="cursor-pointer hover:text-gray-300">공지사항</p>
+              <p @click="$router.push('/notice/list')" class="cursor-pointer hover:text-gray-300">공지사항</p>
             </li>
-            <li><a href="#" class="hover:text-gray-300">회사 소개</a></li>
-            <li><a href="#" class="hover:text-gray-300">연락처</a></li>
+            <li><p @click="$router.push('/faq/list')" class="cursor-pointer hover:text-gray-300">FAQ</p></li>
+            <li><a href="/" class="hover:text-gray-300">회사 소개</a></li>
           </ul>
         </div>
       </div>

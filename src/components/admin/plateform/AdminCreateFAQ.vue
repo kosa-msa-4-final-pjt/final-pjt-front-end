@@ -1,9 +1,9 @@
 <template>
   <div class="w-full mx-auto px-6 py-8">
-    <p class="text-2xl font-semibold text-center pb-6">공지사항 등록</p>
+    <p class="text-2xl font-semibold text-center pb-6">FAQ 등록</p>
 
     <form
-      @submit.prevent="createNotice"
+      @submit.prevent="createFAQ"
       class="max-w-[720px] mx-auto bg-white p-6 border-[1px] border-gray-300 rounded-lg"
     >
       <div class="mb-6">
@@ -56,27 +56,27 @@ export default {
     const title = ref('');
     const content = ref('');
 
-    const createNotice = async () => {
-      const isConfirm = confirm('공지사항을 등록하시겠습니까?');
+    const createFAQ = async () => {
+      const isConfirm = confirm('FAQ를 등록하시겠습니까?');
       if (!isConfirm) {
         return;
       }
       try {
-        const noticeData = {
+        const FAQData = {
           title: title.value,
           content: content.value,
         };
-        await authInstance.post('/api/admin/notice/create', noticeData);
+        await authInstance.post('/api/admin/faq/create', FAQData);
         router.back();
       } catch (error) {
-        console.log('공지사항 등록을 실패했습니다.', error);
+        console.log('FAQ 등록을 실패했습니다.', error);
       }
     };
 
     return {
       title,
       content,
-      createNotice,
+      createFAQ,
     };
   },
 };

@@ -57,11 +57,18 @@
           <!-- 버튼 섹션 -->
           <div class="w-full mt-4">
             <button
-              v-if="estimate.send === false || estimate.status === 'REJECTED'"
+              v-if="estimate.send === false"
               class="w-full bg-midGreen text-white rounded-xl py-2 px-4 font-medium"
               @click="openSendModal(estimate)"
             >
               견적 보내기
+            </button>
+            <button
+              v-if="estimate.status === 'REJECTED'"
+              class="w-full bg-midGreen text-white rounded-xl py-2 px-4 font-medium"
+              @click="openUpdateModal(estimate)"
+            >
+              견적 다시 보내기
             </button>
             <div class="flex" v-else-if="estimate.send === true && estimate.status === 'SENT'">
               <button
@@ -155,7 +162,7 @@
 </template>
 
 <script>
-import authInstance from '@/utils/axiosUtils';
+import { authInstance } from '@/utils/axiosUtils';
 
 export default {
   data() {

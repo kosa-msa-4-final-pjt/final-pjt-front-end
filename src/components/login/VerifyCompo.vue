@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { instance } from '@/utils/axiosUtils';
 
 export default {
   mounted() {
@@ -13,7 +13,7 @@ export default {
     console.log(code);
 
     const request = async () => {
-      const response = await axios.post('http://localhost:8080/api/verify', {
+      const response = await instance.post('/api/verify', {
         verificationCode: code,
         email: email,
       });

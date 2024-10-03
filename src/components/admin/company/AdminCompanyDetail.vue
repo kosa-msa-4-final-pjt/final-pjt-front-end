@@ -1,42 +1,89 @@
 <template>
   <div>
-    <!-- 고객 이미지 -->
+    <!-- 기업 로고 -->
     <div class="flex items-center justify-center h-full mb-10">
-      <img class="object-fill w-72 h-auto bg-inherit" src="@/assets/logo.png" alt="" />
+      <img
+        class="object-cover w-72 h-auto rounded-lg bg-inherit"
+        :src="company.companyLogoUrl || require('@/assets/logo.png')"
+        alt="업체로고"
+      />
     </div>
-    <!-- 고객 정보 -->
+    <!-- 기업 정보 -->
     <div>
       <ul class="p-10 rounded-lg bg-white">
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">고객명</label>
-          <p class="w-1/5 px-10 whitespace-nowrap">{{ member.name }}</p>
-          <!-- <p class="px-2 border-2 border-solid rounded-lg whitespace-nowrap text-center">
-            {{ member.memberState }}
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">업체명</label>
+          <p class="w-4/5 px-10">{{ company.companyName }}</p>
+        </li>
+        <li class="littleTitle">
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">대표자명</label>
+          <p class="w-4/5 px-10">{{ company.owner }}</p>
+        </li>
+        <li class="littleTitle">
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">멤버십 종류</label>
+          <p class="w-1/5 px-10">{{ company.membership ?? '-' }}</p>
+          <!-- <p class="border-2 border-solid border-secondary rounded-lg px-2 text-secondary whitespace-nowrap">
+            {{ membershipState }}
           </p> -->
         </li>
-        <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">닉네임</label>
-          <p class="w-4/5 px-10">{{ member.nickName }}</p>
+        <!-- <li class="littleTitle">
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">멤버십 시작일</label>
+          <div>
+            <p class="w-4/5 px-10">{{ membershipStartDate }}</p>
+          </div>
         </li>
         <li class="littleTitle">
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">멤버십 만료일</label>
+          <div>
+            <p class="w-4/5 px-10">{{ membershipEndDate }}</p>
+          </div>
+        </li> -->
+        <li class="littleTitle">
           <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">이메일</label>
-          <p class="w-4/5 px-10">{{ member.email }}</p>
+          <p class="w-4/5 px-10">{{ company.email }}</p>
         </li>
         <li class="littleTitle">
           <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">전화번호</label>
-          <p class="w-4/5 px-10">{{ formatPhoneNumber(member.phoneNumber) }}</p>
+          <p class="w-4/5 px-10">{{ formatPhoneNumber(company.phoneNumber) }}</p>
         </li>
-        <!-- <li class="littleTitle">
+        <li class="littleTitle">
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">사업자번호</label>
+          <p class="w-4/5 px-10">{{ company.companyNumber }}</p>
+        </li>
+
+        <li class="littleTitle">
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">개업일</label>
+          <p class="w-4/5 px-10">{{ company.publishedDate }}</p>
+        </li>
+        <li class="littleTitle">
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">주소</label>
+          <p class="w-4/5 px-10">{{ company.address }}</p>
+        </li>
+        <li class="littleTitle">
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">시공 분야</label>
+          <div class="w-4/5 px-10 py-2 flex flex-wrap gap-2">
+            <span
+              v-for="(service, index) in company.services"
+              :key="index"
+              class="py-1 px-3 bg-gray-200 text-sm rounded-full"
+            >
+              {{ service }}
+            </span>
+          </div>
+        </li>
+        <li class="littleTitle">
           <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">상담 수</label>
           <p class="w-4/5 px-10">8건</p>
         </li>
         <li class="littleTitle">
           <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">시공 수</label>
           <p class="w-4/5 px-10">2건</p>
-        </li> -->
+        </li>
         <li class="littleTitle">
-          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">가입일</label>
-          <p class="w-4/5 px-10">{{ member.createAt }}</p>
+          <label for="" class="w-1/5 border-r-2 border-indigo-500 font-medium">평점</label>
+          <p class="w-4/5 px-10">
+            <font-awesome-icon class="text-midGreen" :icon="['fas', 'star']" />&nbsp; {{ company.rating }}점
+          </p>
         </li>
       </ul>
     </div>
@@ -44,7 +91,7 @@
     <div class="flex justify-end mt-4 gap-5">
       <button
         class="bg-midGreen hover:bg-[#2a692d] text-white w-1/2 h-[44px] rounded text-[16px] font-medium mt-6"
-        @click="deletionMember"
+        @click="deletionCompany"
       >
         탈퇴
       </button>
@@ -97,7 +144,7 @@
             <div class="flex gap-4 bg-white px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <button
                 v-if="isModalOpen"
-                @click="deleteMember"
+                @click="deleteCompany"
                 type="button"
                 class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-red-600 sm:mt-0 sm:w-auto"
               >
@@ -119,50 +166,53 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 import { authInstance } from '@/utils/axiosUtils';
+import { onMounted, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 export default {
   setup() {
-    const member = ref({});
+    const company = ref({});
     const isModalOpen = ref(false);
     const modalTitle = ref('');
     const modalMessage = ref('');
     const route = useRoute();
     const router = useRouter();
-    const memberId = route.params.id;
+    const companyId = route.params.id;
+    console.log(companyId);
 
-    const fetchMemberDetail = async () => {
+    const fetchCompanyDetail = async () => {
       try {
-        const response = await authInstance.get(`/api/admin/member/${memberId}`);
-        member.value = response.data;
+        const response = await authInstance.get(`/api/admin/company/${companyId}`);
+        console.log(response.data);
+        company.value = response.data;
       } catch (error) {
-        console.error('멤버 정보를 불러오는데 실패했습니다.', error);
+        console.error('업체 정보를 불러오는데 실패했습니다. ', error);
       }
     };
 
     onMounted(() => {
-      fetchMemberDetail();
+      fetchCompanyDetail();
     });
 
-    const deletionMember = () => {
+    const deletionCompany = () => {
       modalTitle.value = '관리자 권한으로 강제 탈퇴';
-      modalMessage.value = '해당 계정을 정말로 강제 탈퇴하시겠습니까? 이 작업은 취소할 수 없습니다.';
+      modalMessage.value =
+        '해당 업체를 정말로 강제 탈퇴하시겠습니까? 해당 업체의 작업은 그대로 서버에 저장됩니다. 이 작업은 취소할 수 없습니다.';
       isModalOpen.value = true;
     };
 
-    const deleteMember = () => {
+    const deleteCompany = () => {
       alert('탈퇴했습니다.');
+      isModalOpen.value = false;
+    };
+
+    const closeModal = () => {
       isModalOpen.value = false;
     };
 
     const goBack = () => {
       router.back();
-    };
-
-    const closeModal = () => {
-      isModalOpen.value = false;
     };
 
     const formatPhoneNumber = (phoneNumber) => {
@@ -179,14 +229,14 @@ export default {
     };
 
     return {
-      member,
+      company,
       isModalOpen,
       modalTitle,
       modalMessage,
-      deletionMember,
-      deleteMember,
-      goBack,
+      deletionCompany,
+      deleteCompany,
       closeModal,
+      goBack,
       formatPhoneNumber,
     };
   },

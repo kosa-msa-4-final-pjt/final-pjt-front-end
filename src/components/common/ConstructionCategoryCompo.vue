@@ -17,7 +17,7 @@
         <!-- Listbox Options with Checkboxes -->
         <transition class="z-10">
           <ListboxOptions
-            class="absolute mt-1 max-h-[300px] w-full overflow-auto rounded-md bg-white pl-2 py-1 shadow-lg sm:text-sm"
+            class="absolute mt-1 max-h-[350px] w-full overflow-auto rounded-md bg-white pl-2 py-1 shadow-lg sm:text-sm"
           >
             <!-- 전체 선택 체크박스 -->
             <label
@@ -59,7 +59,7 @@
 <script>
 import { ref, computed, onMounted, watch } from 'vue';
 import { Listbox, ListboxButton, ListboxOptions } from '@headlessui/vue';
-import axios from 'axios';
+import { instance } from '@/utils/axiosUtils';
 
 export default {
   components: {
@@ -85,7 +85,7 @@ export default {
     // 서비스 목록 가져오기
     const fetchServices = async () => {
       try {
-        const response = await axios.get('/api/constructionType');
+        const response = await instance.get('/api/constructionType');
         services.value = response.data; // 서비스 데이터 설정
       } catch (error) {
         console.error('Error fetching services:', error);

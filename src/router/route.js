@@ -37,28 +37,28 @@ import AdminMemberReviewDetail from '@/components/admin/member/AdminMemberReview
 import AdminMemberList from '@/components/admin/member/AdminMemberList.vue';
 import AdminMemberDetail from '@/components/admin/member/AdminMemberDetail.vue';
 
-import CreateAdminMembership from '@/components/admin/Membership/CreateAdminMembership.vue';
 import AdminMembershipList from '@/components/admin/Membership/AdminMembershipList.vue';
-import AdminMembershipDetail from '@/components/admin/Membership/AdminMembershipDetail.vue';
-
-import AdminPlateformAskList from '@/components/admin/plateform/AdminPlateformAskList.vue';
-import AdminPlateformAskDetail from '@/components/admin/plateform/AdminPlateformAskDetail.vue';
 
 import AdminCreateNotice from '@/components/admin/plateform/AdminCreateNotice.vue';
 import AdminNoticeList from '@/components/admin/plateform/AdminNoticeList.vue';
-import AdminPlateformEventDetail from '@/components/admin/plateform/AdminPlateformEventDetail.vue';
-import AdminPlateformFAQList from '@/components/admin/plateform/AdminPlateformFAQList.vue';
-import AdminPlateformFAQDetail from '@/components/admin/plateform/AdminPlateformFAQDetail.vue';
+import AdminNoticeDetail from '@/components/admin/plateform/AdminNoticeDetail.vue';
+import AdminFAQList from '@/components/admin/plateform/AdminFAQList.vue';
+import AdminFAQDetail from '@/components/admin/plateform/AdminFAQDetail.vue';
 
 import CompanySentRequests from '@/components/mypage/company/CompanySentRequests.vue';
 import CompanyReceivedRequests from '@/components/mypage/company/CompanyReceivedRequests.vue';
 import UserSaveRequests from '@/components/mypage/user/UserSaveRequests.vue';
 import UserOnGoingRequests from '@/components/mypage/user/UserOnGoingRequests.vue';
 
-import PlateformEventList from '@/components/plateformEvent/PlateformEventList.vue';
-import PlateformEventDetail from '@/components/plateformEvent/plateformEventDetail.vue';
+import NoticeList from '@/components/plateform/notice/NoticeList.vue';
+import NoticeDetail from '@/components/plateform/notice/NoticeDetail.vue';
 import UserCompleteRequests from '@/components/mypage/user/UserCompleteRequests.vue';
 import EditPortfolio from '@/components/portfolio/EditPortfolio.vue';
+import AdminCompanyList from '@/components/admin/company/AdminCompanyList.vue';
+import AdminCompanyDetail from '@/components/admin/company/AdminCompanyDetail.vue';
+import AdminCreateFAQ from '@/components/admin/plateform/AdminCreateFAQ.vue';
+import FAQList from '@/components/plateform/faq/FAQList.vue';
+import EditReview from '@/components/review/EditReview.vue';
 
 export default [
   { path: '/', component: HomeCompo },
@@ -141,11 +141,20 @@ export default [
   { path: '/reviews/:id', component: ReviewDetail },
   { path: '/reviews', component: ReviewList },
   { path: '/reviews/create', component: CreateReview },
+  { path: '/reviews/edit/:id', component: EditReview },
   {
     path: '/mypage/admin',
     component: AdminPageCompo,
-    redirect: '/mypage/admin/adminCompanyMembershipList',
+    redirect: '/mypage/admin/adminCompanyList',
     children: [
+      {
+        path: 'adminCompanyList',
+        component: AdminCompanyList,
+      },
+      {
+        path: 'adminCompanyList/:id',
+        component: AdminCompanyDetail,
+      },
       {
         path: 'adminCompanyMembershipList',
         component: AdminCompanyMembershipList,
@@ -159,7 +168,7 @@ export default [
         component: AdminCompanyPortfolioList,
       },
       {
-        path: 'adminCompanyPortfolioDetail',
+        path: 'adminCompanyPortfolioDetail/:id',
         component: AdminCompanyPortfolioDetail,
       },
       {
@@ -175,20 +184,12 @@ export default [
         component: AdminMemberReviewList,
       },
       {
-        path: 'adminMemberReviewDetail',
+        path: 'adminMemberReviewDetail/:id',
         component: AdminMemberReviewDetail,
-      },
-      {
-        path: 'createAdminMembership',
-        component: CreateAdminMembership,
       },
       {
         path: 'adminMembershipList',
         component: AdminMembershipList,
-      },
-      {
-        path: 'adminMembershipDetail',
-        component: AdminMembershipDetail,
       },
       {
         path: 'admincreatenotice',
@@ -199,27 +200,24 @@ export default [
         component: AdminNoticeList,
       },
       {
-        path: 'adminplateformEventDetail',
-        component: AdminPlateformEventDetail,
+        path: 'adminnoticedetail/:id',
+        component: AdminNoticeDetail,
       },
       {
-        path: 'adminplateformFAQList',
-        component: AdminPlateformFAQList,
+        path: 'admincreatefaq',
+        component: AdminCreateFAQ,
       },
       {
-        path: 'adminplateformFAQDetail',
-        component: AdminPlateformFAQDetail,
+        path: 'adminfaqlist',
+        component: AdminFAQList,
       },
       {
-        path: 'adminplateformAskList',
-        component: AdminPlateformAskList,
-      },
-      {
-        path: 'adminplateformAskDetail',
-        component: AdminPlateformAskDetail,
+        path: 'adminfaqdetail/:id',
+        component: AdminFAQDetail,
       },
     ],
   },
-  { path: '/plateformEvent/list', component: PlateformEventList },
-  { path: '/plateformEvents/list/:id', component: PlateformEventDetail },
+  { path: '/notice/list', component: NoticeList },
+  { path: '/notice/list/:id', component: NoticeDetail },
+  { path: '/faq/list', component: FAQList },
 ];

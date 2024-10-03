@@ -131,7 +131,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { instance } from '@/utils/axiosUtils';
 
 export default {
   data() {
@@ -145,6 +145,8 @@ export default {
       errors: {},
       emailVerified: false,
       passwordsMatch: false,
+
+      serverUri: process.env.VUE_APP_SERVER_URI,
     };
   },
   methods: {
@@ -157,9 +159,10 @@ export default {
       }
 
       try {
-        const response = await axios.get('/api/member/check-email', {
+        const response = await instance.get(`/api/member/check-email`, {
           params: { email: this.email },
         });
+        console.log(response);
         console.log(response.data.duplicated);
         if (response.data.duplicated) {
           // 객체로 전달되기 때문에
@@ -273,7 +276,7 @@ export default {
 
         // 서버로 POST 요청
         try {
-          const response = await axios.post('/api/member', memberData);
+          const response = await instance.post(`/api/member`, memberData);
           console.log(response);
           console.log(response.data);
           alert('입력하신 이메일로 인증 메일이 전송되었습니다. 메일 인증 후 로그인이 가능합니다.');

@@ -62,8 +62,8 @@
               type="button"
               class="font-medium text-center border border-solid cursor-pointer select-none ease-in-out px-3 text-base rounded-md w-full bg-[#03c75a] border-[#03c75a] text-white flex items-center justify-center"
             >
-              <a href="http://localhost:8080/oauth2/authorization/naver" class="inline-flex"
-                ><img
+              <a :href="`${serverUri}/oauth2/authorization/naver`" class="inline-flex">
+                <img
                   alt="네이버 로고"
                   class="w-[160px] border-box"
                   loading="lazy"
@@ -76,7 +76,7 @@
               type="button"
               class="font-medium text-center border border-solid cursor-pointer select-none ease-in-out px-3 text-base rounded-md w-full bg-[#fee500] border-[#fee500] text-black flex items-center justify-center"
             >
-              <a href="http://localhost:8080/oauth2/authorization/kakao" class="inline-flex">
+              <a :href="`${serverUri}/oauth2/authorization/kakao`" class="inline-flex">
                 <img
                   alt="카카오 로고"
                   loading="lazy"
@@ -95,13 +95,15 @@
 
 <script>
 import { useUserStore } from '@/stores/userStore';
-import axios from 'axios';
+import { instance } from '@/utils/axiosUtils';
+
 export default {
   data() {
     return {
       email: '',
       password: '',
       errorMessage: '',
+      serverUri: process.env.VUE_APP_SERVER_URI,
     };
   },
   methods: {
@@ -150,14 +152,19 @@ export default {
 
       // 서버 요청
       try {
-        const response = await axios.post(`http://localhost:8080/form/login`, loginData, {
+        const response = await instance.post(`/form/login`, loginData, {
           withCredentials: true,
         });
 
         console.log(response.headers.get('Authorization'));
 
         userStore.login(response.data.nickName, response.headers.get('Authorization'), response.data.role);
-        this.$router.push('/');
+        const role = response.data.role;
+        if (role === 'ADMIN') {
+          this.$router.push('/mypage/admin/adminCompanyList');
+        } else {
+          this.$router.push('/');
+        }
       } catch (error) {
         console.log(error);
         console.error('로그인 오류:', error);

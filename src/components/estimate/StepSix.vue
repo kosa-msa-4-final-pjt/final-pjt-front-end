@@ -147,8 +147,7 @@
 <script>
 import { ref, reactive, watch, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router'; // useRouter 임포트
-import axios from 'axios';
-import authInstance from '@/utils/axiosUtils';
+import { instance, authInstance } from '@/utils/axiosUtils';
 
 export default {
   props: {
@@ -213,7 +212,7 @@ export default {
           }
 
           console.log(`Fetching ${grade} companies:`, url);
-          return axios.get(url);
+          return instance.get(url);
         });
 
         const responses = await Promise.all(requests);

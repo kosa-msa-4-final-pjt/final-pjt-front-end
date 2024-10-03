@@ -124,7 +124,7 @@
 
 <script>
 import { ref } from 'vue';
-import authInstance from '@/utils/axiosUtils';
+import { authInstance } from '@/utils/axiosUtils';
 import { useRouter } from 'vue-router';
 
 export default {

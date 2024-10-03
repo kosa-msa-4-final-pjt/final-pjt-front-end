@@ -101,7 +101,7 @@
               <!-- 시공 취소 및 완료 버튼 -->
               <div class="mt-6 flex justify-end space-x-4">
                 <button
-                  class="bg-red-500 font-medium text-white px-6 py-2 rounded-md shadow-sm hover:bg-red-600 transition"
+                  class="bg-gray-300 font-medium text-gray-800 px-6 py-2 rounded-md shadow-sm hover:bg-red-600 transition"
                   @click="cancel(estimateRequest)"
                 >
                   취소
@@ -128,7 +128,7 @@
 
 <script>
 import { ref } from 'vue';
-import authInstance from '@/utils/axiosUtils';
+import { authInstance } from '@/utils/axiosUtils';
 
 export default {
   setup() {
