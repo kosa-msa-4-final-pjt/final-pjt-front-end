@@ -4,12 +4,18 @@
       <h3 class="font-bold text-2xl text-gray-800">완료된 시공 목록</h3>
     </div>
 
-    <div v-if="estimateRequests.length > 0">
+    <!-- 로딩 상태 -->
+    <div v-if="isLoading" class="text-center">
+      <p class="text-lg">로딩 중...</p>
+    </div>
+
+    <!-- 데이터가 있을 때 -->
+    <div v-else-if="allEstimateRequests.length > 0">
       <!-- 토글 리스트 -->
       <ul class="list-none p-0">
         <li
-          v-for="(estimateRequest, index) in estimateRequests"
-          :key="index"
+          v-for="(estimateRequest, index) in allEstimateRequests"
+          :key="estimateRequest.requestId"
           class="border border-gray-300 p-4 mb-4 rounded-lg shadow-md transition-all"
         >
           <!-- 상단 정보 -->
@@ -100,13 +106,21 @@
                 </p>
               </div>
 
-              <!-- 후기 작성 버튼 -->
+              <!-- 버튼 영역 -->
               <div class="mt-6 flex justify-end">
                 <button
+                  v-if="estimateRequest.estimateRequestStatus === 'COMPLETE'"
                   class="bg-midGreen font-medium text-white px-6 py-2 rounded-md shadow-sm hover:bg-green-600 transition"
                   @click="goToCreateReview(estimateRequest.requestId)"
                 >
                   후기 작성
+                </button>
+                <button
+                  v-else-if="estimateRequest.estimateRequestStatus === 'WRITTENREVIEW'"
+                  class="bg-gray-400 font-medium text-white px-6 py-2 rounded-md shadow-sm cursor-not-allowed"
+                  disabled
+                >
+                  작성 완료
                 </button>
               </div>
             </div>
@@ -123,26 +137,55 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { authInstance } from '@/utils/axiosUtils';
 import { useRouter } from 'vue-router';
 
 export default {
   setup() {
     const router = useRouter();
-    const estimateRequests = ref([]);
+    const completeEstimateRequests = ref([]);
+    const writtenReviewEstimateRequests = ref([]);
+    const allEstimateRequests = ref([]);
     const isOpen = ref([]);
     const selectedEstimateRequestsMap = ref({});
+    const isLoading = ref(true);
 
-    const fetchEstimateRequests = async () => {
+    // 완료된 시공 요청을 가져오는 함수
+    const fetchCompleteEstimateRequests = async () => {
       try {
-        const response = await authInstance.get('/api/estimaterequests/users', { params: { status: 'COMPLETE' } });
-        estimateRequests.value = response.data;
+        const response = await authInstance.get('/api/estimaterequests/users', {
+          params: { status: 'COMPLETE' },
+        });
+        completeEstimateRequests.value = response.data;
+        console.log('Complete:', completeEstimateRequests.value);
       } catch (error) {
         console.error('완료 견적 리스트를 가져오는데 실패했습니다.', error);
       }
     };
 
+    // 작성된 후기가 있는 시공 요청을 가져오는 함수
+    const fetchWrittenReviewEstimateRequests = async () => {
+      try {
+        const response = await authInstance.get('/api/estimaterequests/users', {
+          params: { status: 'WRITTENREVIEW' },
+        });
+        writtenReviewEstimateRequests.value = response.data;
+        console.log('Written Review:', writtenReviewEstimateRequests.value);
+      } catch (error) {
+        console.error('완료 견적 리스트를 가져오는데 실패했습니다.', error);
+      }
+    };
+
+    // 두 데이터를 병합하는 함수
+    const mergeEstimateRequests = () => {
+      allEstimateRequests.value = [...completeEstimateRequests.value, ...writtenReviewEstimateRequests.value];
+
+      // 등록 날짜 기준 내림차순으로 정렬 (선택 사항)
+      allEstimateRequests.value.sort((a, b) => new Date(b.regDate) - new Date(a.regDate));
+    };
+
+    // 토글 함수: 상세 정보 표시/숨기기
     const toggle = async (estimateRequest, index) => {
       try {
         if (!selectedEstimateRequestsMap.value[index]) {
@@ -155,18 +198,28 @@ export default {
       }
     };
 
+    // 후기 작성 페이지로 이동하는 함수
     const goToCreateReview = (requestId) => {
       router.push({ path: '/reviews/create', query: { requestId } });
     };
 
-    fetchEstimateRequests();
+    // 컴포넌트가 마운트될 때 데이터 가져오기
+    onMounted(async () => {
+      await fetchCompleteEstimateRequests();
+      await fetchWrittenReviewEstimateRequests();
+      mergeEstimateRequests();
+      isLoading.value = false;
+    });
 
     return {
-      estimateRequests,
+      completeEstimateRequests,
+      writtenReviewEstimateRequests,
+      allEstimateRequests,
       isOpen,
       selectedEstimateRequestsMap,
       toggle,
       goToCreateReview,
+      isLoading,
     };
   },
 };
