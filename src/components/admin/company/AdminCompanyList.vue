@@ -34,13 +34,13 @@
         <tbody>
           <tr v-for="company in companies" :key="company.id">
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              {{ company.name }}
+              {{ company.companyName }}
             </td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               {{ company.email }}
             </td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              {{ company.nickName }}
+              {{ company.owner }}
             </td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               {{ formatPhoneNumber(company.phoneNumber) }}
