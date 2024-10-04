@@ -16,13 +16,13 @@
             <!-- 멤버십, 시공사례 관리 토글 버튼 -->
             <div v-if="activeMenu === 'companyManagement'" class="ml-4 mt-2">
               <router-link
-                to="adminCompanyList"
+                to="/mypage/admin/adminCompanyList"
                 activeClass="bg-gray-200"
                 class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
                 >업체 가입 관리</router-link
               >
               <router-link
-                to="adminCompanyPortfolioList"
+                to="/mypage/admin/adminCompanyPortfolioList"
                 activeClass="bg-gray-200"
                 class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
               >
@@ -41,13 +41,13 @@
             <!-- 고객 관리, 시공후기 관리 토글 버튼 -->
             <div v-if="activeMenu === 'customerManagement'" class="ml-4 mt-2">
               <router-link
-                to="adminMemberList"
+                to="/mypage/admin/adminMemberList"
                 activeClass="bg-gray-200"
                 class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
                 >고객 가입 관리</router-link
               >
               <router-link
-                to="adminMemberReviewList"
+                to="/mypage/admin/adminMemberReviewList"
                 activeClass="bg-gray-200"
                 class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
                 >시공 후기 관리</router-link
@@ -65,13 +65,13 @@
             <!-- 멤버십 관리 토글 버튼 -->
             <div v-if="activeMenu === 'membershipManagement'" class="ml-4 mt-2">
               <router-link
-                to="adminCompanyMembershipList"
+                to="/mypage/admin/adminCompanyMembershipList"
                 activeClass="bg-gray-200"
                 class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
                 >멤버십 가입자 관리</router-link
               >
               <router-link
-                to="adminMembershipList"
+                to="/mypage/admin/adminMembershipList"
                 activeClass="bg-gray-200"
                 class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
                 >멤버십 관리</router-link
@@ -89,13 +89,13 @@
             <!-- 공지사항, FAQ, 1:1 문의 관리 토글 버튼 -->
             <div v-if="activeMenu === 'platformManagement'" class="ml-4 mt-2">
               <router-link
-                to="adminnoticelist"
+                to="/mypage/admin/adminnoticelist"
                 activeClass="bg-gray-200"
                 class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
                 >공지사항 관리</router-link
               >
               <router-link
-                to="adminfaqlist"
+                to="/mypage/admin/adminfaqlist"
                 activeClass="bg-gray-200"
                 class="block w-full text-left p-2 rounded hover:bg-gray-100 whitespace-nowrap"
                 >FAQ 관리</router-link
