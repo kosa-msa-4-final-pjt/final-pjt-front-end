@@ -100,7 +100,13 @@ export default {
         console.log(response);
         const { price, type, merchantUid, paymentCompany } = response.data.data;
 
+        console.log(price);
+        console.log(type);
+        console.log(merchantUid);
+
         console.log(response.data.data);
+
+        console.log(paymentCompany);
 
         window.IMP.request_pay(
           {

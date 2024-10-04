@@ -1,6 +1,35 @@
 <template>
+  <div
+    v-if="showModal"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75"
+  >
+    <div class="bg-white rounded-lg shadow-lg w-96 p-6">
+      <h2 class="text-xl font-semibold mb-4">가격 수정</h2>
+      <input
+        type="number"
+        v-model="price"
+        class="w-full p-2 border border-gray-300 rounded-lg mb-4"
+        placeholder="가격을 입력하세요"
+      />
+      <div class="flex justify-end space-x-2">
+        <button
+          class="bg-gray-400 text-white px-4 py-2 rounded-lg"
+          @click="closeMembershipEditModal"
+        >
+          취소
+        </button>
+        <button
+          class="bg-gray-500 text-white px-4 py-2 rounded-lg"
+          @click="updatePrice"
+        >
+          저장
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- header -->
   <div class="flex-col">
-    <!-- header -->
     <div class="mb-10 p-5 bg-white rounded-lg">
       <h2 class="font-semibold text-xl mb-4">멤버십 관리</h2>
       <ul class="flex justify-between">
@@ -22,26 +51,35 @@
         </li>
       </ul>
     </div>
+
     <!-- center -->
     <div>
       <table class="table border-2 border-solid border-gray-300 border-collapse w-full">
         <thead>
-          <tr>
-            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">멤버십명</th>
-            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">가격</th>
-            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">가입자수</th>
-          </tr>
+        <tr>
+          <th class="bg-gray-200 text-center p-2 whitespace-nowrap">멤버십명</th>
+          <th class="bg-gray-200 text-center p-2 whitespace-nowrap">가격</th>
+          <th class="bg-gray-200 text-center p-2 whitespace-nowrap">가입자수</th>
+          <th class="bg-gray-200 text-center p-2 whitespace-nowrap">가격 수정</th>
+        </tr>
         </thead>
         <tbody>
-          <tr v-for="membership in memberships" :key="membership.name">
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ membership.name }}</td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              {{ membership.price }}원
-            </td>
-            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              {{ membership.subscriberCount }}명
-            </td>
-          </tr>
+        <tr v-for="membership in memberships" :key="membership.id">
+          <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
+            {{ membership.name }}
+          </td>
+          <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
+            {{ membership.price }}원
+          </td>
+          <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
+            {{ membership.subscriberCount }}명
+          </td>
+          <td class="text-center p-2 border-t border-gray-300 whitespace-nowrap">
+            <button class="bg-black" @click="openMembershipEditModal(membership.id)">
+              수정
+            </button>
+          </td>
+        </tr>
         </tbody>
       </table>
     </div>
@@ -59,12 +97,25 @@ export default defineComponent({
     const totalMemberships = ref(0);
     const newMemberships = ref(0);
     const totalSubscribers = ref(0);
+    const showModal = ref(false);
+    const price = ref(0);
+    const selectedMembershipId = ref(0);
 
     // 현재 날짜 기준 2주 이내의 가입자를 찾는 함수
     const isNewCompany = (startDate) => {
       const now = dayjs(); // 현재 날짜
       const signup = dayjs(startDate); // 가입 날짜
       return now.diff(signup, 'day') <= 14; // 14일 이내인지 확인
+    };
+
+    const updatePrice = async () => {
+      console.log(selectedMembershipId.value);
+      const updateRequest = await authInstance.patch(`/api/admin/membership/${selectedMembershipId.value}/price`, {
+        price: price.value,
+      });
+      console.log(updateRequest);
+      alert('가격 수정이 완료되었습니다.')
+      window.location.reload();
     };
 
     const fetchMembershipList = async () => {
@@ -74,7 +125,10 @@ export default defineComponent({
         totalMemberships.value = memberships.value.length;
         console.log(response.data);
 
-        newMemberships.value = memberships.value.filter((membership) => isNewCompany(membership.startDate)).length;
+        newMemberships.value = memberships
+          .value
+          .filter((membership) => isNewCompany(membership.startDate)).length;
+
       } catch (error) {
         console.error('멤버십 데이터를 가져오는데 실패했습니다.', error);
       }
@@ -91,6 +145,7 @@ export default defineComponent({
         membershipCompanies.forEach((membership) => {
           if (!membershipMap[membership.membershipName]) {
             membershipMap[membership.membershipName] = {
+              id: membership.membershipId,
               name: membership.membershipName,
               price: membership.membershipPrice,
               subscriberCount: 1, // 첫 가입자
@@ -100,11 +155,20 @@ export default defineComponent({
             membershipMap[membership.membershipName].subscriberCount += 1; // 가입자 추가
           }
         });
-
         memberships.value = Object.values(membershipMap); // 배열로 변환
       } catch (error) {
         console.error('멤버십 가입자 데이터를 가져오는데 실패했습니다.', error);
       }
+    };
+
+    const openMembershipEditModal = (membershipId) => {
+      console.log(membershipId);
+      showModal.value = true;
+      selectedMembershipId.value = membershipId;
+    };
+
+    const closeMembershipEditModal = () => {
+      showModal.value = false;
     };
 
     onMounted(() => {
@@ -118,6 +182,12 @@ export default defineComponent({
       newMemberships,
       totalSubscribers,
       isNewCompany,
+      showModal,
+      openMembershipEditModal,
+      closeMembershipEditModal,
+      updatePrice,
+      selectedMembershipId,
+      price,
     };
   },
 });
