@@ -40,7 +40,41 @@
         </div>
 
         <div class="mb-[12px]">
+          <label for="owner" class="text-[14px] font-medium mb-4"
+            >대표자명
+            <span class="text-[10px] text-[#bbb] leading-[14px]">(2자 이상)</span>
+          </label>
+          <div class="mt-2 flex justify-between items-center">
+            <input
+              v-model="owner"
+              @blur="validateOwner"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
+              type="text"
+              placeholder="대표자명을 입력해 주세요."
+              required
+            />
+          </div>
+          <p v-if="errors.owner" class="text-red text-[12px] mt-2">{{ errors.owner }}</p>
+        </div>
+
+        <div class="mb-[12px]">
+          <label for="publishDate" class="text-[14px] font-medium mb-4">개업일자</label>
+          <div class="mt-2 flex justify-between items-center">
+            <input
+              v-model="publishDate"
+              @blur="validatePublishDate"
+              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
+              type="date"
+              :max="today"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="mb-[12px]">
           <label for="companyNumber" class="text-[14px] font-medium mb-4">사업자번호</label>
+          <span class="text-[10px] text-[#bbb] leading-[14px]"> (숫자만 작성) </span>
+
           <div class="mt-2 flex justify-between items-center">
             <input
               v-model="companyNumber"
@@ -120,24 +154,6 @@
         </div>
 
         <div class="mb-[12px]">
-          <label for="owner" class="text-[14px] font-medium mb-4"
-            >대표자명
-            <span class="text-[10px] text-[#bbb] leading-[14px]">(2자 이상)</span>
-          </label>
-          <div class="mt-2 flex justify-between items-center">
-            <input
-              v-model="owner"
-              @blur="validateOwner"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
-              type="text"
-              placeholder="대표자명을 입력해 주세요."
-              required
-            />
-          </div>
-          <p v-if="errors.owner" class="text-red text-[12px] mt-2">{{ errors.owner }}</p>
-        </div>
-
-        <div class="mb-[12px]">
           <label for="phone" class="text-[14px] font-medium mb-4">휴대폰번호 </label>
           <span class="text-[10px] text-[#bbb] leading-[14px]">(숫자만 입력)</span>
           <div class="mt-2 flex justify-between items-center">
@@ -151,20 +167,6 @@
             />
           </div>
           <p v-if="errors.phoneNumber" class="text-red text-[12px] mt-2">{{ errors.phoneNumber }}</p>
-        </div>
-
-        <div class="mb-[12px]">
-          <label for="publishDate" class="text-[14px] font-medium mb-4">개업일자</label>
-          <div class="mt-2 flex justify-between items-center">
-            <input
-              v-model="publishDate"
-              @blur="validatePublishDate"
-              class="flex-grow h-[52px] text-[14px] font-normal p-4 rounded-[4px] border-solid border-[1px] border-[#ddd] box-border focus:outline-none focus:ring-1 focus:ring-midGreen focus:border-midGreen"
-              type="date"
-              :max="today"
-              required
-            />
-          </div>
         </div>
 
         <div class="mb-[12px]">
@@ -269,6 +271,7 @@
 
 <script>
 import { instance } from '@/utils/axiosUtils';
+import axios from 'axios';
 
 export default {
   data() {
@@ -296,7 +299,7 @@ export default {
       logoFile: null, // 로고 이미지 파일
       previewImage: null, // 로고 이미지 미리보기 URL
 
-      serverUri: process.env.VUE_APP_SERVER_URI,
+      serviceKey: '',
     };
   },
   computed: {
@@ -321,6 +324,7 @@ export default {
     const today = new Date().toISOString().split('T')[0];
     this.today = today;
     this.getConstructionType();
+    this.serviceKey = process.env.VUE_APP_SERVICE_KEY;
   },
   methods: {
     // 파일 변경 시 로고 이미지 미리보기 설정
@@ -428,20 +432,59 @@ export default {
         this.errors.email = '이메일 중복 확인에 실패했습니다.';
       }
     },
-    verifyCompanyNumber() {
-      // 먼저 유효성 검사 수행
+    async verifyCompanyNumber() {
+      // 유효성 검사 수행
       this.validateCompanyNumber();
+      this.validateOwner();
+
+      // 필요한 값이 모두 입력되지 않으면 메시지를 표시
+      if (!this.companyNumber) {
+        this.errors.companyNumber = '사업자 번호를 입력해 주세요.';
+      }
+      if (!this.owner) {
+        this.errors.companyNumber = '대표자명을 입력해 주세요.';
+      }
+      if (!this.publishDate) {
+        this.errors.companyNumber = '개업일자를 입력해 주세요.';
+      }
 
       // 유효성 검사를 통과하지 못한 경우 메시지를 표시하지 않음
-      if (this.errors.companyNumber) {
+      if (this.errors.companyNumber || this.errors.owner || this.errors.publishDate) {
         return;
       }
 
-      // 유효성 검사 통과 후 사업자번호 확인
+      const formattedDate = this.publishDate.replace(/-/g, ''); // YYYY-MM-DD를 YYYYMMDD로 변환
+
+      const data = {
+        businesses: [
+          {
+            b_no: this.companyNumber,
+            start_dt: formattedDate,
+            p_nm: this.owner,
+            p_nm2: '',
+            b_nm: '',
+            corp_no: '',
+            b_sector: '',
+            b_type: '',
+          },
+        ],
+      };
+
+      // 사업자번호 확인 로직
       try {
-        // 여기서 실제 사업자번호 확인 로직을 추가할 수 있습니다.
-        this.companyNumberVerified = true;
-        delete this.errors.companyNumber;
+        const response = await axios.post(
+          `https://api.odcloud.kr/api/nts-businessman/v1/validate?serviceKey=${this.serviceKey}`,
+          data
+        );
+        const status = response.data.data[0].valid_msg;
+        console.log(response);
+
+        if (status === '확인할 수 없습니다.') {
+          this.errors.companyNumber = '입력하신 사업자번호를 확인할 수 없습니다.';
+        } else {
+          this.companyNumberVerified = true;
+          delete this.errors.companyNumber;
+        }
       } catch (error) {
         console.error(error);
         this.errors.companyNumber = '사업자 번호 확인에 실패했습니다.';
@@ -461,11 +504,11 @@ export default {
     },
     validateCompanyNumber() {
       this.companyNumberVerified = false; // 사업자번호가 변경되면 확인 상태 초기화
-      const companyNumberPattern = /^[0-9-]+$/;
+      const companyNumberPattern = /^\d{10}$/; // 숫자만 10자리 정규식
       if (!this.companyNumber) {
         this.errors.companyNumber = '사업자 번호를 입력해 주세요.';
       } else if (!companyNumberPattern.test(this.companyNumber)) {
-        this.errors.companyNumber = '사업자 번호는 숫자와 "-"만 입력할 수 있습니다.';
+        this.errors.companyNumber = '사업자 번호는 숫자 10자리로 입력해 주세요.';
       } else {
         delete this.errors.companyNumber;
       }
