@@ -26,7 +26,7 @@
         </p>
         <p
           v-if="role === 'COMPANY'"
-          @click="$router.push('/estimate/list')"
+          @click="goToEstimateList"
           class="cursor-pointer text-[16px] font-semibold mr-8"
           :class="{ 'text-midGreen': isEstimateListPage, 'hover:text-midGreen': !isEstimateListPage }"
         >
@@ -84,6 +84,7 @@
 import { useUserStore } from '@/stores/userStore';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { authInstance } from '@/utils/axiosUtils';
 
 export default {
   setup() {
@@ -93,6 +94,20 @@ export default {
     const isLogin = computed(() => userStore.isLogin);
     const role = computed(() => userStore.role);
     const nickName = computed(() => userStore.nickName);
+
+
+
+    const goToEstimateList = async () => {
+      const membershipCompanyFlag = await authInstance.get('/api/memberships/isjoin');
+      let isMembershipCompany = membershipCompanyFlag.data;
+      if (isMembershipCompany) {
+        router.push('/estimate/list');
+        return ;
+      }
+
+      alert("멤버십 가입 이후 조회 가능합니다.")
+      router.push('/payment')
+    }
 
     // New method to navigate based on role
     const goToMyPage = () => {
@@ -130,6 +145,7 @@ export default {
       goToMyPage,
       goToHome,
       goToEstimateRequest,
+      goToEstimateList
     };
   },
 
