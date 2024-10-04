@@ -82,7 +82,7 @@ export default {
 
   computed: {
     ...mapState(useUserStore, ['user']),
-    ...mapState(useUserStore, { token: 'accessToken' }), // 토큰 저장
+    ...mapState(useUserStore, { token: 'accessToken' }),
   },
 
   mounted() {
