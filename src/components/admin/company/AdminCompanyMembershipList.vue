@@ -24,22 +24,19 @@
       <ul class="flex gap-4">
         <li>
           <label for="" class="font-medium">총 가입자수</label>
-        </li>
-        <li>
-          <label for="" class="font-medium">신규 가입자수</label>
-          <p class="text-red">?명</p>
+          <p class="text-red">{{ totalmembershipCompany }}명</p>
         </li>
         <li>
           <label for="" class="font-medium">총 가입비</label>
-          <p class="text-red">?원</p>
+          <p class="text-red">{{ totalMembershipFee }}원</p>
         </li>
         <li>
           <label for="" class="font-medium">환불 처리수</label>
-          <p class="text-red">?개</p>
+          <p class="text-red">{{ refundCount }}개</p>
         </li>
         <li>
           <label for="" class="font-medium">환불 처리금액</label>
-          <p class="text-red">?원</p>
+          <p class="text-red">{{ refundAmount }}원</p>
         </li>
       </ul>
     </div>
@@ -53,7 +50,7 @@
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">멤버십 금액</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">멤버십 가입일</th>
             <th class="bg-gray-200 text-center p-2 whitespace-nowrap">멤버십 만료일</th>
-            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">상태</th>
+            <th class="bg-gray-200 text-center p-2 whitespace-nowrap"></th>
           </tr>
         </thead>
         <tbody>
@@ -73,14 +70,12 @@
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               <button
                 v-if="company.validMembership"
-                class="border-solid border-secondary rounded-lg px-2 text-secondary whitespace-nowrap border-2"
+                class="text-red border-red border-solid hover:border-gray-500 rounded-lg px-2 hover:text-gray-500 whitespace-nowrap border-2"
                 @click="openModal(company.membershipId)"
               >
                 환불
               </button>
-              <button v-else class="border-solid border-secondary rounded-lg px-2 text-secondary whitespace-nowrap">
-                만료
-              </button>
+              <p v-else class="border-solid border-red rounded-lg px-2 text-red whitespace-nowrap">만료</p>
             </td>
           </tr>
         </tbody>
@@ -123,13 +118,14 @@ export default defineComponent({
     const totalPage = ref();
     const refundCompanyId = ref(0);
     const isRefundComplete = ref(false); // 환불 완료 모달 상태
-
+    const totalMembershipFee = ref(0);
+    const refundCount = ref(0);
+    const refundAmount = ref(0);
     const membershipCompany = ref([]);
     const totalmembershipCompany = ref([]);
     const isModalOpen = ref(false);
 
     const openModal = (companyId) => {
-      console.log(isModalOpen.value);
       isModalOpen.value = true;
       refundCompanyId.value = companyId;
     };
@@ -152,9 +148,17 @@ export default defineComponent({
     const fetchMembershipList = async () => {
       const response = await authInstance.get(`/api/admin/memberships?page=${page.value - 1}&size=${pageSize.value}`);
       console.log(response.data);
-      console.log(response);
       membershipCompany.value = response.data.slice || [];
-      totalmembershipCompany.value = response.data.list || [];
+      totalmembershipCompany.value = response.data.list.length;
+
+      // 총 가입비 계산
+      totalMembershipFee.value = response.data.list.reduce((acc, company) => acc + company.membershipPrice, 0);
+
+      // 환불 처리수 및 환불 처리 금액 계산
+      const refundedCompanies = response.data.list.filter((company) => !company.validMembership);
+      refundCount.value = refundedCompanies.length;
+      refundAmount.value = refundedCompanies.reduce((acc, company) => acc + company.membershipPrice, 0);
+
       totalPage.value = response.data.totalPage;
     };
 
@@ -170,6 +174,7 @@ export default defineComponent({
     });
 
     return {
+      totalmembershipCompany,
       membershipCompany,
       page,
       confirmRefund,
@@ -181,6 +186,9 @@ export default defineComponent({
       closeModal,
       isRefundComplete,
       closeRefundCompleteModal,
+      totalMembershipFee,
+      refundCount,
+      refundAmount,
     };
   },
 });
