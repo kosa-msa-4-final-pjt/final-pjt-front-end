@@ -40,7 +40,7 @@ export default {
     return {
       reviews: [], // 후기 리스트
       currentPage: 0, // 현재 페이지 번호
-      pageSize: 1, // 한 페이지에 표시할 후기 수
+      pageSize: 6, // 한 페이지에 표시할 후기 수
       totalPage: 1, // 전체 페이지 수
       totalReviews: 0, // 총 후기 수
     };

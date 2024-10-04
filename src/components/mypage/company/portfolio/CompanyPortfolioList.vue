@@ -37,7 +37,7 @@ export default {
     return {
       portfolios: [], // 포트폴리오 리스트
       currentPage: 0, // 현재 페이지 번호
-      pageSize: 2, // 한 페이지에 표시할 포트폴리오 개수
+      pageSize: 6, // 한 페이지에 표시할 포트폴리오 개수
       totalPage: 1, // 총 페이지 수
     };
   },

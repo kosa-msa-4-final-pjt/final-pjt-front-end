@@ -36,7 +36,7 @@ export default {
     return {
       portfolios: [], // 포트폴리오 리스트
       currentPage: 0, // 현재 페이지 번호
-      pageSize: 1, // 페이지당 항목 수
+      pageSize: 6, // 페이지당 항목 수
       totalPage: 1, // 더 불러올 포트폴리오가 있는지 여부
       totalPortfolios: 0,
     };

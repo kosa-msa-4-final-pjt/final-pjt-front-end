@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       reviews: [], // 후기 목록
-      pageSize: 1, // 페이지당 후기 개수
+      pageSize: 6, // 페이지당 후기 개수
       currentPage: 0, // 현재 페이지 번호
       totalPage: 1, // 전체 페이지 수
     };

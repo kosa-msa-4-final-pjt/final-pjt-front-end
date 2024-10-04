@@ -9,8 +9,7 @@
           <p class="text-sm text-gray-400 font-medium">{{ formattedCreatedAt }}</p>
         </div>
         <div>
-          <div class="flex gap-4">
-            <button @click="goToEditPage" class="text-gray-400 hover:text-gray-600 text-sm rounded-lg">수정</button>
+          <div v-if="portfolio.canUpdate" class="flex gap-4">
             <button @click="confirmDelete" class="text-gray-400 hover:text-gray-600 text-sm rounded-lg">삭제</button>
           </div>
         </div>
@@ -162,9 +161,7 @@ export default {
         console.error('Error fetching portfolio data: ', error);
       }
     },
-    goToEditPage() {
-      this.$router.push(`/portfolio/edit/${this.$route.params.id}`);
-    },
+
     confirmDelete() {
       if (confirm('시공시례를 삭제하시겠습니까?')) {
         this.deletePortfolio();

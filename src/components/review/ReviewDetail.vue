@@ -36,7 +36,6 @@
         </div>
         <div>
           <div v-if="reviewDetail.updatable" class="flex gap-4">
-            <button @click="goToEditPage" class="text-gray-400 hover:text-gray-600 text-sm rounded-lg">수정</button>
             <button @click="confirmDelete" class="text-gray-400 hover:text-gray-600 text-sm rounded-lg">삭제</button>
           </div>
           <div class="flex justify-end items-center text-lg text-midGreen">

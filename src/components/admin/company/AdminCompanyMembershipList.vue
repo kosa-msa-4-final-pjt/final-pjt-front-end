@@ -1,5 +1,4 @@
 <template>
-
   <div v-if="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-opacity-75">
     <div class="bg-white p-6 rounded-lg shadow-lg">
       <h2 class="text-lg font-semibold mb-4">정말 환불하시겠습니까?</h2>
@@ -48,46 +47,42 @@
     <div>
       <table class="table border-2 border-solid border-gray-300 border-collapse w-full">
         <thead>
-        <tr>
-          <th class="bg-gray-200 text-center p-2 whitespace-nowrap">업체명</th>
-          <th class="bg-gray-200 text-center p-2 whitespace-nowrap">멤버십 종류</th>
-          <th class="bg-gray-200 text-center p-2 whitespace-nowrap">멤버십 금액</th>
-          <th class="bg-gray-200 text-center p-2 whitespace-nowrap">멤버십 가입일</th>
-          <th class="bg-gray-200 text-center p-2 whitespace-nowrap">멤버십 만료일</th>
-          <th class="bg-gray-200 text-center p-2 whitespace-nowrap">상태</th>
-        </tr>
+          <tr>
+            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">업체명</th>
+            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">멤버십 종류</th>
+            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">멤버십 금액</th>
+            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">멤버십 가입일</th>
+            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">멤버십 만료일</th>
+            <th class="bg-gray-200 text-center p-2 whitespace-nowrap">상태</th>
+          </tr>
         </thead>
         <tbody>
+          <tr v-for="company in membershipCompany" :key="company.companyId">
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
+              {{ company.companyName }}
+            </td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
+              {{ company.membershipName }}
+            </td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
+              {{ company.membershipPrice }}원
+            </td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ company.startDate }}</td>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ company.endDate }}</td>
 
-        <tr v-for="company in membershipCompany" :key="company.companyId">
-          <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-            {{ company.companyName }}
-          </td>
-          <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-            {{ company.membershipName }}
-          </td>
-          <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-            {{ company.membershipPrice }}원
-          </td>
-          <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ company.startDate }}</td>
-          <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">{{ company.endDate }}</td>
-
-          <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-            <button
-              v-if="company.validMembership"
-              class="border-solid border-secondary rounded-lg px-2 text-secondary whitespace-nowrap border-2"
-              @click="openModal(company.membershipId)"
-            >
-              환불
-            </button>
-            <button
-              v-else
-              class="border-solid border-secondary rounded-lg px-2 text-secondary whitespace-nowrap"
-            >
-              만료
-            </button>
-          </td>
-        </tr>
+            <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
+              <button
+                v-if="company.validMembership"
+                class="border-solid border-secondary rounded-lg px-2 text-secondary whitespace-nowrap border-2"
+                @click="openModal(company.membershipId)"
+              >
+                환불
+              </button>
+              <button v-else class="border-solid border-secondary rounded-lg px-2 text-secondary whitespace-nowrap">
+                만료
+              </button>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -124,7 +119,7 @@ export default defineComponent({
 
   setup() {
     const page = ref(1);
-    const pageSize = ref(5);
+    const pageSize = ref(6);
     const totalPage = ref();
     const refundCompanyId = ref(0);
     const isRefundComplete = ref(false); // 환불 완료 모달 상태
@@ -137,7 +132,6 @@ export default defineComponent({
       console.log(isModalOpen.value);
       isModalOpen.value = true;
       refundCompanyId.value = companyId;
-
     };
 
     const closeModal = () => {
@@ -153,7 +147,7 @@ export default defineComponent({
       console.log(refundResult.data);
       isModalOpen.value = false;
       isRefundComplete.value = true;
-    }
+    };
 
     const fetchMembershipList = async () => {
       const response = await authInstance.get(`/api/admin/memberships?page=${page.value - 1}&size=${pageSize.value}`);
@@ -175,7 +169,6 @@ export default defineComponent({
       console.log(fetch);
     });
 
-
     return {
       membershipCompany,
       page,
@@ -187,7 +180,7 @@ export default defineComponent({
       openModal,
       closeModal,
       isRefundComplete,
-      closeRefundCompleteModal
+      closeRefundCompleteModal,
     };
   },
 });

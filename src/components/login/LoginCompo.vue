@@ -47,13 +47,9 @@
 
           <!-- 위 버튼과 다른 기능을 하다보니 div를 나눔 -->
           <div class="findOrsignup flex gap-5 justify-center items-center mt-6 mb-10">
-            <a href="" class="findEmailBtn hover:text-midGreen text-[#737373] text-sm py-1 cursor-pointer"
-              >이메일 찾기</a
-            >
-            <div class="w-px min-h-3 bg-[#E1E1E1]"></div>
-            <a href="" class="findPasswordBtn hover:text-midGreen text-[#737373] text-sm py-1 cursor-pointer"
-              >비밀번호 찾기</a
-            >
+            <p @click="this.$router.push('/memberSignup')" class="text-[#737373] text-sm py-1">
+              계정이 없으신가요? <span class="hover:text-midGreen cursor-pointer underline">가입하기</span>
+            </p>
           </div>
 
           <!-- 소셜로그인 -->
