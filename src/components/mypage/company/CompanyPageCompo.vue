@@ -92,6 +92,7 @@ export default {
       activeTab: 'info', // 기본값은 info 컴포넌트
     };
   },
+
   computed: {
     activeComponent() {
       switch (this.activeTab) {
@@ -113,6 +114,19 @@ export default {
   methods: {
     toggleRequestList() {
       this.showRequestOptions = !this.showRequestOptions;
+    },
+
+    openModal(companyId) {
+      this.isModalOpen.value = true;
+      this.refundCompanyId.value = companyId;
+    },
+
+    closeModal() {
+      this.isModalOpen.value = false;
+    },
+
+     closeRefundCompleteModal (){
+      this.isRefundComplete.value = false;
     },
   },
 };
