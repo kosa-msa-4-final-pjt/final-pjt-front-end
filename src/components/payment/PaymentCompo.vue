@@ -8,7 +8,8 @@
         class="px-6 py-20 bg-white text-center shadow-sm rounded-lg border-2 border-gray-200 flex-colum"
       >
         <h3 class="text-2xl font-bold text-gray-800 mb-2">
-          <font-awesome-icon :icon="['fas', 'dollar-sign']" />&nbsp;{{ membership.type }}
+          <font-awesome-icon :icon="['far', 'credit-card']" />
+          {{ membership.type }}
         </h3>
         <p class="text-4xl font-semibold text-gray-900"><span class="text-[26px]">월 </span>{{ membership.price }}원</p>
 
