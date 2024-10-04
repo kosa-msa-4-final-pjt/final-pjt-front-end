@@ -20,13 +20,8 @@
     </div>
 
     <div class="bg-white h-[154px] px-3 pt-2 pb-4 rounded-b-lg">
-      <div class="mb-2 flex justify-between items-center">
+      <div class="mb-2 flex gap-2 items-center">
         <p class="text-[16px] font-bold text-[#1d1d1d] leading-[24px] tracking-[-0.5px]">{{ company.companyName }}</p>
-      </div>
-      <div class="mb-3 flex justify-between items-center">
-        <span class="text-[13px] font-medium text-[#555] leading-[16px] tracking-[-0.3px]"
-          >최근 상담 0건 • 총 공사 3건</span
-        >
         <span class="text-[13px] font-normal text-[#555] leading-[16px] tracking-[-0.3px] flex items-center"
           ><font-awesome-icon class="text-midGreen" :icon="['fas', 'star']" />&nbsp;{{ company.rating }}</span
         >

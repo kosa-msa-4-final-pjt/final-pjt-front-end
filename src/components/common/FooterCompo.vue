@@ -8,8 +8,14 @@
         <div class="w-full md:w-1/3 mb-6 md:mb-0">
           <img class="w-10 h-10" src="@/assets/logo.png" alt="로고" />
           <h2 class="mt-2 text-xl font-bold">체인집업</h2>
-          <p class="mt-2 text-gray-400">03077 서울 종로구 창경궁로 254</p>
-          <p class="mt-1 text-gray-400">대표 전화: 02-1234-5678</p>
+          <div class="flex items-center mt-2">
+            <a href="https://github.com/orgs/kosa-msa-4-final-pjt/repositories">
+              <font-awesome-icon class="text-white" :icon="['fab', 'github']" />
+            </a>
+            <p class="ml-1 text-gray-400 font-semibold">팀 체인저</p>
+          </div>
+
+          <p class="mt-1 text-gray-400">김동혁 이연수 이푸름 채형일</p>
         </div>
 
         <!-- 퀵 링크 -->
@@ -21,7 +27,6 @@
               <p @click="$router.push('/notice/list')" class="cursor-pointer hover:text-gray-300">공지사항</p>
             </li>
             <li><p @click="$router.push('/faq/list')" class="cursor-pointer hover:text-gray-300">FAQ</p></li>
-            <li><a href="/" class="hover:text-gray-300">회사 소개</a></li>
           </ul>
         </div>
       </div>

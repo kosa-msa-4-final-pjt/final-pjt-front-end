@@ -81,7 +81,7 @@ export default {
   },
   setup() {
     const page = ref(1);
-    const pageSize = ref(5);
+    const pageSize = ref(6);
     const totalPage = ref();
 
     const FAQList = ref([]);

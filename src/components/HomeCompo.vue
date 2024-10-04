@@ -117,7 +117,7 @@ export default {
       totalPremiumPages: 1,
       totalBasicPages: 1,
       totalNoPages: 1,
-      pageSize: 3,
+      pageSize: 6,
 
       // Initial Load 상태를 저장하는 변수
       initialLoaded: false,
