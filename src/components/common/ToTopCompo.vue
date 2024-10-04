@@ -1,10 +1,10 @@
 <template>
   <div
-    class="w-[64px] h-[64px] fixed right-4 bottom-[80px] transition-all duration-300 cursor-pointer bg-no-repeat bg-cover"
+    class="fixed right-4 bottom-[80px] transition-all duration-300 cursor-pointer bg-gray-200 rounded-full"
     data-nav="true"
     @click="scrollToTop"
   >
-    <img :src="require('/public/imgs/ic_arrow_top.svg')" alt="Scroll to Top" />
+    <font-awesome-icon class="text-[30px] text-gray-500 px-5 py-4" :icon="['fas', 'arrow-up']" />
   </div>
 </template>
 
