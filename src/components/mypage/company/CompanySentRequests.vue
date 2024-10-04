@@ -12,6 +12,33 @@
           :key="index"
           class="bg-white p-6 border border-gray-200 rounded-lg shadow flex flex-col justify-between"
         >
+          <div class="mb-4">
+            <span
+              v-if="request.estimateStatus === 'SENT'"
+              class="font-medium bg-[#f9a825] text-white rounded-full text-sm px-3 py-1"
+            >
+              보낸 요청
+            </span>
+            <span
+              v-else-if="request.estimateStatus === 'REJECTED'"
+              class="font-medium bg-[#d32f2f] text-white rounded-full text-sm px-3 py-1"
+            >
+              거절된 요청
+            </span>
+            <span
+              v-else-if="request.estimateStatus === 'ACCEPTED'"
+              class="font-medium bg-[#4caf50] text-white rounded-full text-sm px-3 py-1"
+            >
+              진행 중인 시공
+            </span>
+            <span
+              v-else-if="request.estimateStatus === 'COMPLETE'"
+              class="font-medium bg-[#0091ea] text-white rounded-full text-sm px-3 py-1"
+            >
+              완료된 시공
+            </span>
+          </div>
+
           <!-- 기본 정보 -->
           <div class="grid grid-cols-2 gap-x-6">
             <p class="text-base text-gray-700 mb-2"><strong>요청자</strong></p>
@@ -69,6 +96,20 @@
                 수정
               </button>
             </div>
+            <div v-else-if="request.estimateStatus === 'REJECTED'" class="flex w-full">
+              <button
+                class="w-full mr-4 bg-gray-300 text-gray-800 rounded-lg py-2 px-4 font-medium"
+                @click="cancelEstimate(request)"
+              >
+                취소
+              </button>
+              <button
+                class="w-full bg-midGreen text-white rounded-lg py-2 px-4 font-medium"
+                @click="openUpdateModal(request)"
+              >
+                견적 다시 보내기
+              </button>
+            </div>
           </div>
         </li>
       </ul>
@@ -124,6 +165,7 @@ export default {
       try {
         const response = await authInstance.get('/api/estimaterequests/sent');
         sentRequests.value = response.data;
+        console.log(sentRequests.value);
       } catch (error) {
         console.error('보낸 요청 목록을 가져오는데 실패했습니다.', error);
       }
