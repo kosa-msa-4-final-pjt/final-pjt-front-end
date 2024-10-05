@@ -171,7 +171,7 @@ export default {
     const companies = reactive({
       PREMIUM: [],
       BASIC: [],
-      NO: [],
+      // NO: [], // 'NO' grade removed
     });
     const sortedCompanies = reactive({
       PREMIUM: [],
@@ -187,7 +187,7 @@ export default {
       return sortedCompanies.OTHER.length > 0;
     });
 
-    const grades = ['PREMIUM', 'BASIC', 'NO'];
+    const grades = ['PREMIUM', 'BASIC']; // Removed 'NO'
 
     const fetchCompanies = async () => {
       loading.value = true;
@@ -230,7 +230,7 @@ export default {
 
     const sortCompanies = () => {
       sortedCompanies.PREMIUM = companies.PREMIUM || [];
-      sortedCompanies.OTHER = [...(companies.BASIC || []), ...(companies.NO || [])];
+      sortedCompanies.OTHER = [...(companies.BASIC || [])]; // Only BASIC is included in OTHER
     };
 
     const showOtherCompaniesMethod = () => {
