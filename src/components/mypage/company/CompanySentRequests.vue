@@ -5,10 +5,10 @@
     </div>
 
     <!-- 보낸 요청이 있을 때 보여줌 -->
-    <div v-if="sentRequests.length > 0">
+    <div v-if="filteredSentRequests.length > 0">
       <ul class="space-y-6">
         <li
-          v-for="(request, index) in sentRequests"
+          v-for="(request, index) in filteredSentRequests"
           :key="index"
           class="bg-white p-6 border border-gray-200 rounded-lg shadow flex flex-col justify-between"
         >
@@ -68,9 +68,9 @@
             <p class="font-semibold text-gray-800 mb-2 text-base">공사 가격</p>
             <ul class="flex flex-wrap gap-2">
               <li v-for="(price, type) in request.constructionPrices" :key="type">
-                <span class="font-medium bg-gray-100 text-gray-700 rounded-full text-sm px-3 py-1"
-                  >{{ type }}: {{ price }}만원</span
-                >
+                <span class="font-medium bg-gray-100 text-gray-700 rounded-full text-sm px-3 py-1">
+                  {{ type }}: {{ price }}만원
+                </span>
               </li>
             </ul>
           </div>
@@ -125,9 +125,9 @@
       <div class="bg-white rounded-lg p-6 w-[400px] shadow-lg">
         <h2 class="text-lg font-semibold mb-4">견적 수정하기</h2>
         <div v-for="(constructionType, index) in selectedEstimate.constructionTypes" :key="index" class="mb-4">
-          <label :for="'constructionType-' + index" class="block mb-1 font-medium">{{
-            constructionType.typeName
-          }}</label>
+          <label :for="'constructionType-' + index" class="block mb-1 font-medium">
+            {{ constructionType.typeName }}
+          </label>
           <input
             type="text"
             :id="'constructionType-' + index"
@@ -151,7 +151,7 @@
 
 <script>
 import { authInstance } from '@/utils/axiosUtils';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 
 export default {
   setup() {
@@ -172,6 +172,17 @@ export default {
     };
 
     onMounted(fetchRequests);
+
+    // Computed property to filter out specific requests
+    const filteredSentRequests = computed(() => {
+      return sentRequests.value.filter((request) => {
+        // estimateStatus가 'SENT'이고 estimateRequestStatus가 'WAITING'이 아닌 경우 제외
+        if (request.estimateStatus === 'SENT' && request.estimateRequestStatus !== 'WAITING') {
+          return false;
+        }
+        return true;
+      });
+    });
 
     // 견적 취소하기
     const cancelEstimate = async (estimate) => {
@@ -257,7 +268,7 @@ export default {
     };
 
     return {
-      sentRequests,
+      filteredSentRequests,
       showUpdateModal,
       selectedEstimate,
       constructionTypeInputs,

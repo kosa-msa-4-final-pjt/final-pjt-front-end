@@ -44,13 +44,6 @@
       </div>
     </div>
 
-    <!-- 환불 요청 버튼 -->
-    <div class="mt-8 text-right">
-      <button @click="refundRequest" class="mr-20 bg-gray-400 text-white py-2 px-4 rounded hover:bg-red">
-        환불 요청
-      </button>
-    </div>
-
     <!-- 환불 정책 모달 -->
     <div v-if="showPolicyModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-20">
       <div class="bg-white px-10 py-10 rounded-lg shadow-lg text-center">
@@ -136,18 +129,6 @@ export default {
         );
       } catch (error) {
         console.log('결제 오류:', error);
-      }
-    },
-
-    // 환불 요청
-    async refundRequest() {
-      try {
-        const result = await authInstance.post(`${SERVER_BASE_URL}/api/membership`, {
-          id: this.id,
-        });
-        console.log(result.data);
-      } catch (error) {
-        console.log('환불 오류:', error);
       }
     },
 
