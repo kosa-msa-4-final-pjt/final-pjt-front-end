@@ -171,8 +171,6 @@ export default {
       try {
         const response = await instance.get(`/api/portfolio/${portfolioId}`);
         const data = response.data;
-        console.log(data);
-
         // 불러온 데이터를 폼에 초기값으로 설정
         this.title = data.title;
         this.content = data.content;
@@ -301,8 +299,7 @@ export default {
       };
 
       try {
-        const response = await authInstance.patch(`/api/portfolio/${this.portfolioId}`, portfolioRequest);
-        console.log(response.data);
+        await authInstance.patch(`/api/portfolio/${this.portfolioId}`, portfolioRequest);
 
         // 이미지 업로드도 진행
         await this.$refs.quillEditor.uploadImages(this.portfolioId);

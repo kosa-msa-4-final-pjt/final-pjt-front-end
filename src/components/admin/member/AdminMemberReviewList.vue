@@ -94,7 +94,6 @@ export default defineComponent({
     const fetchReviewList = async () => {
       try {
         const response = await authInstance.get(`/api/admin/reviews?page=${page.value - 1}&size=${pageSize.value}`);
-        console.log(response.data);
         reviews.value = response.data.slice || [];
         totalReview.value = response.data.list || [];
 

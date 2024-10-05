@@ -194,7 +194,6 @@ export default {
       try {
         const response = await authInstance.get(`/api/admin/portfolios/${portfolioId.value}`);
         portfolioTest.value = response.data;
-        console.log(portfolioTest.value);
 
         // 이미지 태그에서 src 추출
         portfolio.images = extractImagesFromContent(portfolioTest.value.content);
@@ -208,8 +207,6 @@ export default {
       const doc = parser.parseFromString(content, 'text/html');
       const imgTags = doc.querySelectorAll('img');
       const imageUrls = Array.from(imgTags).map((img) => img.src);
-      console.log('Extracted image URLs:', imageUrls); // 추가: 이미지 추출된 부분을 콘솔에 출력하여 확인
-
       return imageUrls;
     };
 

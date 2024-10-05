@@ -69,7 +69,7 @@ export default {
         await authInstance.post('/api/admin/notice/create', noticeData);
         router.back();
       } catch (error) {
-        console.log('공지사항 등록을 실패했습니다.', error);
+        console.error('공지사항 등록을 실패했습니다.', error);
       }
     };
 

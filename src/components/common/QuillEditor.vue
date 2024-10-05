@@ -100,10 +100,9 @@ export default {
       const uploadedUrls = [];
       let afterUpdate = this.quill.root.innerHTML;
 
-      for (const { file, range, placeholder } of this.pendingImages) {
+      for (const { file, placeholder } of this.pendingImages) {
         const formData = new FormData();
         formData.append('file', file);
-        console.log(range);
         try {
           const response = await instance.post(`/api/portfolio/${portfolioId}/images`, formData, {
             headers: {
@@ -111,7 +110,6 @@ export default {
             },
           });
           const imageUrl = response.data;
-          console.log(imageUrl);
           uploadedUrls.push(imageUrl);
           afterUpdate = afterUpdate.replace(placeholder, imageUrl);
           // Base64 이미지를 서버 URL로 교체
@@ -122,10 +120,9 @@ export default {
         }
       }
 
-      const updateResult = await new Promise((resolve, reject) =>
+      await new Promise((resolve, reject) =>
         this.$emit('insert-images', portfolioId, afterUpdate, resolve, reject)
       );
-      console.log(updateResult);
       this.pendingImages = [];
     },
   },

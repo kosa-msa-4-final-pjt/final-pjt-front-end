@@ -78,7 +78,6 @@ export default {
       try {
         const response = await authInstance.get(`/api/admin/faq/${FAQId.value}`);
         FAQ.value = response.data;
-        console.log('FAQ 상세:', FAQ.value);
       } catch (error) {
         console.error('FAQ를 가져오지 못했습니다.', error);
       }
@@ -111,7 +110,7 @@ export default {
         await authInstance.delete(`/api/admin/faq/${FAQId.value}`);
         routerInstance.back();
       } catch (error) {
-        console.log('FAQ 삭제를 실패했습니다.', error);
+        console.error('FAQ 삭제를 실패했습니다.', error);
       }
     };
 

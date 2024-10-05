@@ -149,7 +149,6 @@ export default {
 
         const response = await instance.get(url);
         this.companies = response.data;
-        console.log('fetchCompanies', this.companies);
 
         // Fetch total pages from the response
         this.totalPremiumPages = response.data.PREMIUM.totalPage;
@@ -187,7 +186,6 @@ export default {
 
         const response = await instance.get(url);
 
-        console.log(response.data);
         // Fetch total pages from the response or calculate them
         if (name === 'PREMIUM') {
           this.totalPremiumPages = response.data.totalPage;

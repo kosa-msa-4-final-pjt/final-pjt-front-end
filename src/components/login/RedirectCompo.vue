@@ -7,9 +7,6 @@ export default {
     const nickName = decodeURIComponent(this.$route.query.nickName);
     const role = this.$route.query.role;
 
-    if (accessToken) {
-      console.log('accessToken = ', accessToken);
-    }
     const store = useUserStore();
 
     store.login(nickName, accessToken, role);

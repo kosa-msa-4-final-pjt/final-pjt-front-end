@@ -105,7 +105,6 @@ export default defineComponent({
     const fetchMembers = async () => {
       try {
         const response = await authInstance.get(`/api/admin/members?page=${page.value - 1}&size=${pageSize.value}`);
-        console.log(response.data);
         members.value = response.data.slice || [];
         totalMembers.value = response.data.list.length;
 

@@ -113,7 +113,6 @@ export default {
         this.company = response.data;
         this.portfolios = this.company.responses.list.slice(0, 3);
         this.reviews = this.company.reviews.list.slice(0, 3);
-        console.log(response.data);
       } catch (error) {
         console.error('Error fetching company data:', error);
       }

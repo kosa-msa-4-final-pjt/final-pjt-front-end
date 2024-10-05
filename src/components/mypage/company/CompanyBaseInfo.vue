@@ -188,7 +188,6 @@ export default {
       try {
         const response = await authInstance.get('/api/company/mypage');
         info.value = response.data;
-        console.log(info.value);
 
         // 시공 종류 데이터도 함께 가져오기
         allServices.value = response.data.allServices;

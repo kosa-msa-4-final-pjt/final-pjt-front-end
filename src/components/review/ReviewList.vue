@@ -55,7 +55,6 @@ export default {
     async fetchReviews() {
       try {
         const response = await instance.get(`/api/reviews/page?page=${this.currentPage}&size=${this.pageSize}`);
-        console.log(response.data);
         this.totalPage = response.data.totalPage;
         this.totalReviews = response.data.list.length;
         this.reviews.push(...response.data.slice);

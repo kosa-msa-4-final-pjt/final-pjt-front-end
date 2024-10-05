@@ -116,7 +116,6 @@ export default {
 
     const openModal = (companyId) => {
       isModalOpen.value = true;
-      console.log(companyId)
       refundCompanyId.value = companyId;
     };
 
@@ -129,9 +128,7 @@ export default {
     };
 
     const confirmRefund = async () => {
-      console.log(refundCompanyId)
-      const refundResult = await authInstance.patch(`/api/memberships/${refundCompanyId.value}/refund`);
-      console.log(refundResult.data);
+      await authInstance.patch(`/api/memberships/${refundCompanyId.value}/refund`);
       isModalOpen.value = false;
       isRefundComplete.value = true;
         window.location.reload();
@@ -142,7 +139,7 @@ export default {
         const response = await authInstance.get('/api/memberships');
         memberships.value = response.data;
       } catch (error) {
-        console.log('실패', error);
+        console.error('실패', error);
       }
     };
 

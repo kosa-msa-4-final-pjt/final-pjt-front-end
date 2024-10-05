@@ -97,10 +97,7 @@ export default {
       try {
         // 결제 요청
         const response = await authInstance.post(`/api/payment/prepare`, { membershipId });
-        console.log(response);
         const { price, type, merchantUid, paymentCompany } = response.data.data;
-
-        console.log(response.data.data);
 
         window.IMP.request_pay(
           {
@@ -119,7 +116,7 @@ export default {
           },
 
           async (response) => {
-            const complete = await authInstance.post(`${SERVER_BASE_URL}/api/memberships`, {
+             await authInstance.post(`${SERVER_BASE_URL}/api/memberships`, {
               impUid: response.imp_uid,
               merchantUid: response.merchant_uid,
               success: response.success,
@@ -130,24 +127,21 @@ export default {
               alert('결제를 성공하셨습니다.');
               this.$router.push('/mypage/company');
             }
-
-            console.log(complete.data.data);
           }
         );
       } catch (error) {
-        console.log('결제 오류:', error);
+        console.error('결제 오류:', error);
       }
     },
 
     // 환불 요청
     async refundRequest() {
       try {
-        const result = await authInstance.post(`${SERVER_BASE_URL}/api/membership`, {
+        await authInstance.post(`${SERVER_BASE_URL}/api/membership`, {
           id: this.id,
         });
-        console.log(result.data);
       } catch (error) {
-        console.log('환불 오류:', error);
+        console.error('환불 오류:', error);
       }
     },
 

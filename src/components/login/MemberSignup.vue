@@ -162,8 +162,6 @@ export default {
         const response = await instance.get(`/api/member/check-email`, {
           params: { email: this.email },
         });
-        console.log(response);
-        console.log(response.data.duplicated);
         if (response.data.duplicated) {
           // 객체로 전달되기 때문에
           this.errors.email = '이미 사용 중인 이메일입니다.';
@@ -248,17 +246,11 @@ export default {
     },
     validateForm() {
       this.validateEmail();
-      console.log('email validate success');
       this.validatePassword();
-      console.log('password validate success');
       this.validateConfirmPassword();
-      console.log('password validate success');
       this.validateName();
-      console.log('name validate success');
       this.validateNickname();
-      console.log('email validate success');
       this.validatePhone();
-      console.log('email validate success');
     },
     async insertMember() {
       this.validateForm();
@@ -272,13 +264,10 @@ export default {
           phoneNumber: this.phoneNumber,
         };
 
-        console.log(memberData);
 
         // 서버로 POST 요청
         try {
-          const response = await instance.post(`/api/member`, memberData);
-          console.log(response);
-          console.log(response.data);
+          await instance.post(`/api/member`, memberData);
           alert('입력하신 이메일로 인증 메일이 전송되었습니다. 메일 인증 후 로그인이 가능합니다.');
           this.$router.push('/login');
         } catch (error) {

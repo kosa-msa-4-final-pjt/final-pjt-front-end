@@ -109,12 +109,10 @@ export default {
     const route = useRoute();
     const router = useRouter();
     const companyId = route.params.id;
-    console.log(companyId);
 
     const fetchCompanyDetail = async () => {
       try {
         const response = await authInstance.get(`/api/admin/company/${companyId}`);
-        console.log(response.data);
         company.value = response.data;
       } catch (error) {
         console.error('업체 정보를 불러오는데 실패했습니다. ', error);

@@ -92,11 +92,9 @@ export default defineComponent({
     };
 
     const updatePrice = async () => {
-      console.log(selectedMembershipId.value);
-      const updateRequest = await authInstance.patch(`/api/admin/membership/${selectedMembershipId.value}/price`, {
+      await authInstance.patch(`/api/admin/membership/${selectedMembershipId.value}/price`, {
         price: price.value,
       });
-      console.log(updateRequest);
       alert('가격 수정이 완료되었습니다.');
       window.location.reload();
     };
@@ -108,7 +106,6 @@ export default defineComponent({
         memberships.value.sort((a, b) => b.price - a.price);
 
         totalMemberships.value = memberships.value.length;
-        console.log(memberships.value);
       } catch (error) {
         console.error('멤버십 데이터를 가져오는데 실패했습니다.', error);
       }
@@ -147,7 +144,6 @@ export default defineComponent({
     };
 
     const openMembershipEditModal = (membershipId) => {
-      console.log(membershipId);
       showModal.value = true;
       selectedMembershipId.value = membershipId;
     };

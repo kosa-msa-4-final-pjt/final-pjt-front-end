@@ -91,13 +91,12 @@ export default {
     const getNotices = async () => {
       try {
         const response = await authInstance.get(`/api/admin/notice/list?page=${page.value - 1}&size=${pageSize.value}`);
-        console.log(response.data);
         noticeList.value = response.data.slice || [];
         totalNotice.value = response.data.list || [];
 
         totalPage.value = response.data.totalPage;
       } catch (error) {
-        console.log('공지사항을 가져오지 못했습니다.', error);
+        console.error('공지사항을 가져오지 못했습니다.', error);
       }
     };
 

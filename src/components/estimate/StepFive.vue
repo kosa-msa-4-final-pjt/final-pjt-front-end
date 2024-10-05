@@ -174,7 +174,6 @@ export default {
             });
 
             this.$router.push('/requestEstimate/stepSix');
-            console.log(response);
           })
           .catch((error) => {
             console.error('폼 제출 중 오류 발생:', error);

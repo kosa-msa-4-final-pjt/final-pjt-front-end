@@ -52,8 +52,6 @@ export default {
     async fetchReviews() {
       try {
         const response = await authInstance.get(`/api/reviews/mypage?page=${this.currentPage}&size=${this.pageSize}`);
-        console.log(response.data.slice);
-
         // 전체 페이지 수 설정
         this.totalPage = response.data.totalPage;
 

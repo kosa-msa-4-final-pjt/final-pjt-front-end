@@ -96,7 +96,6 @@ export default {
       try {
         const response = await authInstance.get('/api/member/mypage');
         info.value = response.data;
-        console.log(response.data);
       } catch (error) {
         console.error('유저 정보를 가져오지 못했습니다.', error);
       }
@@ -111,8 +110,6 @@ export default {
 
       try {
         // 사용자 정보 업데이트 API 호출
-        console.log(info.value.password);
-        console.log(info.value.phoneNumber);
         await authInstance.patch('/api/member/mypage', {
           password: info.value.password,
           phoneNumber: info.value.phoneNumber,
