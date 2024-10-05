@@ -20,7 +20,7 @@
       <div>
         <label class="block text-sm font-medium text-gray-700">소개글</label>
         <textarea
-          class="mt-2 block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-midGreen resize-none"
+          class="mt-2 h-[120px] block w-full px-3 py-2 rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-midGreen resize-none"
           placeholder="소개글을 입력해주세요."
           v-model="info.companyDesc"
         ></textarea>
