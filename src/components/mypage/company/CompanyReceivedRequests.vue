@@ -216,8 +216,6 @@ export default {
         this.estimateDetails.forEach((detail, index) => {
           this.constructionTypeInputs[index] = detail.estimatedPrice || ''; // 가격이 있으면 설정, 없으면 빈 문자열
         });
-
-        console.log(this.estimateDetails);
         this.showSendModal = true; // 데이터를 다 가져온 후 모달을 표시
       } catch (error) {
         console.error('견적 상세 정보를 가져오는데 실패했습니다.', error); // 에러 발생 시 콘솔에 로그 출력
@@ -321,7 +319,7 @@ export default {
         await authInstance.delete(`/api/estimates/${estimate.estimateId}`);
         window.location.reload();
       } catch (error) {
-        console.log('견적 삭제를 실패했습니다.', error);
+        console.error('견적 삭제를 실패했습니다.', error);
       }
     },
 

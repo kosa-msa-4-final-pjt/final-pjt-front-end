@@ -139,15 +139,13 @@ export default defineComponent({
     };
 
     const confirmRefund = async () => {
-      const refundResult = await authInstance.post(`/api/admin/memberships/${refundCompanyId.value}/refund`);
-      console.log(refundResult.data);
+      await authInstance.post(`/api/admin/memberships/${refundCompanyId.value}/refund`);
       isModalOpen.value = false;
       isRefundComplete.value = true;
     };
 
     const fetchMembershipList = async () => {
       const response = await authInstance.get(`/api/admin/memberships?page=${page.value - 1}&size=${pageSize.value}`);
-      console.log(response.data);
       membershipCompany.value = response.data.slice || [];
       totalmembershipCompany.value = response.data.list.length;
 
@@ -169,8 +167,7 @@ export default defineComponent({
 
     // 컴포넌트가 마운트될 때 데이터 불러오기
     onMounted(async () => {
-      const fetch = await fetchMembershipList();
-      console.log(fetch);
+      await fetchMembershipList();
     });
 
     return {

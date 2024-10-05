@@ -158,7 +158,6 @@ export default {
           params: { status: 'COMPLETE' },
         });
         completeEstimateRequests.value = response.data;
-        console.log('Complete:', completeEstimateRequests.value);
       } catch (error) {
         console.error('완료 견적 리스트를 가져오는데 실패했습니다.', error);
       }
@@ -171,7 +170,6 @@ export default {
           params: { status: 'WRITTENREVIEW' },
         });
         writtenReviewEstimateRequests.value = response.data;
-        console.log('Written Review:', writtenReviewEstimateRequests.value);
       } catch (error) {
         console.error('완료 견적 리스트를 가져오는데 실패했습니다.', error);
       }

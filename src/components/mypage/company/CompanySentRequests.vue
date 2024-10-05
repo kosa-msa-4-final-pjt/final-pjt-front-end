@@ -165,7 +165,6 @@ export default {
       try {
         const response = await authInstance.get('/api/estimaterequests/sent');
         sentRequests.value = response.data;
-        console.log(sentRequests.value);
       } catch (error) {
         console.error('보낸 요청 목록을 가져오는데 실패했습니다.', error);
       }
@@ -191,7 +190,7 @@ export default {
           await authInstance.delete(`/api/estimates/${estimate.estimateId}`);
           await fetchRequests();
         } catch (error) {
-          console.log('견적 삭제를 실패했습니다.', error);
+          console.error('견적 삭제를 실패했습니다.', error);
         }
       }
     };

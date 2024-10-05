@@ -93,7 +93,6 @@ export default defineComponent({
     const fetchPortfolioList = async () => {
       try {
         const response = await authInstance.get(`/api/admin/portfolios?page=${page.value - 1}&size=${pageSize.value}`);
-        console.log(response.data);
         portfolios.value = response.data.slice || [];
         totalPortfolio.value = response.data.list || [];
 

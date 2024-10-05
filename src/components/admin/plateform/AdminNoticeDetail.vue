@@ -90,7 +90,6 @@ export default {
       try {
         const response = await authInstance.get(`/api/admin/notice/${noticeId.value}`);
         notice.value = response.data;
-        console.log('공지사항 상세:', notice.value);
       } catch (error) {
         console.error('공지사항을 가져오지 못했습니다.', error);
       }
@@ -123,7 +122,7 @@ export default {
         await authInstance.delete(`/api/admin/notice/${noticeId.value}`);
         routerInstance.back();
       } catch (error) {
-        console.log('공지사항 삭제를 실패했습니다.', error);
+        console.error('공지사항 삭제를 실패했습니다.', error);
       }
     };
 

@@ -150,7 +150,6 @@ export default {
             status: 'WAITING',
           },
         });
-        console.log(response.data);
         estimateRequests.value = response.data; // 응답 데이터를 estimateRequests에 저장
       } catch (error) {
         console.error('견적 요청 리스트를 가져오는데 실패했습니다.', error);
@@ -164,7 +163,6 @@ export default {
           const response = await authInstance.get(`/api/estimaterequests/${estimateRequest.requestId}/estimates/sent`);
           estimateRequest.estimates = response.data; // 각 요청별로 견적 목록 저장
         }
-        console.log(estimateRequest.estimates);
         isOpen.value[index] = !isOpen.value[index]; // 토글 상태 변경
       } catch (error) {
         console.error('견적 리스트를 가져오는데 실패했습니다.', error);
@@ -177,8 +175,6 @@ export default {
           const response = await authInstance.get(
             `/api/estimaterequests/${estimateRequest.requestId}/estimates/${estimate.estimateId}`
           );
-          console.log(response);
-          console.log(response.data);
           // 모달을 열고 해당 견적 상세 정보를 표시
           openModal(response.data, estimateRequest.requestId);
         } else {
@@ -200,7 +196,7 @@ export default {
         closeModal;
         window.location.reload();
       } catch (error) {
-        console.log('승인 실패했습니다.', error);
+        console.error('승인 실패했습니다.', error);
       }
     };
 
@@ -214,7 +210,7 @@ export default {
         closeModal;
         window.location.reload();
       } catch (error) {
-        console.log('거절 실패했습니다.', error);
+        console.error('거절 실패했습니다.', error);
       }
     };
 

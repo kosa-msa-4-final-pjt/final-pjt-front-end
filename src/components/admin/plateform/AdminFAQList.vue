@@ -91,14 +91,13 @@ export default {
     const getFAQs = async () => {
       try {
         const response = await authInstance.get(`/api/admin/faq/list?page=${page.value - 1}&size=${pageSize.value}`);
-        console.log(response);
 
         FAQList.value = response.data.slice || [];
         totalFAQ.value = response.data.list || [];
 
         totalPage.value = response.data.totalPage;
       } catch (error) {
-        console.log('FAQ를 가져오지 못했습니다.', error);
+        console.error('FAQ를 가져오지 못했습니다.', error);
       }
     };
 

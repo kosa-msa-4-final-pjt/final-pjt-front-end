@@ -24,7 +24,7 @@
     <!-- 업체 설명 -->
     <div class="bg-gray-50 p-6 rounded-lg mb-8">
       <h3 class="text-xl font-semibold text-gray-800 mb-4">업체 소개</h3>
-      <p class="text-gray-700 leading-relaxed">{{ company.companyDesc }}</p>
+      <p class="text-gray-700 leading-relaxed whitespace-pre-wrap">{{ company.companyDesc }}</p>
     </div>
 
     <!-- 업체 서비스 -->
@@ -113,7 +113,6 @@ export default {
         this.company = response.data;
         this.portfolios = this.company.responses.list.slice(0, 3);
         this.reviews = this.company.reviews.list.slice(0, 3);
-        console.log(response.data);
       } catch (error) {
         console.error('Error fetching company data:', error);
       }

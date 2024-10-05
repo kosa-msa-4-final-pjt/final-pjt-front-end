@@ -106,7 +106,6 @@ export default {
     checkEmail() {
       // 이메일 형식 검증
       const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      console.log('이메일: ' + this.email);
       if (this.email.length != 0 && emailPattern.test(this.email)) {
         return true;
       }
@@ -123,9 +122,6 @@ export default {
 
     vallidateForm() {
       // 이메일과 비밀번호 검증
-      console.log('이메일 검증 결과 ' + this.checkEmail());
-      console.log('패스워드 검증 결과 ' + this.checkPassword());
-
       if (this.checkEmail() && this.checkPassword()) {
         return true;
       }
@@ -152,8 +148,6 @@ export default {
           withCredentials: true,
         });
 
-        console.log(response.headers.get('Authorization'));
-
         userStore.login(response.data.nickName, response.headers.get('Authorization'), response.data.role);
         const role = response.data.role;
         if (role === 'ADMIN') {
@@ -162,7 +156,6 @@ export default {
           this.$router.push('/');
         }
       } catch (error) {
-        console.log(error);
         console.error('로그인 오류:', error);
         if (error.status == 401 || error.status == 500) {
           this.errorMessage = '아이디 또는 패스워드를 확인해 주세요.';

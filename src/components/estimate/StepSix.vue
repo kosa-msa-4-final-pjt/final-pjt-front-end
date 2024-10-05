@@ -210,21 +210,16 @@ export default {
           if (params.length > 0) {
             url += `&${params.join('&')}`;
           }
-
-          console.log(`Fetching ${grade} companies:`, url);
           return instance.get(url);
         });
 
         const responses = await Promise.all(requests);
         responses.forEach((response, index) => {
           const grade = grades[index];
-          console.log(`Response for ${grade}:`, response.data);
-
           companies[grade] = response.data.list;
         });
 
         sortCompanies();
-        console.log('정렬된 응답 데이터:', companies);
       } catch (err) {
         console.error('업체를 불러오는 중 오류가 발생했습니다:', err);
         error.value = '업체 목록을 불러오는 데 실패했습니다';
@@ -259,8 +254,7 @@ export default {
           estimateRequestId: estimateRequestId,
         };
 
-        const response = await authInstance.post('/api/estimates/send', requestPayload);
-        console.log(response);
+        await authInstance.post('/api/estimates/send', requestPayload);
 
         requestedCompanies.value.push(companyId);
 

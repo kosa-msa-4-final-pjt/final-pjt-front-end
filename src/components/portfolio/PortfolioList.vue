@@ -48,7 +48,6 @@ export default {
     async fetchPortfolios() {
       try {
         const response = await instance.get(`/api/portfolio/page?size=${this.pageSize}&page=${this.currentPage}`);
-        console.log(response.data);
         this.totalPage = response.data.totalPage;
         this.totalPortfolios = response.data.list.length;
         this.portfolios.push(...response.data.slice);

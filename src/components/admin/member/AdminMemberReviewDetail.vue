@@ -203,7 +203,6 @@ export default {
         const response = await authInstance.get(`/api/admin/reviews/${reviewId.value}`);
         review.images = extractImagesFromContent(response.data.content);
         Object.assign(review, response.data);
-        console.log(review);
       } catch (error) {
         console.error('Error fetching review data:', error);
       }

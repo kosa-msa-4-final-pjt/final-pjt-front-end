@@ -185,7 +185,6 @@ export default {
       this.modalMessage =
         '해당 계정을 정말로 강제 탈퇴하시겠습니까? 해당 계정의 작업은 그대로 서버에 저장됩니다. 이 작업은 취소할 수 없습니다.';
       this.isModalOpen = true;
-      console.log('계정 탈퇴완료:', this.isModalOpen);
     },
 
     deleteCompany() {

@@ -166,11 +166,6 @@ export default {
     },
 
     async afterUploadImages(portfolioId, afterUpdateContent, resolve, reject) {
-      console.log('이미지 삽입 후 내용');
-      console.log(afterUpdateContent);
-
-      // const userStore = useUserStore();
-      // const token = userStore.accessToken;
 
       const portfolioRequest = {
         title: this.title,
@@ -275,7 +270,6 @@ export default {
         const response = await authInstance.post('/api/portfolio/create', portfolioRequest);
         alert('시공 사례가 작성되었습니다.');
         const portfolioId = response.data.id;
-        console.log('이미지 저장 호출');
         await this.$refs.quillEditor.uploadImages(portfolioId);
 
         this.$router.push(`/portfolio/${portfolioId}`);

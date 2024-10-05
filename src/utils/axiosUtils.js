@@ -34,22 +34,16 @@ authInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    console.log(error);
     if (error.status == 500) {
-      console.log('서버 예외');
       return Promise.reject(error);
     }
 
     if (originalRequest._retry) {
-      console.log('이미 재요청 시도를 진행함');
       return Promise.reject(error);
     }
 
-    if (originalRequest) console.log('액세스 토큰 만료 가능성 있음 ' + originalRequest);
-    console.log(originalRequest);
     originalRequest._retry = true;
     try {
-      console.log('재발급 요청');
       const res = await axios.post(
         process.env.VUE_APP_SERVER_URI + '/refreshToken',
         {},
@@ -62,12 +56,8 @@ authInstance.interceptors.response.use(
 
       originalRequest.Authorization = accessToken;
 
-      console.log('발급 이후의 요청');
-      console.log(originalRequest);
-
       return authInstance(originalRequest);
     } catch (refreshError) {
-      console.log(refreshError);
       return Promise.reject(refreshError);
     }
   }

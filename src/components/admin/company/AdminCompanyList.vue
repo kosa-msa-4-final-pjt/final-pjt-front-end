@@ -118,7 +118,6 @@ export default defineComponent({
     const fetchCompanies = async () => {
       try {
         const response = await authInstance.get(`/api/admin/companies?page=${page.value - 1}&size=${pageSize.value}`);
-        console.log(response.data);
 
         companies.value = response.data.slice || [];
         totalCompanies.value = response.data.list || [];

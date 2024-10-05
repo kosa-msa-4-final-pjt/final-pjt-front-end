@@ -41,7 +41,7 @@ export default {
         const response = await authInstance.get(`/api/notice/${noticeId}`);
         notice.value = response.data;
       } catch (error) {
-        console.log('공지사항을 가져오지 못했습니다.', error);
+        console.error('공지사항을 가져오지 못했습니다.', error);
       }
     };
 

@@ -172,7 +172,7 @@ export default {
         authInstance.post(`/api/estimaterequests/${estimateRequest.requestId}/cancel`);
         window.location.reload();
       } catch (error) {
-        console.log('취소를 실패했습니다.', error);
+        console.error('취소를 실패했습니다.', error);
       }
     };
 
@@ -185,7 +185,7 @@ export default {
         authInstance.post(`/api/estimaterequests/${estimateRequest.requestId}/complete`);
         window.location.reload();
       } catch (error) {
-        console.log('시공 완료를 실패했습니다.', error);
+        console.error('시공 완료를 실패했습니다.', error);
       }
     };
 
