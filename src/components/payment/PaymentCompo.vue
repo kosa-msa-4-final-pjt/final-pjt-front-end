@@ -16,13 +16,13 @@
         <!-- 멤버십 설명 -->
         <div v-if="membership.type === 'BASIC'" class="my-8">
           <p class="text-gray-600 mb-2 font-medium">가장 기본적인 멤버십</p>
-          <p class="text-gray-600 mb-2 font-medium">고객들의 견적 요청서 조회 가능</p>
-          <p class="text-gray-600 font-medium">견적 요청 작성 가능</p>
+          <p class="text-gray-600 mb-2 font-medium">견적서 작성 가능</p>
+          <p class="text-gray-600 font-medium">고객들의 견적 요청서 조회 가능</p>
         </div>
         <div v-else-if="membership.type === 'PREMIUM'" class="my-8">
           <p class="text-gray-600 mb-2 font-medium">광고 혜택이 주어지는 멤버십</p>
-          <p class="text-gray-600 mb-2 font-medium">배너 광고 제공</p>
-          <p class="text-gray-600 font-medium">업체 추천 시 페이지 상단에 위치</p>
+          <p class="text-gray-600 mb-2 font-medium">업체 리스트 최상단 노출</p>
+          <p class="text-gray-600 font-medium">견적 작성 시 고객에게 우선적으로 추천</p>
         </div>
 
         <!-- 결제하기 버튼 -->
