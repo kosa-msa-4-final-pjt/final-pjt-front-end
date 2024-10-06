@@ -162,6 +162,7 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2';
 import { authInstance } from '@/utils/axiosUtils';
 
 export default {
@@ -231,7 +232,7 @@ export default {
         // 예시: response.data.constructionPrices가 객체로 { typeId: { price: number, ... } } 형태라고 가정
         const constructionPrices = response.data.constructionPrices;
 
-        // constructionPrices 객체를 배열으로 변환하여 estimateDetails에 저장
+        // constructionPrices 객체를 배열로 변환하여 estimateDetails에 저장
         this.estimateDetails = Object.keys(constructionPrices).map((typeId) => ({
           estimateConstructionTypeId: typeId,
           price: constructionPrices[typeId].price,
@@ -259,10 +260,20 @@ export default {
 
     // 견적 금액을 제출하는 함수
     async submitEstimate() {
-      const isConfirm = confirm('견적을 보내시겠습니까?');
-      if (!isConfirm) {
+      const result = await Swal.fire({
+        text: '견적을 보내시겠습니까?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '보내기',
+        cancelButtonText: '취소',
+        confirmButtonColor: '#429f50',
+        cancelButtonColor: '#d33',
+      });
+
+      if (!result.isConfirmed) {
         return;
       }
+
       try {
         // 시공 타입별 입력 금액 데이터를 서버로 전송할 형식으로 변환
         const constructionPrices = {};
@@ -284,10 +295,20 @@ export default {
 
     // 견적 금액 수정 후 제출하는 함수
     async submitUpdateEstimate() {
-      const isConfirm = confirm('견적을 수정하시겠습니까?');
-      if (!isConfirm) {
+      const result = await Swal.fire({
+        text: '견적을 수정하시겠습니까?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '수정',
+        cancelButtonText: '취소',
+        confirmButtonColor: '#429f50',
+        cancelButtonColor: '#d33',
+      });
+
+      if (!result.isConfirmed) {
         return;
       }
+
       try {
         // 시공 타입별 입력된 금액 데이터를 전송할 형식으로 변환
         const constructionPrices = {};
@@ -311,15 +332,31 @@ export default {
 
     // 요청이 온 견적을 삭제(거절) 하기
     async deleteEstimate(estimate) {
-      const isConfirm = confirm('정말로 삭제하시겠습니까?');
-      if (!isConfirm) {
+      const result = await Swal.fire({
+        text: '정말로 삭제하시겠습니까?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '삭제',
+        cancelButtonText: '취소',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+      });
+
+      if (!result.isConfirmed) {
         return;
       }
+
       try {
         await authInstance.delete(`/api/estimates/${estimate.estimateId}`);
         window.location.reload();
       } catch (error) {
-        console.error('견적 삭제를 실패했습니다.', error);
+        Swal.fire({
+          text: '견적 삭제에 실패했습니다.',
+          icon: 'error',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#f39c12',
+        });
+        console.error('견적 삭제에 실패했습니다.', error);
       }
     },
 

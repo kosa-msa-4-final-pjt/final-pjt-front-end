@@ -80,6 +80,7 @@
 
 <script>
 import { authInstance } from '@/utils/axiosUtils';
+import Swal from 'sweetalert2';
 import { ref } from 'vue';
 
 export default {
@@ -104,7 +105,13 @@ export default {
     const updateUser = async () => {
       // 비밀번호 확인
       if (info.value.password !== info.value.confirmPassword) {
-        alert('비밀번호가 일치하지 않습니다.');
+        Swal.fire({
+          text: '비밀번호가 일치하지 않습니다.',
+          icon: 'error',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#f39c12',
+        });
+
         return;
       }
 
@@ -114,7 +121,12 @@ export default {
           password: info.value.password,
           phoneNumber: info.value.phoneNumber,
         });
-        alert('정보가 성공적으로 수정되었습니다.');
+        Swal.fire({
+          text: '정보가 성공적으로 수정되었습니다.',
+          icon: 'success',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#429f50',
+        });
         window.location.reload();
       } catch (error) {
         console.error('정보 수정에 실패했습니다.', error);

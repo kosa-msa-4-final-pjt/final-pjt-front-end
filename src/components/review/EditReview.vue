@@ -164,6 +164,7 @@ import { ref, onMounted, computed } from 'vue';
 import { QuillEditor } from '@vueup/vue-quill';
 import { useRoute, useRouter } from 'vue-router';
 import { authInstance } from '@/utils/axiosUtils';
+import Swal from 'sweetalert2';
 
 export default {
   components: {
@@ -236,7 +237,12 @@ export default {
         selectedConstructionTypes.value = data2.constructionTypeResponses.map((type) => type.constructionId);
       } catch (error) {
         console.error('리뷰 생성 페이지 데이터를 가져오는데 실패했습니다.', error);
-        alert('리뷰 생성 페이지를 불러오는데 실패했습니다.');
+        Swal.fire({
+          text: '리뷰 작성 페이지를 불러오는데 실패했습니다.',
+          icon: 'errpr',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#f39c12',
+        });
         router.push('/'); // 안전한 경로로 리디렉션
       }
     };
@@ -245,7 +251,12 @@ export default {
       const currentRequestId = requestId.value;
 
       if (!currentRequestId) {
-        alert('유효하지 않은 요청 ID입니다.');
+        Swal.fire({
+          text: '유효하지 않은 요청 ID입니다.',
+          icon: 'error',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#f39c12',
+        });
         return;
       }
 
@@ -265,13 +276,22 @@ export default {
 
       try {
         const reviewResponse = await authInstance.post('/api/reviews', reviewRequestData);
-        alert('후기가 작성되었습니다.');
-
+        Swal.fire({
+          text: '후기가 작성되었습니다.',
+          icon: 'success',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#429f50',
+        });
         const reviewId = reviewResponse.data.reviewId;
         await uploadRemainContents(reviewId);
       } catch (error) {
         console.error('후기 작성에 실패하였습니다.', error);
-        alert('후기 작성에 실패하였습니다.');
+        Swal.fire({
+          text: '후기 작성에 실패하였습니다.',
+          icon: 'success',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#f39c12',
+        });
       }
     };
 
@@ -322,7 +342,12 @@ export default {
 
         const registerResult = response.data;
         if (registerResult) {
-          alert('등록 성공!');
+          Swal.fire({
+            text: '후기가 작성되었습니다.',
+            icon: 'success',
+            confirmButtonText: '확인',
+            confirmButtonColor: '#429f50',
+          });
           router.push(`/reviews/${reviewId}`);
         }
       } catch (error) {
@@ -335,7 +360,12 @@ export default {
         if (endDate.value < startDate.value) {
           startDate.value = '';
           endDate.value = '';
-          alert(`종료 날짜는 시작 날짜보다 앞설 수 없습니다.\n날짜를 다시 입력해주세요.`);
+          Swal.fire({
+            text: '종료 날짜는 시작 날짜보다 앞설 수 없습니다.\n날짜를 다시 입력해주세요.',
+            icon: 'warning',
+            confirmButtonText: '확인',
+            confirmButtonColor: '#f39c12',
+          });
         }
       }
     };
@@ -352,7 +382,12 @@ export default {
     onMounted(() => {
       requestId.value = route.query.requestId;
       if (!requestId.value) {
-        alert('유효하지 않은 요청 ID입니다.');
+        Swal.fire({
+          text: '유효하지 않은 요청 ID입니다.',
+          icon: 'error',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#f39c12',
+        });
         router.push('/'); // 안전한 경로로 리디렉션
         return;
       }

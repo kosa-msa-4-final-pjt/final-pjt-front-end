@@ -117,6 +117,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Navigation, Pagination } from 'swiper';
 import { authInstance } from '@/utils/axiosUtils';
+import Swal from 'sweetalert2';
 
 export default {
   data() {
@@ -202,17 +203,39 @@ export default {
       this.$router.push(`/reviews/edit/${this.reviewDetail.id}`);
     },
     confirmDelete() {
-      if (confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {
-        this.deleteReview();
-      }
+      Swal.fire({
+        text: '후기를 삭제하시겠습니까?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: '삭제',
+        cancelButtonText: '취소',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.deleteReview();
+        }
+      });
     },
     async deleteReview() {
       const reviewId = this.$route.params.id;
       try {
         await authInstance.delete(`/api/reviews/${reviewId}`);
-        alert('리뷰가 삭제되었습니다.');
-        this.$router.push('/reviews');
+        Swal.fire({
+          text: '리뷰가 삭제되었습니다.',
+          icon: 'success',
+          confirmButtonColor: '#429f50',
+          confirmButtonText: '확인',
+        }).then(() => {
+          this.$router.push('/reviews');
+        });
       } catch (error) {
+        Swal.fire({
+          text: '리뷰 삭제 중 문제가 발생했습니다. 다시 시도해 주세요.',
+          icon: 'error',
+          confirmButtonColor: '#d33',
+          confirmButtonText: '확인',
+        });
         console.error('Error deleting review:', error);
       }
     },

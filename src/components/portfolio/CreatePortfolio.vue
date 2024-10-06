@@ -166,7 +166,6 @@ export default {
     },
 
     async afterUploadImages(portfolioId, afterUpdateContent, resolve, reject) {
-
       const portfolioRequest = {
         title: this.title,
         content: afterUpdateContent,
@@ -268,14 +267,24 @@ export default {
 
       try {
         const response = await authInstance.post('/api/portfolio/create', portfolioRequest);
-        alert('시공 사례가 작성되었습니다.');
+        this.$swal.fire({
+          text: '시공 사례가 작성되었습니다.',
+          icon: 'success',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#429f50',
+        });
         const portfolioId = response.data.id;
         await this.$refs.quillEditor.uploadImages(portfolioId);
 
         this.$router.push(`/portfolio/${portfolioId}`);
       } catch (error) {
         console.error(error);
-        alert('시공 사례 작성에 실패하였습니다.');
+        this.$swal.fire({
+          text: '시공 사례 작성에 실패하였습니다.',
+          icon: 'error',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#f39c12',
+        });
       }
     },
   },

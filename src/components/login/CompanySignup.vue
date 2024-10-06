@@ -338,7 +338,12 @@ export default {
         this.logoFile = null;
         this.previewImage = null;
         this.selectedFileName = ''; // 파일이 없으면 이름 초기화
-        alert('이미지 파일을 선택해주세요.');
+        this.$swal.fire({
+          text: '이미지 파일을 선택해주세요.',
+          icon: 'warning',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#f39c12',
+        });
       }
     },
 
@@ -620,14 +625,29 @@ export default {
         // 서버로 POST 요청
         try {
           await instance.post('/api/company', formData);
-          alert('입력하신 이메일로 인증 메일이 전송되었습니다. 메일 인증 후 로그인이 가능합니다.');
+          this.$swal.fire({
+            text: '입력하신 이메일로 인증 메일이 전송되었습니다. 메일 인증 후 로그인이 가능합니다.',
+            icon: 'info',
+            confirmButtonText: '확인',
+            confirmButtonColor: '#f39c12',
+          });
           this.$router.push('/');
         } catch (error) {
           console.error(error);
-          alert('업체 등록에 실패했습니다.');
+          this.$swal.fire({
+            text: '업체 등록에 실패했습니다.',
+            icon: 'error',
+            confirmButtonText: '확인',
+            confirmButtonColor: '#f39c12',
+          });
         }
       } else {
-        alert('입력한 정보를 확인해 주세요.');
+        this.$swal.fire({
+          text: '입력한 정보를 확인해 주세요.',
+          icon: 'warning',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#f39c12',
+        });
       }
     },
 

@@ -85,6 +85,7 @@ import { useUserStore } from '@/stores/userStore';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { authInstance } from '@/utils/axiosUtils';
+import Swal from 'sweetalert2';
 
 export default {
   setup() {
@@ -95,19 +96,22 @@ export default {
     const role = computed(() => userStore.role);
     const nickName = computed(() => userStore.nickName);
 
-
-
     const goToEstimateList = async () => {
       const membershipCompanyFlag = await authInstance.get('/api/memberships/isjoin');
       let isMembershipCompany = membershipCompanyFlag.data;
       if (isMembershipCompany) {
         router.push('/estimate/list');
-        return ;
+        return;
       }
+      Swal.fire({
+        text: '멤버십 가입 이후 조회 가능합니다.',
+        icon: 'warning',
+        confirmButtonText: '확인',
+        confirmButtonColor: '#f39c12',
+      });
 
-      alert("멤버십 가입 이후 조회 가능합니다.")
-      router.push('/payment')
-    }
+      router.push('/payment');
+    };
 
     // New method to navigate based on role
     const goToMyPage = () => {
@@ -145,7 +149,7 @@ export default {
       goToMyPage,
       goToHome,
       goToEstimateRequest,
-      goToEstimateList
+      goToEstimateList,
     };
   },
 

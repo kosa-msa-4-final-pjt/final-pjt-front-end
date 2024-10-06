@@ -152,6 +152,7 @@
 <script>
 import { authInstance } from '@/utils/axiosUtils';
 import { ref, onMounted, computed } from 'vue';
+import Swal from 'sweetalert2';
 
 export default {
   setup() {
@@ -185,13 +186,23 @@ export default {
 
     // 견적 취소하기
     const cancelEstimate = async (estimate) => {
-      if (confirm('정말로 취소하시겠습니까?')) {
-        try {
-          await authInstance.delete(`/api/estimates/${estimate.estimateId}`);
-          await fetchRequests();
-        } catch (error) {
-          console.error('견적 삭제를 실패했습니다.', error);
-        }
+      const result = await Swal.fire({
+        text: '정말로 취소하시겠습니까?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '확인',
+        cancelButtonText: '취소',
+        confirmButtonColor: '#429f50',
+        cancelButtonColor: '#d33',
+      });
+      if (!result.isConfirmed) {
+        return;
+      }
+      try {
+        await authInstance.delete(`/api/estimates/${estimate.estimateId}`);
+        await fetchRequests();
+      } catch (error) {
+        console.error('견적 삭제를 실패했습니다.', error);
       }
     };
 
@@ -229,8 +240,16 @@ export default {
 
     // 견적 금액 수정 후 제출하는 함수
     const submitUpdateEstimate = async () => {
-      const isConfirm = confirm('견적을 수정하시겠습니까?');
-      if (!isConfirm) {
+      const result = await Swal.fire({
+        text: '견적을 수정하시겠습니까?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '확인',
+        cancelButtonText: '취소',
+        confirmButtonColor: '#429f50',
+        cancelButtonColor: '#d33',
+      });
+      if (!result.isConfirmed) {
         return;
       }
       try {

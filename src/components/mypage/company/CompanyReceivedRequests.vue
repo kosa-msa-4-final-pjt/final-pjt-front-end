@@ -166,6 +166,7 @@
 
 <script>
 import { authInstance } from '@/utils/axiosUtils';
+import Swal from 'sweetalert2';
 
 export default {
   data() {
@@ -259,8 +260,16 @@ export default {
 
     // 견적 금액을 제출하는 함수
     async submitEstimate() {
-      const isConfirm = confirm('견적을 보내시겠습니까?');
-      if (!isConfirm) {
+      const result = await Swal.fire({
+        text: '견적을 보내시겠습니까?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '확인',
+        cancelButtonText: '취소',
+        confirmButtonColor: '#429f50',
+        cancelButtonColor: '#d33',
+      });
+      if (!result.isConfirmed) {
         return;
       }
       try {
@@ -284,8 +293,16 @@ export default {
 
     // 견적 금액 수정 후 제출하는 함수
     async submitUpdateEstimate() {
-      const isConfirm = confirm('견적을 수정하시겠습니까?');
-      if (!isConfirm) {
+      const result = await Swal.fire({
+        text: '견적을 수정하시겠습니까?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '확인',
+        cancelButtonText: '취소',
+        confirmButtonColor: '#429f50',
+        cancelButtonColor: '#d33',
+      });
+      if (!result.isConfirmed) {
         return;
       }
       try {
@@ -311,15 +328,23 @@ export default {
 
     // 요청이 온 견적을 삭제(거절) 하기
     async deleteEstimate(estimate) {
-      const isConfirm = confirm('정말로 삭제하시겠습니까?');
-      if (!isConfirm) {
+      const result = await Swal.fire({
+        text: '정말로 삭제하시겠습니까?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '확인',
+        cancelButtonText: '취소',
+        confirmButtonColor: '#429f50',
+        cancelButtonColor: '#d33',
+      });
+      if (!result.isConfirmed) {
         return;
       }
       try {
         await authInstance.delete(`/api/estimates/${estimate.estimateId}`);
         window.location.reload();
       } catch (error) {
-        console.error('견적 삭제를 실패했습니다.', error);
+        console.error('견적 삭제에 실패했습니다.', error);
       }
     },
 

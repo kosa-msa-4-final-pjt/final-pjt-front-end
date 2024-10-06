@@ -129,6 +129,7 @@
 <script>
 import { ref } from 'vue';
 import { authInstance } from '@/utils/axiosUtils';
+import Swal from 'sweetalert2';
 
 export default {
   setup() {
@@ -164,27 +165,73 @@ export default {
     };
 
     const cancel = async (estimateRequest) => {
-      const isConfirm = confirm('정말로 취소하시겠습니까?');
-      if (!isConfirm) {
+      const result = await Swal.fire({
+        text: '정말로 취소하시겠습니까?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: '취소',
+        cancelButtonText: '닫기',
+      });
+
+      if (!result.isConfirmed) {
         return;
       }
+
       try {
-        authInstance.post(`/api/estimaterequests/${estimateRequest.requestId}/cancel`);
-        window.location.reload();
+        await authInstance.post(`/api/estimaterequests/${estimateRequest.requestId}/cancel`);
+        Swal.fire({
+          text: '취소되었습니다.',
+          icon: 'success',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#429f50',
+        }).then(() => {
+          window.location.reload();
+        });
       } catch (error) {
+        Swal.fire({
+          text: '취소를 실패했습니다. 다시 시도해주세요.',
+          icon: 'error',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#f39c12',
+        });
         console.error('취소를 실패했습니다.', error);
       }
     };
 
     const complete = async (estimateRequest) => {
-      const isConfirm = confirm('시공을 완료하시겠습니까?');
-      if (!isConfirm) {
+      const result = await Swal.fire({
+        text: '시공을 완료하시겠습니까?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#429f50',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '완료',
+        cancelButtonText: '닫기',
+      });
+
+      if (!result.isConfirmed) {
         return;
       }
+
       try {
-        authInstance.post(`/api/estimaterequests/${estimateRequest.requestId}/complete`);
-        window.location.reload();
+        await authInstance.post(`/api/estimaterequests/${estimateRequest.requestId}/complete`);
+        Swal.fire({
+          text: '시공이 완료되었습니다.',
+          icon: 'success',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#429f50',
+        }).then(() => {
+          window.location.reload();
+        });
       } catch (error) {
+        Swal.fire({
+          text: '시공 완료를 실패했습니다. 다시 시도해주세요.',
+          icon: 'error',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#f39c12',
+        });
         console.error('시공 완료를 실패했습니다.', error);
       }
     };

@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2';
 import router from '@/router';
 import { authInstance } from '@/utils/axiosUtils';
 import { ref } from 'vue';
@@ -57,18 +58,41 @@ export default {
     const content = ref('');
 
     const createNotice = async () => {
-      const isConfirm = confirm('공지사항을 등록하시겠습니까?');
-      if (!isConfirm) {
+      const result = await Swal.fire({
+        text: '공지사항을 등록하시겠습니까?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '등록',
+        cancelButtonText: '취소',
+        confirmButtonColor: '#429f50',
+        cancelButtonColor: '#d33',
+      });
+
+      if (!result.isConfirmed) {
         return;
       }
+
       try {
         const noticeData = {
           title: title.value,
           content: content.value,
         };
         await authInstance.post('/api/admin/notice/create', noticeData);
-        router.back();
+        Swal.fire({
+          text: '공지사항이 성공적으로 등록되었습니다.',
+          icon: 'success',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#429f50',
+        }).then(() => {
+          router.back();
+        });
       } catch (error) {
+        Swal.fire({
+          text: '공지사항 등록에 실패했습니다.',
+          icon: 'error',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#f39c12',
+        });
         console.error('공지사항 등록을 실패했습니다.', error);
       }
     };

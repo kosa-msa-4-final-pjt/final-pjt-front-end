@@ -27,7 +27,7 @@
 
 <script>
 import PortfolioCompo from './PortfolioCompo.vue';
-import { instance } from '@/utils/axiosUtils';
+import { authInstance } from '@/utils/axiosUtils';
 
 export default {
   components: {
@@ -47,7 +47,7 @@ export default {
   methods: {
     async fetchPortfolios() {
       try {
-        const response = await instance.get(`/api/portfolio/page?size=${this.pageSize}&page=${this.currentPage}`);
+        const response = await authInstance.get(`/api/portfolio/mypage?size=${this.pageSize}&page=${this.currentPage}`);
         this.totalPage = response.data.totalPage; // 총 페이지 수 업데이트
         this.portfolios.push(...response.data.slice); // 기존 포트폴리오 목록에 새로운 데이터 추가
       } catch (error) {

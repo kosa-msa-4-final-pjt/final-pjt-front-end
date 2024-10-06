@@ -148,6 +148,7 @@
 import { ref, reactive, watch, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router'; // useRouter 임포트
 import { instance, authInstance } from '@/utils/axiosUtils';
+import Swal from 'sweetalert2';
 
 export default {
   props: {
@@ -242,8 +243,18 @@ export default {
     };
 
     const sendEstimateRequest = async (companyId) => {
-      const isConfirm = confirm('요청을 보내시겠습니까?');
-      if (!isConfirm) return;
+      const result = await Swal.fire({
+        title: '확인',
+        text: '요청을 보내시겠습니까?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '확인',
+        cancelButtonText: '취소',
+        confirmButtonColor: '#429f50',
+        cancelButtonColor: '#d33',
+      });
+
+      if (!result.isConfirmed) return;
 
       try {
         const estimateResponse = await authInstance.get('/api/estimates/request/latest');
@@ -257,20 +268,40 @@ export default {
         await authInstance.post('/api/estimates/send', requestPayload);
 
         requestedCompanies.value.push(companyId);
-
-        alert('견적 요청이 완료되었습니다.');
+        Swal.fire({
+          text: '견적 요청이 완료되었습니다.',
+          icon: 'success',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#429f50',
+        });
       } catch (err) {
         console.error('견적 요청을 보내는 중 오류가 발생했습니다:', err);
-        alert('견적 요청을 보내는 데 실패했습니다.');
+        Swal.fire({
+          text: '견적 요청을 보내는 데 실패했습니다.',
+          icon: 'error',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#f39c12',
+        });
       }
     };
 
     // UserSaveRequests로 이동하는 메서드
-    const goToUserSaveRequests = () => {
-      const isConfirm = confirm('요청한 견적을 보러 가시겠습니까?');
-      if (!isConfirm) {
+    const goToUserSaveRequests = async () => {
+      const result = await Swal.fire({
+        title: '확인',
+        text: '요청한 견적을 보러 가시겠습니까?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: '확인',
+        cancelButtonText: '취소',
+        confirmButtonColor: '#429f50',
+        cancelButtonColor: '#d33',
+      });
+
+      if (!result.isConfirmed) {
         return;
       }
+
       router.push('/mypage/user/usersaverequest');
     };
 

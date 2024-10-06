@@ -74,6 +74,7 @@
 import { defineComponent, ref, onMounted } from 'vue';
 import { authInstance } from '@/utils/axiosUtils';
 import dayjs from 'dayjs';
+import Swal from 'sweetalert2';
 
 export default defineComponent({
   setup() {
@@ -95,7 +96,12 @@ export default defineComponent({
       await authInstance.patch(`/api/admin/membership/${selectedMembershipId.value}/price`, {
         price: price.value,
       });
-      alert('가격 수정이 완료되었습니다.');
+      Swal.fire({
+        text: '가격 수정이 완료되었습니다.',
+        icon: 'success',
+        confirmButtonText: '확인',
+        confirmButtonColor: '#429f50',
+      });
       window.location.reload();
     };
 
