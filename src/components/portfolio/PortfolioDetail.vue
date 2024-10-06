@@ -88,6 +88,7 @@
 
 <script>
 import { authInstance } from '@/utils/axiosUtils';
+import Swal from 'sweetalert2';
 
 export default {
   data() {
@@ -163,17 +164,39 @@ export default {
     },
 
     confirmDelete() {
-      if (confirm('시공시례를 삭제하시겠습니까?')) {
-        this.deletePortfolio();
-      }
+      Swal.fire({
+        text: '시공시례를 삭제하시겠습니까?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '삭제',
+        cancelButtonText: '취소',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.deletePortfolio();
+        }
+      });
     },
     async deletePortfolio() {
       const id = this.$route.params.id;
 
       try {
         await authInstance.delete(`/api/portfolio/${id}`);
+        Swal.fire({
+          text: '포트폴리오가 삭제되었습니다.',
+          icon: 'success',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#429f50',
+        });
         this.$router.push('/portfolio');
       } catch (error) {
+        Swal.fire({
+          text: '포트폴리오 삭제에 실패했습니다.',
+          icon: 'error',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#f39c12',
+        });
         console.error('Error deleting portfolio: ', error);
       }
     },

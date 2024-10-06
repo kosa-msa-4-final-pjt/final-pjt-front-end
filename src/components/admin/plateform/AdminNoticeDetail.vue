@@ -63,10 +63,10 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2';
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { authInstance } from '@/utils/axiosUtils';
-import router from '@/router';
 
 export default {
   setup() {
@@ -91,37 +91,89 @@ export default {
         const response = await authInstance.get(`/api/admin/notice/${noticeId.value}`);
         notice.value = response.data;
       } catch (error) {
+        Swal.fire({
+          text: '공지사항을 가져오지 못했습니다.',
+          icon: 'error',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#f39c12',
+        });
         console.error('공지사항을 가져오지 못했습니다.', error);
       }
     };
 
     // 공지사항 수정 기능
     const updateNotice = async () => {
-      const isConfirm = confirm('수정하시겠습니까?');
-      if (!isConfirm) {
+      const result = await Swal.fire({
+        text: '수정하시겠습니까?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '수정',
+        cancelButtonText: '취소',
+        confirmButtonColor: '#429f50',
+        cancelButtonColor: '#d33',
+      });
+
+      if (!result.isConfirmed) {
         return;
       }
+
       try {
         await authInstance.patch(`/api/admin/notice/${noticeId.value}`, {
           title: notice.value.title,
           content: notice.value.content,
         });
-        router.back();
+        Swal.fire({
+          text: '공지사항이 성공적으로 수정되었습니다.',
+          icon: 'success',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#429f50',
+        }).then(() => {
+          routerInstance.back();
+        });
       } catch (error) {
+        Swal.fire({
+          text: '공지사항 저장에 실패했습니다.',
+          icon: 'error',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#f39c12',
+        });
         console.error('공지사항 저장을 실패했습니다.', error);
       }
     };
 
     // 공지사항 삭제 기능
     const removeNotice = async () => {
-      const isConfirm = confirm('정말로 삭제하시겠습니까?');
-      if (!isConfirm) {
+      const result = await Swal.fire({
+        text: '정말로 삭제하시겠습니까?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '삭제',
+        cancelButtonText: '취소',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+      });
+
+      if (!result.isConfirmed) {
         return;
       }
+
       try {
         await authInstance.delete(`/api/admin/notice/${noticeId.value}`);
-        routerInstance.back();
+        Swal.fire({
+          text: '공지사항이 성공적으로 삭제되었습니다.',
+          icon: 'success',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#429f50',
+        }).then(() => {
+          routerInstance.back();
+        });
       } catch (error) {
+        Swal.fire({
+          text: '공지사항 삭제에 실패했습니다.',
+          icon: 'error',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#f39c12',
+        });
         console.error('공지사항 삭제를 실패했습니다.', error);
       }
     };

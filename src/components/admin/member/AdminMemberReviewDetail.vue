@@ -164,6 +164,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Navigation, Pagination } from 'swiper';
 import { authInstance } from '@/utils/axiosUtils';
+import Swal from 'sweetalert2';
 
 export default {
   name: 'ReviewDetail',
@@ -226,14 +227,29 @@ export default {
       try {
         const response = await authInstance.delete(`/api/admin/reviews/${id}`);
         if (response.data) {
-          alert('삭제했습니다.');
+          Swal.fire({
+            text: '시공후기를 삭제했습니다.',
+            icon: 'success',
+            confirmButtonText: '확인',
+            confirmButtonColor: '#429f50',
+          });
           router.push('/mypage/admin/adminMemberReviewList');
         } else {
-          alert('삭제에 실패했습니다.');
+          Swal.fire({
+            text: '시공후기를 삭제에 실패하였습니다.',
+            icon: 'error',
+            confirmButtonText: '확인',
+            confirmButtonColor: '#f39c12',
+          });
         }
       } catch (error) {
         console.error('Error deleting review:', error);
-        alert('삭제 중 오류가 발생했습니다.');
+        Swal.fire({
+          text: '시공후기를 삭제에 실패하였습니다.',
+          icon: 'error',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#f39c12',
+        });
       } finally {
         isModalOpen.value = false;
       }

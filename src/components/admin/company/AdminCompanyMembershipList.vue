@@ -11,9 +11,11 @@
   </div>
 
   <div v-if="isRefundComplete" class="fixed inset-0 flex items-center justify-center bg-opacity-75">
-    <div class="bg-white p-6 rounded-lg shadow-lg">
+    <div class="bg-white p-6 rounded-lg shadow-lg flex-column">
       <h2 class="text-lg font-semibold mb-4">환불이 완료되었습니다.</h2>
-      <button @click="closeRefundCompleteModal" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">확인</button>
+      <div class="w-full text-center">
+        <button @click="closeRefundCompleteModal" class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">확인</button>
+      </div>
     </div>
   </div>
 

@@ -117,7 +117,13 @@ export default {
             });
 
             if (response.success) {
-              alert('결제를 성공하셨습니다.');
+              this.$swal.fire({
+                text: '결제에 성공하셨습니다.',
+                icon: 'success',
+                confirmButtonText: '확인',
+                confirmButtonColor: '#429f50',
+              });
+
               this.$router.push('/mypage/company');
             }
           }

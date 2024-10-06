@@ -156,7 +156,12 @@ export default {
 
       this.$nextTick(() => {
         if (!this.formData.address) {
-          alert('주소를 입력해주세요.');
+          this.$swal.fire({
+            text: '주소를 입력해주세요.',
+            icon: 'warning',
+            confirmButtonText: '확인',
+            confirmButtonColor: '#f39c12',
+          });
           return;
         }
 
@@ -164,7 +169,12 @@ export default {
         authInstance
           .post('/api/estimaterequests', this.formData)
           .then((response) => {
-            alert('견적 요청이 완료되었습니다.');
+            this.$swal.fire({
+              text: '견적 요청이 완료되었습니다.',
+              icon: 'success',
+              confirmButtonText: '확인',
+              confirmButtonColor: '#429f50',
+            });
 
             // 견적 요청이 완료된 후, 부모 컴포넌트에 데이터 전달
             this.$emit('sendDataToParent', {
@@ -177,7 +187,12 @@ export default {
           })
           .catch((error) => {
             console.error('폼 제출 중 오류 발생:', error);
-            alert('견적 요청에 실패했습니다.');
+            this.$swal.fire({
+              text: '견적 요청에 실패했습니다.',
+              icon: 'error',
+              confirmButtonText: '확인',
+              confirmButtonColor: '#f39c12',
+            });
           });
       });
     },

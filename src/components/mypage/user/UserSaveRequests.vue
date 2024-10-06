@@ -29,7 +29,6 @@
 
           <!-- 카드 형식으로 보여주는 부분 -->
           <div v-if="isOpen[index]" class="bg-gray-100 mt-2 p-4 shadow rounded">
-            <!-- 조건: estimates 배열이 있는지 확인하고 비어있는 경우 메시지 표시 -->
             <div v-if="!estimateRequest.estimates || estimateRequest.estimates.length === 0">
               해당 요청은 견적이 없습니다.
             </div>
@@ -79,7 +78,6 @@
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-lg font-semibold">상세 견적</h2>
         <button class="font-bold text-black p-2 mr-2" @click="closeModal">x</button>
-        <!-- 아이콘으로 변경? -->
       </div>
 
       <!-- 모달 내용 -->
@@ -134,6 +132,7 @@
 <script>
 import { ref } from 'vue';
 import { authInstance } from '@/utils/axiosUtils';
+import Swal from 'sweetalert2';
 
 export default {
   setup() {
@@ -186,14 +185,29 @@ export default {
     };
 
     const accept = async (estimate, requestId) => {
-      const isConfirm = confirm('승인하시겠습니까?');
-      if (!isConfirm) {
+      const result = await Swal.fire({
+        text: '승인하시겠습니까?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '확인',
+        cancelButtonText: '취소',
+        confirmButtonColor: '#429f50',
+        cancelButtonColor: '#d33',
+      });
+
+      if (!result.isConfirmed) {
         return;
       }
       try {
         await authInstance.post(`/api/estimaterequests/${requestId}/estimates/${estimate.estimateId}/accept`);
-        alert('승인이 완료되었습니다.');
-        closeModal;
+        Swal.fire({
+          text: '승인이 완료되었습니다.',
+          icon: 'success',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#429f50',
+        });
+
+        closeModal();
         window.location.reload();
       } catch (error) {
         console.error('승인 실패했습니다.', error);
@@ -201,13 +215,22 @@ export default {
     };
 
     const reject = async (estimate, requestId) => {
+      const result = await Swal.fire({
+        text: '정말로 거절하시겠습니까?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '확인',
+        cancelButtonText: '취소',
+        confirmButtonColor: '#429f50',
+        cancelButtonColor: '#d33',
+      });
+
+      if (!result.isConfirmed) {
+        return;
+      }
       try {
-        const isConfirm = confirm('정말로 거절하시겠습니까?');
-        if (!isConfirm) {
-          return;
-        }
         await authInstance.post(`/api/estimaterequests/${requestId}/estimates/${estimate.estimateId}/reject`);
-        closeModal;
+        closeModal();
         window.location.reload();
       } catch (error) {
         console.error('거절 실패했습니다.', error);

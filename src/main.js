@@ -16,6 +16,8 @@ import VuePaginatePlugin from '@svifty7/vue-paginate';
 import { createPinia } from 'pinia';
 import { createPersistedState } from 'pinia-plugin-persistedstate';
 
+import Swal from 'sweetalert2';
+
 library.add(fas, far, fab);
 
 const app = createApp(App);
@@ -26,6 +28,8 @@ app.use(router);
 app.use(pinia);
 app.use(VuePaginatePlugin);
 app.component('font-awesome-icon', FontAwesomeIcon);
+app.config.globalProperties.$swal = Swal;
+
 app.mount('#app');
 
 export { pinia };

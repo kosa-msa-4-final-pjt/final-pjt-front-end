@@ -149,6 +149,7 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2';
 import { authInstance } from '@/utils/axiosUtils';
 import { computed, ref } from 'vue';
 
@@ -200,17 +201,36 @@ export default {
     const updateCompany = async () => {
       // 비밀번호 확인
       if (info.value.password !== info.value.confirmPassword) {
-        alert('비밀번호가 일치하지 않습니다.');
+        Swal.fire({
+          text: '비밀번호가 일치하지 않습니다.',
+          icon: 'error',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#f39c12',
+        });
         return;
       }
 
       if (selectedTypes.value.length === 0) {
-        alert('최소 한 개의 시공 종류를 선택해야 합니다.');
+        Swal.fire({
+          text: '최소 한 개의 시공 종류를 선택해야 합니다.',
+          icon: 'warning',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#f39c12',
+        });
         return;
       }
 
-      const isConfirm = confirm('정말로 수정하시겠습니까?');
-      if (!isConfirm) {
+      const result = await Swal.fire({
+        text: '정말로 수정하시겠습니까?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '수정',
+        cancelButtonText: '취소',
+        confirmButtonColor: '#429f50',
+        cancelButtonColor: '#d33',
+      });
+
+      if (!result.isConfirmed) {
         return;
       }
 
@@ -222,9 +242,21 @@ export default {
           phoneNumber: info.value.phoneNumber,
           updateServices: selectedTypes.value, // 선택한 시공 종류 전송
         });
-        alert('정보가 성공적으로 수정되었습니다.');
-        window.location.reload();
+        Swal.fire({
+          text: '정보가 성공적으로 수정되었습니다.',
+          icon: 'success',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#429f50',
+        }).then(() => {
+          window.location.reload();
+        });
       } catch (error) {
+        Swal.fire({
+          text: '정보 수정에 실패했습니다.',
+          icon: 'error',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#f39c12',
+        });
         console.error('정보 수정에 실패했습니다.', error);
       }
     };
