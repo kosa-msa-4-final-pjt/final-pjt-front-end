@@ -195,7 +195,7 @@ export default {
     const companyName = ref('');
     const rating = ref('');
     const floor = ref('');
-    const startDate = ref(new Date().toISOString().slice(0, 10));
+    const startDate = ref('');
     const endDate = ref('');
     const totalPrice = ref('');
     const buildingTypes = ref([]);
