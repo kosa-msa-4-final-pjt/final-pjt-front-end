@@ -30,7 +30,7 @@
         </li>
         <li>
           <label for="" class="font-medium">총 가입비</label>
-          <p class="text-red">{{ totalMembershipFee }}원</p>
+          <p class="text-red">{{ totalMembershipFee.toLocaleString() }}원</p>
         </li>
         <li>
           <label for="" class="font-medium">환불 처리수</label>
@@ -38,7 +38,7 @@
         </li>
         <li>
           <label for="" class="font-medium">환불 처리금액</label>
-          <p class="text-red">{{ refundAmount }}원</p>
+          <p class="text-red">{{ refundAmount.toLocaleString() }}원</p>
         </li>
       </ul>
     </div>

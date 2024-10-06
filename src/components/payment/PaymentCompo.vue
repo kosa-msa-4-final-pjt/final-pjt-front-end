@@ -11,7 +11,9 @@
           <font-awesome-icon :icon="['far', 'credit-card']" />
           {{ membership.type }}
         </h3>
-        <p class="text-4xl font-semibold text-gray-900"><span class="text-[26px]">월 </span>{{ membership.price }}원</p>
+        <p class="text-4xl font-semibold text-gray-900">
+          <span class="text-[26px]">월 </span>{{ formatPrice(membership.price) }}원
+        </p>
 
         <!-- 멤버십 설명 -->
         <div v-if="membership.type === 'BASIC'" class="my-8">
@@ -152,6 +154,10 @@ export default {
     // 환불 정책 모달 닫기
     closeRefundPolicy() {
       this.showPolicyModal = false;
+    },
+
+    formatPrice(price) {
+      return price.toLocaleString();
     },
   },
 };
