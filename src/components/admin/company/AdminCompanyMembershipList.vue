@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, ref, watch } from 'vue';
+import { defineComponent, onMounted, ref, watch, computed } from 'vue';
 import { VuePaginate } from '@svifty7/vue-paginate';
 import { authInstance } from '@/utils/axiosUtils';
 
@@ -118,11 +118,8 @@ export default defineComponent({
     const totalPage = ref();
     const refundCompanyId = ref(0);
     const isRefundComplete = ref(false); // 환불 완료 모달 상태
-    const totalMembershipFee = ref(0);
-    const refundCount = ref(0);
-    const refundAmount = ref(0);
     const membershipCompany = ref([]);
-    const totalmembershipCompany = ref([]);
+    const totalmembershipCompany = ref(0);
     const isModalOpen = ref(false);
 
     const openModal = (companyId) => {
@@ -142,30 +139,39 @@ export default defineComponent({
       await authInstance.post(`/api/admin/memberships/${refundCompanyId.value}/refund`);
       isModalOpen.value = false;
       isRefundComplete.value = true;
+      fetchMembershipList(); // 환불 후 목록을 새로고침
     };
 
     const fetchMembershipList = async () => {
       const response = await authInstance.get(`/api/admin/memberships?page=${page.value - 1}&size=${pageSize.value}`);
       membershipCompany.value = response.data.slice || [];
       totalmembershipCompany.value = response.data.list.length;
-
-      // 총 가입비 계산
-      totalMembershipFee.value = response.data.list.reduce((acc, company) => acc + company.membershipPrice, 0);
-
-      // 환불 처리수 및 환불 처리 금액 계산
-      const refundedCompanies = response.data.list.filter((company) => !company.validMembership);
-      refundCount.value = refundedCompanies.length;
-      refundAmount.value = refundedCompanies.reduce((acc, company) => acc + company.membershipPrice, 0);
-
       totalPage.value = response.data.totalPage;
     };
 
-    // 페이지 변경 시 데이터 다시 가져오기
+    // 총 가입비 계산하는 computed 속성
+    const totalMembershipFee = computed(() => {
+      return membershipCompany.value.reduce((acc, company) => acc + company.membershipPrice, 0);
+    });
+
+    // 환불 처리 건수를 계산하는 computed 속성
+    const refundCount = computed(() => {
+      return membershipCompany.value.filter((company) => !company.validMembership).length;
+    });
+
+    // 환불 처리 금액을 계산하는 computed 속성
+    const refundAmount = computed(() => {
+      return membershipCompany.value
+        .filter((company) => !company.validMembership)
+        .reduce((acc, company) => acc + company.membershipPrice, 0);
+    });
+
+    // 페이지 변경 시 데이터를 다시 가져오기
     watch(page, () => {
       fetchMembershipList();
     });
 
-    // 컴포넌트가 마운트될 때 데이터 불러오기
+    // 컴포넌트가 마운트될 때 데이터를 불러오기
     onMounted(async () => {
       await fetchMembershipList();
     });
