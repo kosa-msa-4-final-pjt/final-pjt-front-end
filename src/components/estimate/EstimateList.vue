@@ -81,7 +81,7 @@
                 수정
               </button>
             </div>
-            <div v-else-if="estimate.send === true && estimate.status === 'RECEIVED'">
+            <div class="flex" v-else-if="estimate.send === true && estimate.status === 'RECEIVED'">
               <button
                 class="w-full mr-4 bg-gray-300 text-gray-800 rounded-lg py-2 px-4 font-medium"
                 @click="deleteEstimate(estimate)"
