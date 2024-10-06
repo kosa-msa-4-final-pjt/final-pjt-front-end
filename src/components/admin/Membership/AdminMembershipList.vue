@@ -52,7 +52,7 @@
               {{ membership.name }}
             </td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
-              {{ membership.price }}원
+              {{ membership.price.toLocaleString() }}원
             </td>
             <td class="text-center p-2 border-t border-gray-300 bg-white whitespace-nowrap">
               {{ membership.subscriberCount }}명
